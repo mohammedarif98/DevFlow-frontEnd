@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'rubik-wet-paint': ['"Rubik Wet Paint"', 'system-ui', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

@@ -1,12 +1,13 @@
-// import { useState } from 'react'
+import Header from "./components/user-components/Header/Header"
+// import Home from "./pages/user-pages/Home"
+
 
 
 function App() {
   return (
     <>
-    <h1 className="text-3xl font-bold text-fuchsia-600">
-      Hello world!
-    </h1>
+    <Header/>
+    {/* <Home /> */}
     </>
   )
 }
