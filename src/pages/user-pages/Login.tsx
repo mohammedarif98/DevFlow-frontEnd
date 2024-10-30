@@ -1,5 +1,5 @@
 import React from 'react';
-import loginBg3 from '../../../public/images/freepik-export-20241029093300RFZp.jpeg';
+import loginBg3 from '../../assets/images/freepik-export-20241029093300RFZp.jpeg';
 import { Link } from 'react-router-dom';
 import { FaGoogle } from "react-icons/fa";
 
@@ -67,7 +67,7 @@ const Login: React.FC = () => {
           <div className='flex flex-col items-center mt-4'>
             <p className='text-black mb-4'>------------- or -------------</p>
             
-            <button className='flex items-center justify-center w-full bg-gray-50 border border-gray-500 opacity-95 text-black py-2 rounded'>
+            <button className='flex items-center justify-center w-full bg-gray-50 border border-gray-500 opacity-95 text-black py-2 font-semibold rounded'>
               <FaGoogle className='text-red-800 text-xl mr-2' />
               Login with Google
             </button>
