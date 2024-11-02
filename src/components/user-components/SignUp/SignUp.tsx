@@ -66,9 +66,9 @@ const SignUp: React.FC = () => {
         ) : (
           <SignUpForm
             loading={loading}
+            register={register}
             errors={errors}
             handleSubmit={handleSubmit}
-            register={register}
             handleSignUp={handleSignUp}
           />
         )}

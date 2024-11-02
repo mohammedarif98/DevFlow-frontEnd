@@ -6,9 +6,9 @@ import { UserSignUp } from '../../../utils/types/api-types';
 
 interface SignUpFormProps {
   loading: boolean;
+  register: any;
   errors: any;
   handleSubmit: any;
-  register: any;
   handleSignUp: (data: UserSignUp) => void;
 }
 

@@ -1,11 +1,25 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { UserLogin } from "../../../utils/types/api-types";
 
 
+interface LoginFormProps {
+  loading: boolean;
+  register: any;
+  errors: any;
+  handleSubmit: any;
+  handleLogin: (data: UserLogin) => void;
+}
 
-const LoginForm: React.FC = ({}) => (
-  <form className="w-[60%] max-w-lg">
+const LoginForm: React.FC<LoginFormProps> = ({
+  loading,
+  register,
+  errors,
+  handleSubmit,
+  handleLogin,
+}) => (
+  <form className="w-[60%] max-w-lg" onSubmit={handleSubmit(handleLogin)}>
     <h2 className="text-2xl font-bold mb-6 text-center">
       Sign in to your Account
     </h2>
@@ -17,10 +31,16 @@ const LoginForm: React.FC = ({}) => (
       <input
         type="email"
         id="email"
+        {...register("email")}
         className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-0"
         placeholder="Enter your email"
         required
       />
+      {errors.email && (
+        <span className="text-sm font-normal text-rose-600">
+          {errors.email.message}
+        </span>
+      )}
     </div>
 
     <div className="mb-1">
@@ -33,10 +53,16 @@ const LoginForm: React.FC = ({}) => (
       <input
         type="password"
         id="password"
+        {...register("password")}
         className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-0"
         placeholder="Enter your password"
         required
       />
+      {errors.password && (
+        <span className="text-sm font-normal text-rose-600">
+          {errors.password.message}
+        </span>
+      )}
     </div>
 
     <div className="flex justify-end mb-6">
@@ -49,7 +75,7 @@ const LoginForm: React.FC = ({}) => (
       type="submit"
       className="w-full bg-black hover:bg-opacity-75 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
     >
-      Login
+      {loading ? "Login..." : "login" }
     </button>
 
     <div className="flex justify-end my-2">

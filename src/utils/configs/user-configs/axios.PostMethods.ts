@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { UserSignUp } from "../../types/api-types";
+import { UserLogin, UserSignUp } from "../../types/api-types";
 import { apiRequest } from "./axios.config";
 
 
@@ -16,7 +16,7 @@ export const userSignUp = async( signUpPayload: UserSignUp): Promise<{message: s
         const result = await apiRequest(config);
         return result.data;
     }catch(error){
-        let message = "An unexpected error occurred.";
+        let message;
         if(axios.isAxiosError(error) && error.response?.data?.message) {
             message = error.response.data.message;
           }
@@ -41,6 +41,27 @@ export const OtpVerification = async( otp: string ): Promise<AxiosResponse> => {
             message = error.response.data.message;
           }
         // console.log("OTP verification failed:", message);
+        throw new Error(message);
+    }
+}
+
+
+//*----------------------- function for login -------------------------
+export const userLogin = async(loginPayload: UserLogin): Promise<{ message: string}> => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `/api/auth/login-user`,
+        data: loginPayload
+    }
+    try{
+        const result = await apiRequest(config);
+        //* Ensure the response contains the message field
+        return result.data.message ? { message: result.data.message } : { message: "Invalid response from server" };
+    }catch(error){
+        let message;
+        if(axios.isAxiosError(error) && error.response?.data?.message){
+            message = error.response.data.message;
+        }
         throw new Error(message);
     }
 }
