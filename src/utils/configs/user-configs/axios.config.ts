@@ -7,7 +7,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // Configure the main Axios instance with default settings
 export const axiosInstance = axios.create({
 	baseURL: BASE_URL,
-	timeout: 10000,
+	// timeout: 5000,
 	withCredentials: true,
 	headers: {
 	  'Content-Type': 'application/json',
@@ -22,8 +22,8 @@ export const apiRequest = async( config: AxiosRequestConfig ) => {
         ...config,
         data: {
             ...config.data,
-            password: '[REDACTED]', // Mask the password field
-            confirmPassword: '[REDACTED]', // Mask the confirmPassword field if present
+            password: '[REDACTED]', // Mask the password
+            confirmPassword: '[REDACTED]', // Mask the confirmPassword
         },
     };
     console.log("API Request Config:", sanitizedConfig);
@@ -32,7 +32,7 @@ export const apiRequest = async( config: AxiosRequestConfig ) => {
         return response;
         // return response.data;
     }catch( error ){
-        console.error("API call failed", error);
+        // console.error("API call failed", error);
         throw error;
     }
 };

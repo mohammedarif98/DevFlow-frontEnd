@@ -1,0 +1,11 @@
+/* Hide spinners for Webkit browsers (Chrome, Safari) */
+.hide-spinners::-webkit-inner-spin-button,
+.hide-spinners::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide spinners for Firefox */
+.hide-spinners {
+  -moz-appearance: textfield;
+}
