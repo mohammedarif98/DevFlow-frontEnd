@@ -10,6 +10,7 @@ interface LoginFormProps {
   errors: any;
   handleSubmit: any;
   handleLogin: (data: UserLogin) => void;
+  errorMessage?: string | null;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({
@@ -18,6 +19,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
   errors,
   handleSubmit,
   handleLogin,
+  errorMessage,
 }) => (
   <form className="w-[60%] max-w-lg" onSubmit={handleSubmit(handleLogin)}>
     <h2 className="text-2xl font-bold mb-6 text-center">
@@ -32,7 +34,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         type="email"
         id="email"
         {...register("email")}
-        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-0"
+        className="w-full px-3 py-2 border rounded-sm focus:border-black focus:outline-none focus:ring-0"
         placeholder="Enter your email"
         required
       />
@@ -54,7 +56,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         type="password"
         id="password"
         {...register("password")}
-        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-0"
+        className="w-full px-3 py-2 border rounded-sm focus:border-black focus:outline-none focus:ring-0"
         placeholder="Enter your password"
         required
       />
@@ -62,6 +64,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
         <span className="text-sm font-normal text-rose-600">
           {errors.password.message}
         </span>
+      )}
+      {errorMessage && (
+        <span className="text-sm font-normal text-rose-600">{errorMessage}</span>
       )}
     </div>
 

@@ -5,13 +5,14 @@ import { useUserLoginForm } from "../../../utils/validations/user-validations/us
 import { toast } from "react-toastify";
 import { UserLogin } from "../../../utils/types/api-types";
 import LoginForm from "./LoginForm";
-import { userLogin } from "../../../utils/configs/user-configs/axios.PostMethods";
+import { userLogin } from "../../../utils/configs/user-axios/axios.PostMethods";
 
 
 
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { errors, register, handleSubmit } = useUserLoginForm();
   const navigate = useNavigate()
 
@@ -23,7 +24,7 @@ const Login: React.FC = () => {
         navigate('/');
     } catch (error) {
         const message = (error as Error).message.replace('Error: ', '');
-        toast.error(message)
+        setErrorMessage(message)
     } finally {
       setLoading(false);
     }
@@ -56,12 +57,14 @@ const Login: React.FC = () => {
 
       {/* Right Side Form */}
       <div className="bg-slate-200 w-full md:w-1/2 h-screen flex flex-col justify-center items-center">
+      {/* Pass all to the LoginForm component */}
         <LoginForm
           loading = {loading}
           register = {register}
           errors = {errors}
           handleSubmit = {handleSubmit}
           handleLogin = {handleLogin}
+          errorMessage = {errorMessage} 
         />
       </div>
     </div>

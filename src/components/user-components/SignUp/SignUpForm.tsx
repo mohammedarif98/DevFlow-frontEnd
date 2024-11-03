@@ -30,7 +30,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
         type='text'
         id='username'
         {...register('username')}
-        className='w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-0'
+        className='w-full px-3 py-2 border rounded-sm focus:border-black focus:outline-none focus:ring-0'
         placeholder='Enter your username'
         required
       />
@@ -47,7 +47,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
         type='email'
         id='email'
         {...register('email')}
-        className='w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-0'
+        className='w-full px-3 py-2 border rounded-sm focus:border-black focus:outline-none focus:ring-0'
         placeholder='Enter your email'
         required
       />
@@ -64,7 +64,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
         type='password'
         id='password'
         {...register('password')}
-        className='w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-0'
+        className='w-full px-3 py-2 border rounded-sm focus:border-black focus:outline-none focus:ring-0'
         placeholder='Enter your password'
         required
       />
@@ -81,7 +81,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
         type='password'
         id='confirmPassword'
         {...register('confirmPassword')}
-        className='w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-0'
+        className='w-full px-3 py-2 border rounded-sm focus:border-black focus:outline-none focus:ring-0'
         placeholder='Confirm your password'
         required
       />

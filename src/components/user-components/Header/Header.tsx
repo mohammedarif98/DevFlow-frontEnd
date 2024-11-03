@@ -5,7 +5,9 @@ import { BsChatSquareTextFill } from 'react-icons/bs';
 import { HiOutlinePencilSquare } from 'react-icons/hi2';
 import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
 import { LuLogIn } from "react-icons/lu";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { userLogout } from '../../../utils/configs/user-axios/axios.PostMethods';
+import { toast } from 'react-toastify';
 
 
 
@@ -14,7 +16,7 @@ const Header: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -36,6 +38,17 @@ const Header: React.FC = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         }
     },[]);
+
+    const handleLogout = async() => {
+        try{
+            await userLogout();
+            console.log("logout seccess");
+            navigate('/login');
+        }catch(error){
+            const message = (error as Error).message.replace('Error: ', '');
+            toast.error(message);
+        }
+    }
     
     return (
         <div className='bg-slate-50 flex items-center justify-between py-2 px-4 md:px-8 border-b border-gray-200'>
@@ -95,7 +108,7 @@ const Header: React.FC = () => {
                             <button className='block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100'>
                                 Apply for author verification
                             </button>
-                            <button className='block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100'>
+                            <button className='block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100' onClick={ handleLogout }>
                                <Link to=''>Logout</Link>
                             </button>
                         </div>

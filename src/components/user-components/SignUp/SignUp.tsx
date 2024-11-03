@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import loginBg3 from '../../../assets/images/freepik-export-20241029093300RFZp.jpeg'
 import { UserSignUp } from '../../../utils/types/api-types';
-import { userSignUp } from '../../../utils/configs/user-configs/axios.PostMethods';
+import { userSignUp } from '../../../utils/configs/user-axios/axios.PostMethods';
 import SignUpForm from '../SignUp/SignUpForm';
 import OtpVerificationForm from '../SignUp/OtpVerificationForm';
 import { useUserSignUpForm } from '../../../utils/validations/user-validations/userSignupValidation';
@@ -36,7 +36,6 @@ const SignUp: React.FC = () => {
       }
     
     const handleOtpVerification = (otp: string) => {
-        // Handle OTP verification logic here
         console.log('OTP submitted:', otp);
         navigate('/login');
     };

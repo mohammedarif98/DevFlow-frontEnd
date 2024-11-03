@@ -14,11 +14,9 @@ export const resendOTP = async() => {
         const result = await apiRequest(config)
         return result;
     }catch(error){
-        let message; 
-        if(axios.isAxiosError(error) && error.response?.data?.message) {
-            message = error.response.data.message;
-          }
-        // console.log("OTP verification failed:", message);
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "User signup failed";
         throw new Error(message);
     }
 }

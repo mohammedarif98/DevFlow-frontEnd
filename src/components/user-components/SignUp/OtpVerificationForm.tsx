@@ -1,9 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { OtpVerification } from '../../../utils/configs/user-configs/axios.PostMethods';
-import  { resendOTP } from '../../../utils/configs/user-configs/axios.GetMethods'
+import { OtpVerification } from '../../../utils/configs/user-axios/axios.PostMethods';
+import  { resendOTP } from '../../../utils/configs/user-axios/axios.GetMethods'
 import { useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-toastify';
-
 
 
 
@@ -20,7 +19,6 @@ const OtpVerificationForm: React.FC<OtpVerificationFormProps> = ({ onSubmit }) =
 
   const handleChange = (index: number, value: string) => {
     const newOtp = [...otp];
-    // Ensure only numeric input is accepted
     if (/^\d*$/.test(value) && value.length <= 1) {
       newOtp[index] = value;
       setOtp(newOtp);
@@ -44,10 +42,7 @@ const OtpVerificationForm: React.FC<OtpVerificationFormProps> = ({ onSubmit }) =
       const response = await resendOTP();
       toast.success(response.data.message);
     }catch(error){
-      let errorMessage;
-      if( error instanceof Error){
-        errorMessage = error.message.replace("Error: ","");
-      }
+      const errorMessage = error instanceof Error ? error.message.replace("Error: ", "") : "Failed to resend OTP";
       toast.error(errorMessage);
     }
   };
@@ -59,16 +54,12 @@ const OtpVerificationForm: React.FC<OtpVerificationFormProps> = ({ onSubmit }) =
     try{
       const response = await OtpVerification(otpString);
       onSubmit(otpString);
-      navigate('/login');
+      // navigate('/login');
       toast.success(response.data.message);
       setError(null);
     }catch(error){
-      let errorMessage = "OTP verification failed";
-      if( error instanceof Error){
-        errorMessage = error.message.replace("Error: ","");
-      }
+      const errorMessage = error instanceof Error ? error.message.replace("Error: ", "") : "Failed to resend OTP";
       setError(errorMessage)
-      // toast.error(errorMessage);
     }
   };
 

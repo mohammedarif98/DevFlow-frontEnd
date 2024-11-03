@@ -16,11 +16,9 @@ export const userSignUp = async( signUpPayload: UserSignUp): Promise<{message: s
         const result = await apiRequest(config);
         return result.data;
     }catch(error){
-        let message;
-        if(axios.isAxiosError(error) && error.response?.data?.message) {
-            message = error.response.data.message;
-          }
-        // console.error("User signup failed:", message);
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "User signup failed";
         throw new Error(message);
     }
 };
@@ -36,11 +34,9 @@ export const OtpVerification = async( otp: string ): Promise<AxiosResponse> => {
         const result = await apiRequest(config);
         return result;
     }catch(error){
-        let message; 
-        if(axios.isAxiosError(error) && error.response?.data?.message) {
-            message = error.response.data.message;
-          }
-        // console.log("OTP verification failed:", message);
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "User signup failed";
         throw new Error(message);
     }
 }
@@ -58,10 +54,24 @@ export const userLogin = async(loginPayload: UserLogin): Promise<{ message: stri
         //* Ensure the response contains the message field
         return result.data.message ? { message: result.data.message } : { message: "Invalid response from server" };
     }catch(error){
-        let message;
-        if(axios.isAxiosError(error) && error.response?.data?.message){
-            message = error.response.data.message;
-        }
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "User signup failed";
+        throw new Error(message);
+    }
+}
+
+//*----------------------- function for logout -------------------------
+export const userLogout = async() => {
+    const config: AxiosRequestConfig = {
+        method: "POST",
+        url: `/api/auth/logout-user`,
+    }
+    try{
+        return await apiRequest(config);
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+        ? error.response.data.message : "User Logout failed";
         throw new Error(message);
     }
 }
