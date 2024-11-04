@@ -5,7 +5,6 @@ import { UserLogin } from "../../../utils/types/api-types";
 
 
 interface LoginFormProps {
-  loading: boolean;
   register: any;
   errors: any;
   handleSubmit: any;
@@ -14,7 +13,6 @@ interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({
-  loading,
   register,
   errors,
   handleSubmit,
@@ -80,7 +78,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
       type="submit"
       className="w-full bg-black hover:bg-opacity-75 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
     >
-      {loading ? "Login..." : "login" }
+      Login
     </button>
 
     <div className="flex justify-end my-2">

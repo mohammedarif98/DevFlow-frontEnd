@@ -1,25 +1,30 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import loginBg3 from "../../../assets/images/freepik-export-20241029093300RFZp.jpeg";
 import { useUserLoginForm } from "../../../utils/validations/user-validations/userLoginValidation";
 import { toast } from "react-toastify";
 import { UserLogin } from "../../../utils/types/api-types";
 import LoginForm from "./LoginForm";
 import { userLogin } from "../../../utils/configs/user-axios/axios.PostMethods";
-
-
+import { login } from "../../../redux/slices/user-slice/userSlice";
+// import LoadingSpinner  from "../../common/LoadingSpinner";
+import { useLoading } from "../../../context/LoadingContext";
 
 
 const Login: React.FC = () => {
-  const [loading, setLoading] = useState(false);
+  const { setLoading } = useLoading();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { errors, register, handleSubmit } = useUserLoginForm();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
 
   const handleLogin = async (data: UserLogin) => {
       try {
         setLoading(true);
         const response = await userLogin(data);
+        dispatch(login(response.user));
         toast.success(response?.message);
         navigate('/');
     } catch (error) {
@@ -59,13 +64,13 @@ const Login: React.FC = () => {
       <div className="bg-slate-200 w-full md:w-1/2 h-screen flex flex-col justify-center items-center">
       {/* Pass all to the LoginForm component */}
         <LoginForm
-          loading = {loading}
           register = {register}
           errors = {errors}
           handleSubmit = {handleSubmit}
           handleLogin = {handleLogin}
           errorMessage = {errorMessage} 
         />
+        {/* { loading && <LoadingSpinner/>} */}
       </div>
     </div>
   );

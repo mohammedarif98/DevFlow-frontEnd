@@ -7,13 +7,13 @@ import { userSignUp } from '../../../utils/configs/user-axios/axios.PostMethods'
 import SignUpForm from '../SignUp/SignUpForm';
 import OtpVerificationForm from '../SignUp/OtpVerificationForm';
 import { useUserSignUpForm } from '../../../utils/validations/user-validations/userSignupValidation';
-
+import { useLoading } from '../../../context/LoadingContext';
 
 
 
 const SignUp: React.FC = () => {
 
-    const [loading, setLoading] = useState(false);
+    const { setLoading } = useLoading();
     const [showOtpForm, setShowOtpForm] = useState(false);
     const navigate = useNavigate();
     const { errors, handleSubmit, register, reset } = useUserSignUpForm();
@@ -64,7 +64,6 @@ const SignUp: React.FC = () => {
           <OtpVerificationForm onSubmit={handleOtpVerification} />
         ) : (
           <SignUpForm
-            loading={loading}
             register={register}
             errors={errors}
             handleSubmit={handleSubmit}

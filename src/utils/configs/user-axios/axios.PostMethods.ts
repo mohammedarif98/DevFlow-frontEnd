@@ -1,15 +1,15 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { UserLogin, UserSignUp } from "../../types/api-types";
+import { LoginResponse, UserLogin, UserSignUp } from "../../types/api-types";
 import { apiRequest } from "./axios.config";
 
 
 
 //* --------------------- Function to handle user signup ----------------------------
-export const userSignUp = async( signUpPayload: UserSignUp): Promise<{message: string}> => {
+export const userSignUp = async( payload: UserSignUp): Promise<{message: string}> => {
     const config: AxiosRequestConfig = {
         method: 'POST',
         url: `/api/auth/register-user`,
-        data: signUpPayload
+        data: payload
     }
     try{
         // return await apiRequest(config);
@@ -43,16 +43,17 @@ export const OtpVerification = async( otp: string ): Promise<AxiosResponse> => {
 
 
 //*----------------------- function for login -------------------------
-export const userLogin = async(loginPayload: UserLogin): Promise<{ message: string}> => {
+export const userLogin = async(payload: UserLogin): Promise<LoginResponse> => {
     const config: AxiosRequestConfig = {
         method: 'POST',
         url: `/api/auth/login-user`,
-        data: loginPayload
+        data: payload
     }
     try{
         const result = await apiRequest(config);
         //* Ensure the response contains the message field
-        return result.data.message ? { message: result.data.message } : { message: "Invalid response from server" };
+        // return result.data.message ? { message: result.data.message } : { message: "Invalid response from server" };
+        return result.data;
     }catch(error){
         const message = axios.isAxiosError(error) && error.response?.data?.message
             ? error.response.data.message

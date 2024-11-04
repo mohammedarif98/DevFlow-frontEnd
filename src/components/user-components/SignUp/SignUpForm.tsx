@@ -5,7 +5,6 @@ import { UserSignUp } from '../../../utils/types/api-types';
 
 
 interface SignUpFormProps {
-  loading: boolean;
   register: any;
   errors: any;
   handleSubmit: any;
@@ -13,7 +12,6 @@ interface SignUpFormProps {
 }
 
 const SignUpForm: React.FC<SignUpFormProps> = ({
-  loading,
   errors,
   handleSubmit,
   register,
@@ -94,7 +92,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
       type='submit'
       className='w-full bg-black hover:bg-opacity-75 text-white font-base py-2 px-4 rounded focus:outline-none focus:shadow-outline'
     >
-      {loading ? 'Signing Up...' : 'Sign Up'}
+      Sign Up
     </button>
 
     <div className='flex justify-end my-2'>
