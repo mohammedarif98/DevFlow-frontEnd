@@ -4,20 +4,24 @@ import { FaRegUser } from "react-icons/fa";
 import { BsChatSquareTextFill } from "react-icons/bs";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
-import { LuLogIn } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
 import { userLogout } from "../../../utils/configs/user-axios/axios.PostMethods";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../redux/slices/user-slice/userSlice";
 
+
+
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.user);
+  const prevScrollPos = useRef(window.pageYOffset);
+
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -27,13 +31,11 @@ const Header: React.FC = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  // close the dropdown when click outside
+
+  //*---------------- Close the dropdown when clicking outside ----------------------
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     };
@@ -43,11 +45,30 @@ const Header: React.FC = () => {
     };
   }, []);
 
+
+  //*---------------- Hide header on scroll down, show on scroll up -----------------------
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      setIsVisible(prevScrollPos.current > currentScrollPos || currentScrollPos < 10);
+      prevScrollPos.current = currentScrollPos;
+
+      if (isDropdownOpen) {
+        setIsDropdownOpen(false);
+      }
+      
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isDropdownOpen]);
+
+
   const handleLogout = async () => {
     try {
       await userLogout();
       dispatch(logout());
-      console.log("logout success");
       navigate("/login");
     } catch (error) {
       const message = (error as Error).message.replace("Error: ", "");
@@ -55,14 +76,17 @@ const Header: React.FC = () => {
     }
   };
 
+
   return (
-    <div className="bg-slate-50 flex items-center justify-between py-2 px-4 md:px-8 border-b border-gray-200">
+    <div
+      className={`fixed top-0 left-0 w-full bg-slate-50 flex items-center justify-between py-2 px-4 md:px-8 border-b border-gray-200 z-50 transition-transform duration-300 ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       {/*--------- Logo Section -----------*/}
       <div className="flex items-center">
         <Link to="/">
-          <span className="font-rubik-wet-paint text-lg md:text-2xl">
-            DevFlow
-          </span>
+          <span className="font-rubik-wet-paint text-lg md:text-2xl">DevFlow</span>
         </Link>
       </div>
 
@@ -88,18 +112,18 @@ const Header: React.FC = () => {
 
       {/*--------- User Profile Section (Desktop) --------- */}
       <div className="hidden md:flex items-center space-x-4 md:space-x-6 lg:space-x-6">
-        <button className="rounded-full hover:bg-gray-200 p-2 transition-colors">
-          <Link to="/writeBlog">
-            <HiOutlinePencilSquare className="text-2xl text-black" />
-          </Link>
-        </button>
-        <button className="rounded-full hover:bg-gray-200 p-2 transition-colors">
-            <Link to="/notification">
-            <CiBellOn className="text-2xl text-black" />
-            </Link>
-        </button>
         {user && (
           <>
+            <button className="rounded-full hover:bg-gray-200 p-2 transition-colors">
+              <Link to="/writeBlog">
+                <HiOutlinePencilSquare className="text-2xl text-black" />
+              </Link>
+            </button>
+            <button className="rounded-full hover:bg-gray-200 p-2 transition-colors">
+              <Link to="/notification">
+                <CiBellOn className="text-2xl text-black" />
+              </Link>
+            </button>
             <button className="rounded-full hover:bg-gray-200 p-2 transition-colors">
               <Link to="/chat">
                 <BsChatSquareTextFill className="text-xl text-black" />
@@ -137,11 +161,14 @@ const Header: React.FC = () => {
           </>
         )}
         {!user && (
-          <button className="rounded-full hover:bg-gray-200 p-2 transition-colors">
-            <Link to="/login">
-              <LuLogIn className="text-xl text-black" />
-            </Link>
-          </button>
+          <>
+            <button className="">
+              <Link to="/" className="text-black font-semibold">About</Link>
+            </button>
+            <button className="rounded bg-black text-white py-1 px-6">
+              <Link to="/login" className="font-semibold">Login</Link>
+            </button>
+          </>
         )}
       </div>
 
@@ -149,13 +176,13 @@ const Header: React.FC = () => {
       {isMenuOpen && (
         <div className="absolute top-16 left-0 w-full bg-slate-50 shadow-lg md:hidden">
           <div className="flex flex-col items-start space-y-1 px-2 py-6">
-            <button className="flex items-left">
-              <Link to="/writeBlog">
-                <span className="text-sm text-black">Post Blog</span>
-              </Link>
-            </button>
             {user && (
               <>
+                <button className="flex items-left">
+                  <Link to="/writeBlog">
+                    <span className="text-sm text-black">Post Blog</span>
+                  </Link>
+                </button>
                 <button className="flex items-left">
                   <Link to="/notification">
                     <span className="text-sm text-black">Notification</span>

@@ -4,8 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+html,body {
     background-color: rgb(255,254,254); 
     margin: 0; 
-    height: 100vh; 
+    height: 100%; 
+    padding: 0;
 }
