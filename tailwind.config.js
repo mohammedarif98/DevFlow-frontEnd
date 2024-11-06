@@ -8,6 +8,8 @@ export default {
     extend: {
       fontFamily: {
         'rubik-wet-paint': ['"Rubik Wet Paint"', 'system-ui', 'sans-serif'],
+        'dancing-script': ['"Dancing Script"', 'cursive'],
+        'pacifico-regular': ['"Pacifico"', 'cursive'],
       },
     },
   },

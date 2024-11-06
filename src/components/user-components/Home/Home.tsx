@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import landing_Image from "../../../assets/images/devbg1.jpeg";
+import landing_Image from "../../../assets/images/SAVE_20241105_220105~2.jpg";
+import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {
   const { user } = useSelector((state: any) => state.user);
@@ -14,6 +15,19 @@ const Home: React.FC = () => {
             alt="landing-image"
             className="absolute top-0 left-0 w-full h-full object-cover"
           />
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-6">
+            <div>
+              <p className="text-slate-100 font-dancing-script font-bold text-5xl">
+                Platform to learn and share your Knowledge
+              </p>
+            </div>
+            <div className="flex items-center justify-center gap-6">
+              <p className="text-slate-100 font-semibold text-2xl">Welcome to DevFlow</p>
+              <button className="bg-white px-4 font-medium h-8 rounded-lg hover:opacity-80">
+                <Link to="/login">Get Start</Link>
+              </button>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="text-2xl mt-14 font-semibold text-center">

@@ -64,7 +64,8 @@ const Header: React.FC = () => {
     };
   }, [isDropdownOpen]);
 
-
+  
+  //*---------------- api call -----------------
   const handleLogout = async () => {
     try {
       await userLogout();
@@ -165,7 +166,7 @@ const Header: React.FC = () => {
             <button className="">
               <Link to="/" className="text-black font-semibold">About</Link>
             </button>
-            <button className="rounded bg-black text-white py-1 px-6">
+            <button className="rounded bg-black text-white py-1 px-4">
               <Link to="/login" className="font-semibold">Login</Link>
             </button>
           </>
