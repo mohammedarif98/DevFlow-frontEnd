@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import loginBg3 from '../../../assets/images/freepik-export-20241029093300RFZp.jpeg'
-import { UserSignUp } from '../../../utils/types/api-types';
-import { userSignUp } from '../../../utils/configs/user-axios/axios.PostMethods';
-import SignUpForm from '../SignUp/SignUpForm';
-import OtpVerificationForm from '../SignUp/OtpVerificationForm';
-import { useUserSignUpForm } from '../../../utils/validations/user-validations/userSignupValidation';
-import { useLoading } from '../../../context/LoadingContext';
+import loginBg3 from '../../../../assets/images/freepik-export-20241029093300RFZp.jpeg'
+import { UserSignUp } from '../../../../utils/types/api-types';
+import { userSignUp } from '../../../../services/user-services/axios.PostMethods';
+import SignUpForm from './SignUpForm';
+import OtpVerificationForm from './OtpVerificationForm';
+import { useUserSignUpForm } from '../../../../utils/validations/user-validations/userSignupValidation';
+import { useLoading } from '../../../../contexts/LoadingContext';
 
 
 

@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import loginBg3 from "../../../assets/images/freepik-export-20241029093300RFZp.jpeg";
-import { useUserLoginForm } from "../../../utils/validations/user-validations/userLoginValidation";
+import loginBg3 from "../../../../assets/images/freepik-export-20241029093300RFZp.jpeg";
+import { useUserLoginForm } from "../../../../utils/validations/user-validations/userLoginValidation";
 import { toast } from "react-toastify";
-import { UserLogin } from "../../../utils/types/api-types";
+import { UserLogin } from "../../../../utils/types/api-types";
 import LoginForm from "./LoginForm";
-import { userLogin } from "../../../utils/configs/user-axios/axios.PostMethods";
-import { login } from "../../../redux/slices/user-slice/userSlice";
+import { userLogin } from "../../../../services/user-services/axios.PostMethods";
+import { login } from "../../../../redux/slices/user-slice/userSlice";
 // import LoadingSpinner  from "../../common/LoadingSpinner";
-import { useLoading } from "../../../context/LoadingContext";
+import { useLoading } from "../../../../contexts/LoadingContext";
 
 
 const Login: React.FC = () => {

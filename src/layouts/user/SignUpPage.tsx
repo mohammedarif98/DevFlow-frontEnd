@@ -1,5 +1,5 @@
 import React from 'react';
-import SignUp from '../../components/user-components/SignUp/SignUp';
+import SignUp from '../../modules/user/pages/SignUp/SignUp';
 
 
 

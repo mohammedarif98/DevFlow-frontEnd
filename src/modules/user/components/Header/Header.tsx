@@ -5,10 +5,10 @@ import { BsChatSquareTextFill } from "react-icons/bs";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import { userLogout } from "../../../utils/configs/user-axios/axios.PostMethods";
+import { userLogout } from "../../../../services/user-services/axios.PostMethods";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../../redux/slices/user-slice/userSlice";
+import { logout } from "../../../../redux/slices/user-slice/userSlice";
 
 
 

@@ -1,8 +1,9 @@
 import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
-import UserRouter from "./routes/UserRouter";
+// import UserRouter from "./routes/UserRouter";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { LoadingProvider } from './context/LoadingContext';
+import { LoadingProvider } from './contexts/LoadingContext';
+import UserRouter from './modules/user/routes';
 
 
 function App() {

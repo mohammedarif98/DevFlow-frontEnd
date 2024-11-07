@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import landing_Image from "../../../assets/images/SAVE_20241105_220105~2.jpg";
+import landing_Image from "../../../../assets/images/SAVE_20241105_220105~2.jpg";
 import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {

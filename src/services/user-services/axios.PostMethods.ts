@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { LoginResponse, UserLogin, UserSignUp } from "../../types/api-types";
+import { LoginResponse, UserLogin, UserSignUp } from "../../utils/types/api-types";
 import { apiRequest } from "./axios.config";
 
 

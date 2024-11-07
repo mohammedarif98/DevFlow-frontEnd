@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaGoogle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { UserSignUp } from '../../../utils/types/api-types';
+import { UserSignUp } from '../../../../utils/types/api-types';
 
 
 interface SignUpFormProps {
