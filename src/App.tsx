@@ -3,7 +3,8 @@ import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { LoadingProvider } from './contexts/LoadingContext';
-import UserRouter from './modules/user/routes';
+import UserRoutes from './modules/user/routes';
+import AdminRoutes from './modules/admin/routes';
 
 
 function App() {
@@ -13,8 +14,8 @@ function App() {
         <LoadingProvider>
           <Router>
             <Routes>
-              <Route path='/*' element={ <UserRouter/> } />     {/* ------ user routes ----- */}
-              {/* <Route path='/admin' element={ <AdminRouter/> } />     ------ admin routes ----- */}
+              <Route path='/*' element={ <UserRoutes/> } />            {/* ------ user routes ----- */}
+              <Route path='/admin/*' element={ <AdminRoutes/> } />     {/*------ admin routes ----- */}
             </Routes>
           </Router>
         </LoadingProvider>

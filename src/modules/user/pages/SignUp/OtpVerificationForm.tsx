@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { OtpVerification } from '../../../../services/user-services/axios.PostMethods';
 import  { resendOTP } from '../../../../services/user-services/axios.GetMethods'
-import { useNavigate } from 'react-router-dom'; 
+// import { useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-toastify';
 
 
@@ -14,7 +14,7 @@ const OtpVerificationForm: React.FC<OtpVerificationFormProps> = ({ onSubmit }) =
   const [otp, setOtp] = useState(['', '', '', '']);
   const [error, setError] = useState<string | null>(null);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
 
   const handleChange = (index: number, value: string) => {
@@ -91,7 +91,7 @@ const OtpVerificationForm: React.FC<OtpVerificationFormProps> = ({ onSubmit }) =
         )}
 
         <div className='flex justify-end my-2'>
-          <p className='font-medium' onClick={ handleResendOTP }> Resend OTP?</p>
+          <p className='font-medium' style={{cursor:'pointer'}} onClick={ handleResendOTP }> Resend OTP?</p>
         </div>
 
         <button

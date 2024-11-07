@@ -1,5 +1,5 @@
 import React from 'react';
-import Login from '../../modules/user/pages/Login/Login'
+import Login from './Login'
 
 
 

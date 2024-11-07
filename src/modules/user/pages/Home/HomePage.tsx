@@ -1,14 +1,14 @@
 import React from 'react'
-import Home from '../../modules/user/pages/Home/Home'
+import Home from './Home'
 
 
 
 const HomePage: React.FC = () => {
 
   return (
-    <>
+    <div>
       <Home />
-    </>
+    </div>
   )
 }
 

@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import landing_Image from "../../../../assets/images/SAVE_20241105_220105~2.jpg";
 import { Link } from "react-router-dom";
 
+
+
 const Home: React.FC = () => {
   const { user } = useSelector((state: any) => state.user);
 
@@ -35,31 +37,8 @@ const Home: React.FC = () => {
           <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
           <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
           <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-          <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
         </div>
+
       )}
     </>
   );
