@@ -12,9 +12,7 @@ export const userLoginSchema: ZodType<UserLogin> = z.object({
         message: "Invalid email address",
     }),
     password: z.string().min(5,{ message: "Enter the Password"})
-
 });
-
 
 export const useUserLoginForm = () => {
     const { register, handleSubmit, formState:{errors} } = useForm<UserLogin>({resolver: zodResolver(userLoginSchema)});

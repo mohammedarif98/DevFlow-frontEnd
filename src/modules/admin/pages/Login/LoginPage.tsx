@@ -5,7 +5,7 @@ import Login from './Login'
 
 const LoginPage:React.FC = () => {
   return (
-    <div>
+    <div className=''>
         <Login />
     </div>
   )

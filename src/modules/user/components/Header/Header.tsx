@@ -5,7 +5,7 @@ import { BsChatSquareTextFill } from "react-icons/bs";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import { userLogout } from "../../../../services/user-services/axios.PostMethods";
+import { userLogout } from "../../../../services/axios.PostMethods";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../../redux/slices/user-slice/userSlice";
@@ -66,7 +66,7 @@ const Header: React.FC = () => {
 
   
   //*---------------- api call -----------------
-  const handleLogout = async () => {
+  const handleLogout = async() => {
     try {
       await userLogout();
       dispatch(logout());

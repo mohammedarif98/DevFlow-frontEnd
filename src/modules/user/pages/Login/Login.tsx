@@ -6,9 +6,8 @@ import { useUserLoginForm } from "../../../../utils/validations/user-validations
 import { toast } from "react-toastify";
 import { UserLogin } from "../../../../utils/types/api-types";
 import LoginForm from "./LoginForm";
-import { userLogin } from "../../../../services/user-services/axios.PostMethods";
+import { userLogin } from "../../../../services/axios.PostMethods";
 import { login } from "../../../../redux/slices/user-slice/userSlice";
-// import LoadingSpinner  from "../../common/LoadingSpinner";
 import { useLoading } from "../../../../contexts/LoadingContext";
 
 
@@ -36,41 +35,37 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="relative flex flex-col md:flex-row h-screen">
-      {/* Small Screen Logo */}
-      <div className="absolute top-4 left-4 md:hidden">
-        <Link to="/">
-          <span className="font-rubik-wet-paint text-lg md:text-3xl">
-            DevFlow
-          </span>
-        </Link>
-      </div>
-
-      {/* Left Side Background Image */}
-      <div
-        className="hidden md:block w-full md:w-1/2 h-screen bg-cover bg-no-repeat bg-center"
-        style={{ backgroundImage: `url(${loginBg3})` }}
-      >
-        <div className="flex justify-start items-start p-6">
+    <div className="bg-[#001F23] relative h-screen flex items-center justify-center">
+      <div className="p-8 flex flex-col md:flex-row items-center justify-center h-[650px] w-[1400px]">
+      {/*---------- Small Screen Logo -----------*/}
+        <div className="absolute top-4 left-4 md:hidden">
           <Link to="/">
-            <span className="font-rubik-wet-paint text-lg md:text-3xl">
+            <span className="font-rubik-wet-paint text-white text-lg md:text-3xl">
               DevFlow
             </span>
           </Link>
         </div>
-      </div>
 
-      {/* Right Side Form */}
-      <div className="bg-slate-200 w-full md:w-1/2 h-screen flex flex-col justify-center items-center">
-      {/* Pass all to the LoginForm component */}
-        <LoginForm
-          register = {register}
-          errors = {errors}
-          handleSubmit = {handleSubmit}
-          handleLogin = {handleLogin}
-          errorMessage = {errorMessage} 
-        />
-        {/* { loading && <LoadingSpinner/>} */}
+      {/* ------------Left Side------------ */}
+        <div className="hidden md:flex items-center justify-center w-full md:w-1/2">
+            <p className="md:text-3xl lg:text-4xl text-white font-rubik-wet-paint">
+            Welcome To DevFlow
+            </p>
+        </div>
+
+        <span className="md:border-r-2 md:h-[80%] "></span>
+
+      {/* ------------Right Side------------ */}
+        <div className="md:w-1/2 w-full flex flex-col items-center">
+          <LoginForm
+            register = {register}
+            errors = {errors}
+            handleSubmit = {handleSubmit}
+            handleLogin = {handleLogin}
+            errorMessage = {errorMessage} 
+          />
+          {/* { loading && <LoadingSpinner/>} */}
+        </div>
       </div>
     </div>
   );

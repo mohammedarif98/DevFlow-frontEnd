@@ -17,11 +17,14 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
   register,
   handleSignUp,
 }) => (
-  <form className='w-[60%] max-w-lg' onSubmit={handleSubmit(handleSignUp)}>
-    <h2 className='text-2xl font-bold mb-6 text-center'>Register User</h2>
+  <form className='w-3/4' onSubmit={handleSubmit(handleSignUp)}>
 
-    <div className='mb-3'>
-      <label htmlFor='username' className='block text-gray-700 font-semibold mb-2'>
+    <div className=''>
+      <p className='text-2xl text-white font-semibold tracking-[0.1em] font-arsenal-sc-regular mb-6 text-center'>Create An Account</p>
+    </div>
+
+    <div className='mb-1'>
+      <label htmlFor='username' className='block text-white font-semibold mb-2'>
         Username
       </label>
       <input
@@ -37,8 +40,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
       )}
     </div>
 
-    <div className='mb-3'>
-      <label htmlFor='email' className='block text-gray-700 font-semibold mb-2'>
+    <div className='mb-1'>
+      <label htmlFor='email' className='block text-white font-semibold mb-2'>
         Email
       </label>
       <input
@@ -54,8 +57,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
       )}
     </div>
 
-    <div className='mb-3'>
-      <label htmlFor='password' className='block text-gray-700 font-semibold mb-2'>
+    <div className='mb-1'>
+      <label htmlFor='password' className='block text-white font-semibold mb-2'>
         Password
       </label>
       <input
@@ -71,8 +74,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
       )}
     </div>
 
-    <div className='mb-8'>
-      <label htmlFor='confirmPassword' className='block text-gray-700 font-semibold mb-2'>
+    <div className='mb-5'>
+      <label htmlFor='confirmPassword' className='block text-white font-semibold mb-2'>
         Confirm Password
       </label>
       <input
@@ -90,24 +93,25 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
 
     <button
       type='submit'
-      className='w-full bg-black hover:bg-opacity-75 text-white font-base py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+      className='w-full bg-red-900 hover:bg-opacity-75 text-white font-base py-2 px-4 rounded focus:outline-none focus:shadow-outline'
     >
       Sign Up
     </button>
 
     <div className='flex justify-end my-2'>
-      <p className='text-sm'>
+      <p className='text-sm text-white'>
         Already have an account? <Link to='/login' className='font-semibold'>Login</Link>
       </p>
     </div>
 
-    <div className='flex flex-col items-center mt-4'>
-      <p className='text-black mb-4'>------------- or -------------</p>
+    <div className='flex flex-col items-center'>
+      <p className='text-white mb-2'>------------- or -------------</p>
       <button className='flex items-center justify-center w-full bg-gray-50 border border-gray-500 opacity-95 text-black py-2 font-semibold rounded'>
         <FaGoogle className='text-red-800 text-xl mr-2' />
         Sign Up with Google
       </button>
     </div>
+
   </form>
 );
 

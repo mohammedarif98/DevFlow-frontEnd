@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import loginBg3 from '../../../../assets/images/freepik-export-20241029093300RFZp.jpeg'
 import { UserSignUp } from '../../../../utils/types/api-types';
-import { userSignUp } from '../../../../services/user-services/axios.PostMethods';
+import { userSignUp } from '../../../../services/axios.PostMethods';
 import SignUpForm from './SignUpForm';
 import OtpVerificationForm from './OtpVerificationForm';
 import { useUserSignUpForm } from '../../../../utils/validations/user-validations/userSignupValidation';
@@ -41,36 +40,40 @@ const SignUp: React.FC = () => {
     };
 
   return (
-    <div className='relative flex flex-col md:flex-row h-screen'>
-        {/* Small Screen Logo */}
-        <div className='absolute top-4 left-4 md:hidden '>
-            <Link to='/'>
-                <span className='font-rubik-wet-paint text-lg md:text-3xl'>DevFlow</span>
+    <div className='bg-[#001F23] relative h-screen flex items-center justify-center'>
+      <div className='p-8 flex flex-col md:flex-row items-center justify-center h-[650px] w-[1400px]'>
+        {/* -----------Small Screen Logo------------- */}
+          <div className="absolute top-5 text-white left-8 md:hidden">
+            <Link to="/">
+              <span className="font-rubik-wet-paint text-lg md:text-3xl">
+                DevFlow
+              </span>
             </Link>
-        </div>
+          </div>
 
-        {/* Left Side Background Image */}
-        <div className='hidden md:block w-full md:w-1/2 h-screen bg-cover bg-no-repeat bg-center' 
-            style={{ backgroundImage: `url(${ loginBg3 })` }}>
-            <div className='flex justify-start items-start p-6'>
-                <Link to='/'>
-                    <span className='font-rubik-wet-paint text-lg md:text-3xl'>DevFlow</span>
-                </Link>
-            </div>
-        </div>
-        {/* Right Side Form */}
-        <div className='bg-slate-200 w-full md:w-1/2 h-screen  flex flex-col justify-center items-center'>
-        {showOtpForm ? (
-          <OtpVerificationForm onSubmit={handleOtpVerification} />
-        ) : (
-          <SignUpForm
-            register={register}
-            errors={errors}
-            handleSubmit={handleSubmit}
-            handleSignUp={handleSignUp}
-          />
-        )}
-        </div>
+        {/* -------------- left side --------------- */}
+          <div className="hidden md:flex items-center justify-center w-full md:w-1/2">
+            <p className="md:text-3xl lg:text-4xl text-white font-rubik-wet-paint">
+              Welcome To DevFlow
+            </p>
+          </div>
+
+          <span className="md:border-r-2 md:h-[100%] "></span>
+
+        {/* -------------- right side --------------- */}
+          <div className='md:w-1/2 w-full flex flex-col items-center'>
+          {showOtpForm ? (
+            <OtpVerificationForm onSubmit={handleOtpVerification} />
+          ) : (
+            <SignUpForm
+              register={register}
+              errors={errors}
+              handleSubmit={handleSubmit}
+              handleSignUp={handleSignUp}
+            />
+          )}
+          </div>
+      </div>
   </div>
   )
 }

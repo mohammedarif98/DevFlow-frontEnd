@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { OtpVerification } from '../../../../services/user-services/axios.PostMethods';
-import  { resendOTP } from '../../../../services/user-services/axios.GetMethods'
+import { OtpVerification } from '../../../../services/axios.PostMethods';
+import  { resendOTP } from '../../../../services/axios.GetMethods'
 // import { useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-toastify';
 

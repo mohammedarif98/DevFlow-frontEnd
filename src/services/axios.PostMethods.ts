@@ -1,10 +1,10 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { LoginResponse, UserLogin, UserSignUp } from "../../utils/types/api-types";
+import { AdminLogin, LoginResponse, UserLogin, UserSignUp } from "../utils/types/api-types";
 import { apiRequest } from "./axios.config";
 
 
-
-//* --------------------- Function to handle user signup ----------------------------
+//* =============================== USER API ========================================
+// -------- Function to handle user signup ----------
 export const userSignUp = async( payload: UserSignUp): Promise<{message: string}> => {
     const config: AxiosRequestConfig = {
         method: 'POST',
@@ -23,7 +23,7 @@ export const userSignUp = async( payload: UserSignUp): Promise<{message: string}
     }
 };
 
-//*----------------------- function for email otp verification -------------------------
+// --------- function for email otp verification ---------
 export const OtpVerification = async( otp: string ): Promise<AxiosResponse> => {
     const config: AxiosRequestConfig = {
         method: 'POST',
@@ -42,7 +42,7 @@ export const OtpVerification = async( otp: string ): Promise<AxiosResponse> => {
 }
 
 
-//*----------------------- function for login -------------------------
+// ------- function for user login --------
 export const userLogin = async(payload: UserLogin): Promise<LoginResponse> => {
     const config: AxiosRequestConfig = {
         method: 'POST',
@@ -62,7 +62,7 @@ export const userLogin = async(payload: UserLogin): Promise<LoginResponse> => {
     }
 }
 
-//*----------------------- function for logout -------------------------
+// -------- function for user logout ---------
 export const userLogout = async() => {
     const config: AxiosRequestConfig = {
         method: "POST",
@@ -72,7 +72,44 @@ export const userLogout = async() => {
         return await apiRequest(config);
     }catch(error){
         const message = axios.isAxiosError(error) && error.response?.data?.message
-        ? error.response.data.message : "User Logout failed";
+            ? error.response.data.message : "User Logout failed";
+        throw new Error(message);
+    }
+}
+
+
+
+
+//* =================== USER API ============================
+// --------- funnction for admin login ----------
+export const adminLogin = async(payload: AdminLogin): Promise<LoginResponse> => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `/api/admin/login-admin`,
+        data: payload
+    }
+    try{
+        const result = await apiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "Admin signup failed";
+        throw new Error(message);
+    }
+}
+
+// -------- function for admin logout ---------
+export const adminLogout = async() => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `/api/admin/logout-admin`
+    }
+    try{
+        return await apiRequest(config);
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message : "Admin Logout failed";
         throw new Error(message);
     }
 }
