@@ -12,7 +12,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   return (
     <div
-      className={`bg-slate-100 text-black w-64 border border-r-slate-300 h-screen fixed top-0 left-0 transition-transform duration-300 ease-in-out ${
+      className={`bg-white text-black w-64 border border-r-slate-300 h-screen fixed top-0 left-0 transition-transform duration-300 ease-in-out ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -21,7 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
           DevFlow Admin
         </Link>
       </div>
-      <ul className="mt-10 space-y-1">
+      <ul className="mt-10 space-y-[1px]">
         <li className="mb-4">
           <NavLink
             to="/admin/dashboard"

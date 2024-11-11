@@ -1,6 +1,11 @@
 
 //*------------------- user form data types ------------------------
 
+
+export interface UserLoginResponse {
+    user: string; 
+    message: string;
+}
 export interface UserSignUp {
     username: string;
     email: string; 
@@ -14,16 +19,12 @@ export interface UserLogin {
 }
 
 
-export interface LoginResponse {
-    user: string; 
-    message: string;
-}
-
-
-
-
 //*------------------- admin form data types ------------------------
 
+export interface AdminLoginResponse {
+    admin: string; 
+    message: string;
+}
 
 export interface AdminLogin {
     email: string;

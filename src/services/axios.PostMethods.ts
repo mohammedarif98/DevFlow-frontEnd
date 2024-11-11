@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { AdminLogin, LoginResponse, UserLogin, UserSignUp } from "../utils/types/api-types";
+import { AdminLogin, UserLoginResponse, UserLogin, UserSignUp, AdminLoginResponse } from "../utils/types/api-types";
 import { apiRequest } from "./axios.config";
 
 
@@ -43,7 +43,7 @@ export const OtpVerification = async( otp: string ): Promise<AxiosResponse> => {
 
 
 // ------- function for user login --------
-export const userLogin = async(payload: UserLogin): Promise<LoginResponse> => {
+export const userLogin = async(payload: UserLogin): Promise<UserLoginResponse> => {
     const config: AxiosRequestConfig = {
         method: 'POST',
         url: `/api/auth/login-user`,
@@ -80,30 +80,32 @@ export const userLogout = async() => {
 
 
 
-//* =================== USER API ============================
+//* =================== ADMIN API ============================
 // --------- funnction for admin login ----------
-export const adminLogin = async(payload: AdminLogin): Promise<LoginResponse> => {
+export const adminLogin = async(payload: AdminLogin): Promise<AdminLoginResponse> => {
     const config: AxiosRequestConfig = {
         method: 'POST',
-        url: `/api/admin/login-admin`,
+        url: '/api/admin/login-admin',
         data: payload
     }
     try{
         const result = await apiRequest(config);
+        console.log(result.data);
         return result.data;
     }catch(error){
         const message = axios.isAxiosError(error) && error.response?.data?.message
             ? error.response.data.message
-            : "Admin signup failed";
+            : "Admin login failed";
         throw new Error(message);
     }
 }
+
 
 // -------- function for admin logout ---------
 export const adminLogout = async() => {
     const config: AxiosRequestConfig = {
         method: 'POST',
-        url: `/api/admin/logout-admin`
+        url: '/api/admin/logout-admin'
     }
     try{
         return await apiRequest(config);

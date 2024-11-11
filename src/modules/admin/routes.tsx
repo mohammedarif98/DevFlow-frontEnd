@@ -18,7 +18,7 @@ const AdminRoutes: React.FC = () => {
   const showNavbarAndSidebar = location.pathname !== '/admin/login';
 
   return (
-    <div className="flex flex-col h-screen bg-slate-200">
+    <div className="flex flex-col h-screen bg-neutral-200">
       {showNavbarAndSidebar && (
         <>
           <Navbar onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />

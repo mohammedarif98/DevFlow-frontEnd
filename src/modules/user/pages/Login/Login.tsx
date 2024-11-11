@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import loginBg3 from "../../../../assets/images/freepik-export-20241029093300RFZp.jpeg";
-import { useUserLoginForm } from "../../../../utils/validations/user-validations/userLoginValidation";
-import { toast } from "react-toastify";
-import { UserLogin } from "../../../../utils/types/api-types";
 import LoginForm from "./LoginForm";
+import { toast } from "react-toastify";
+import { useUserLoginForm } from "../../../../utils/validations/user-validations/userLoginValidation";
+import { useLoading } from "../../../../contexts/LoadingContext";
+import { UserLogin } from "../../../../utils/types/api-types";
 import { userLogin } from "../../../../services/axios.PostMethods";
 import { login } from "../../../../redux/slices/user-slice/userSlice";
-import { useLoading } from "../../../../contexts/LoadingContext";
 
 
 const Login: React.FC = () => {
