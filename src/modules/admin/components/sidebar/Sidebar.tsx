@@ -12,7 +12,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   return (
     <div
-      className={`bg-white text-black w-64 border border-r-slate-300 h-screen fixed top-0 left-0 transition-transform duration-300 ease-in-out ${
+      className={`bg-[#ffffff] text-black w-64 border border-r-slate-300 h-screen fixed top-0 left-0 transition-transform duration-300 ease-in-out ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -27,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             to="/admin/dashboard"
             className={({ isActive }) =>
               `gap-x-4 font-semibold block py-3 px-10 hover:bg-blue-100 flex items-center space-x-2 ${
-                isActive ? "bg-blue-100 text-blue-900 border-r-2 border-r-blue-900" : ""
+                isActive ? "bg-blue-200 text-blue-900 border-r-2 border-r-blue-900" : ""
               }`
             }
           >
@@ -37,15 +37,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
         </li>
         <li className="">
           <NavLink
-            to="/admin/users"
+            to="/admin/user-list"
             className={({ isActive }) =>
               `gap-x-4 font-normal block py-3 px-10 hover:bg-blue-100 flex items-center space-x-2 ${
-                isActive ? "bg-blue-100 text-blue-900 border-r-2 border-r-blue-900" : ""
+                isActive ? "bg-blue-200 text-blue-900 border-r-2 border-r-blue-900" : ""
               }`
             }
           >
             <FaUsersLine className="text-xl" />
-            Users
+            User Profiles
           </NavLink>
         </li>
         <li className="">
@@ -53,7 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             to="/admin/category"
             className={({ isActive }) =>
               `gap-x-4 font-normal block py-3 px-10 hover:bg-blue-100 flex items-center space-x-2 ${
-                isActive ? "bg-blue-100 text-blue-900 border-r-2 border-r-blue-900" : ""
+                isActive ? "bg-blue-200 text-blue-900 border-r-2 border-r-blue-900" : ""
               }`
             }
           >
@@ -66,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             to="/admin/blogs"
             className={({ isActive }) =>
               `gap-x-4 font-normal block py-3 px-10 hover:bg-blue-100 flex items-center space-x-2 ${
-                isActive ? "bg-blue-100 text-blue-900 border-r-2 border-r-blue-900" : ""
+                isActive ? "bg-blue-200 text-blue-900 border-r-2 border-r-blue-900" : ""
               }`
             }
           >

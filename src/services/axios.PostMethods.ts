@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { AdminLogin, UserLoginResponse, UserLogin, UserSignUp, AdminLoginResponse } from "../utils/types/api-types";
-import { apiRequest } from "./axios.config";
+import { userApiRequest } from "./axios.UserConfig";
+import { adminApiRequest } from "./axios.AdminConfig";
 
 
 //* =============================== USER API ========================================
@@ -13,7 +14,7 @@ export const userSignUp = async( payload: UserSignUp): Promise<{message: string}
     }
     try{
         // return await apiRequest(config);
-        const result = await apiRequest(config);
+        const result = await userApiRequest(config);
         return result.data;
     }catch(error){
         const message = axios.isAxiosError(error) && error.response?.data?.message
@@ -31,7 +32,7 @@ export const OtpVerification = async( otp: string ): Promise<AxiosResponse> => {
         data: { otp }
     }
     try{
-        const result = await apiRequest(config);
+        const result = await userApiRequest(config);
         return result;
     }catch(error){
         const message = axios.isAxiosError(error) && error.response?.data?.message
@@ -50,7 +51,7 @@ export const userLogin = async(payload: UserLogin): Promise<UserLoginResponse> =
         data: payload
     }
     try{
-        const result = await apiRequest(config);
+        const result = await userApiRequest(config);
         //* Ensure the response contains the message field
         // return result.data.message ? { message: result.data.message } : { message: "Invalid response from server" };
         return result.data;
@@ -69,7 +70,7 @@ export const userLogout = async() => {
         url: `/api/auth/logout-user`,
     }
     try{
-        return await apiRequest(config);
+        return await userApiRequest(config);
     }catch(error){
         const message = axios.isAxiosError(error) && error.response?.data?.message
             ? error.response.data.message : "User Logout failed";
@@ -80,8 +81,8 @@ export const userLogout = async() => {
 
 
 
-//* =================== ADMIN API ============================
-// --------- funnction for admin login ----------
+//* ========== ADMIN API =============
+// ------------------------- funnction for admin login ------------------------
 export const adminLogin = async(payload: AdminLogin): Promise<AdminLoginResponse> => {
     const config: AxiosRequestConfig = {
         method: 'POST',
@@ -89,7 +90,7 @@ export const adminLogin = async(payload: AdminLogin): Promise<AdminLoginResponse
         data: payload
     }
     try{
-        const result = await apiRequest(config);
+        const result = await adminApiRequest(config);
         console.log(result.data);
         return result.data;
     }catch(error){
@@ -108,7 +109,7 @@ export const adminLogout = async() => {
         url: '/api/admin/logout-admin'
     }
     try{
-        return await apiRequest(config);
+        return await adminApiRequest(config);
     }catch(error){
         const message = axios.isAxiosError(error) && error.response?.data?.message
             ? error.response.data.message : "Admin Logout failed";

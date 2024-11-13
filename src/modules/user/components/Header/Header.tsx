@@ -9,6 +9,7 @@ import { userLogout } from "../../../../services/axios.PostMethods";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../../redux/slices/user-slice/userSlice";
+import { MdLogout } from "react-icons/md";
 
 
 
@@ -80,7 +81,7 @@ const Header: React.FC = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 w-full bg-slate-50 flex items-center justify-between py-2 px-4 md:px-8 border-b border-gray-200 z-50 transition-transform duration-300 ${
+      className={`fixed top-0 left-0 w-full bg-white flex items-center justify-between py-2 px-4 md:px-8 border-b border-gray-200 z-50 transition-transform duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
@@ -140,9 +141,9 @@ const Header: React.FC = () => {
               </button>
               {/*-------- dropdown menu button --------- */}
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-52 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-20">
-                  <button className="block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
-                    Profile
+                <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-20">
+                  <button className="block w-full text-sm text-left px-4 py-2 mt-2 text-gray-700 hover:bg-gray-100">
+                    <Link to='/profile'>View Profile</Link>
                   </button>
                   <button className="block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
                     Settings
@@ -151,10 +152,10 @@ const Header: React.FC = () => {
                     Apply for author verification
                   </button>
                   <button
-                    className="block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
                     onClick={handleLogout}
+                    className="flex items-center w-full text-left px-4 py-2 text-sm text-black hover:bg-gray-100"
                   >
-                    <Link to="">Logout</Link>
+                    <MdLogout className="mr-2" /> Logout
                   </button>
                 </div>
               )}

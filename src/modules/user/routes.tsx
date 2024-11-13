@@ -3,6 +3,7 @@ import Header from "./components/Header/Header";
 import SignUpPage from "./pages/SignUp/SignUpPage";
 import LoginPage from "./pages/Login/LoginPage";
 import Home from "./pages/Home/Home";
+import ProfilePage from "./pages/Profile/ProfilePage";
 
 
 
@@ -18,6 +19,7 @@ const UserRoutes = () => {
             <Route path='/signup' element= { <SignUpPage /> } />
             <Route path='/login' element={ <LoginPage /> } />
             <Route path='/' element= { <Home /> } />
+            <Route path="/profile" element={<ProfilePage /> }/>
         </Routes>
     </>
   )

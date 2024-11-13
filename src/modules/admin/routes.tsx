@@ -4,6 +4,7 @@ import Sidebar from './components/sidebar/Sidebar';
 import DashboardPage from './pages/Dashboard/DashboardPage';
 import LoginPage from './pages/Login/LoginPage';
 import { useState } from 'react';
+import UserListPage from './pages/User Profiles/UserListPage';
 
 
 
@@ -18,7 +19,7 @@ const AdminRoutes: React.FC = () => {
   const showNavbarAndSidebar = location.pathname !== '/admin/login';
 
   return (
-    <div className="flex flex-col h-screen bg-neutral-200">
+    <div className="flex flex-col h-screen bg-slate-200">
       {showNavbarAndSidebar && (
         <>
           <Navbar onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
@@ -27,6 +28,7 @@ const AdminRoutes: React.FC = () => {
             <div className={`flex-1 p-6 transition-all duration-300 ease-in-out ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
               <Routes>
                 <Route path='/dashboard' element={<DashboardPage />} />
+                <Route path='/user-list' element={<UserListPage/>} />
               </Routes>
             </div>
           </div>
