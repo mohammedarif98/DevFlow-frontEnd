@@ -7,7 +7,8 @@ import { useUserLoginForm } from "../../../../utils/validations/user-validations
 import { useLoading } from "../../../../contexts/LoadingContext";
 import { UserLogin } from "../../../../utils/types/api-types";
 import { userLogin } from "../../../../services/axios.PostMethods";
-import { login } from "../../../../redux/slices/user-slice/userSlice";
+import { login } from "../../../../redux/slices/userSlice/userSlice";
+
 
 
 const Login: React.FC = () => {
@@ -27,7 +28,7 @@ const Login: React.FC = () => {
         navigate('/');
     } catch (error) {
         const message = (error as Error).message.replace('Error: ', '');
-        setErrorMessage(message)
+        setErrorMessage(message);
     } finally {
       setLoading(false);
     }

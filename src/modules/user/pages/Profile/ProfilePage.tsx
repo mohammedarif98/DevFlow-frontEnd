@@ -4,7 +4,7 @@ import Profile from './Profile'
 
 
 
-const ProfilePaage:React.FC = () => {
+const ProfilePage:React.FC = () => {
   return (
     <div>
         <Profile/>
@@ -12,4 +12,4 @@ const ProfilePaage:React.FC = () => {
   )
 }
 
-export default ProfilePaage
+export default ProfilePage;

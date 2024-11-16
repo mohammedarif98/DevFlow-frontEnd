@@ -2,8 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
 
-import userReducer from '../redux/slices/user-slice/userSlice';
-import adminReducer from '../redux/slices/admin-slice/adminSlice';
+import userReducer from './slices/userSlice/userSlice';
+import adminReducer from './slices/adminSlice/adminSlice';
 
 
 const userConfig = {

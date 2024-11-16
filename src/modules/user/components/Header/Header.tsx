@@ -8,8 +8,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { userLogout } from "../../../../services/axios.PostMethods";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../../../redux/slices/user-slice/userSlice";
+import { logout } from "../../../../redux/slices/userSlice/userSlice";
 import { MdLogout } from "react-icons/md";
+import { AiOutlineUser } from "react-icons/ai";
+import { LuSettings } from "react-icons/lu";
 
 
 
@@ -142,21 +144,23 @@ const Header: React.FC = () => {
               {/*-------- dropdown menu button --------- */}
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-20">
-                  <button className="block w-full text-sm text-left px-4 py-2 mt-2 text-gray-700 hover:bg-gray-100">
-                    <Link to='/profile'>View Profile</Link>
-                  </button>
-                  <button className="block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
-                    Settings
-                  </button>
-                  <button className="block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
-                    Apply for author verification
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center w-full text-left px-4 py-2 text-sm text-black hover:bg-gray-100"
-                  >
-                    <MdLogout className="mr-2" /> Logout
-                  </button>
+                  <div className="flex flex-col">
+                    <button className="block w-full text-sm text-left px-4 py-2 mt-2 text-gray-700 hover:bg-gray-100">
+                      <Link to='/profile'><FaRegUser className="inline-block mr-2" />View Profile</Link>
+                    </button>
+                    <button className="block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                      <LuSettings className="inline-block mr-2" />Settings
+                    </button>
+                    <button className="block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                      Apply for author verification
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center w-full text-left px-4 py-2 text-sm text-black hover:bg-gray-100"
+                    >
+                      <MdLogout className="mr-2" /> Logout
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

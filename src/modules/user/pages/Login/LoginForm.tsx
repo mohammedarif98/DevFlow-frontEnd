@@ -40,7 +40,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         required
       />
       {errors.email && (
-        <span className="text-sm font-normal text-rose-600">
+        <span className="text-sm font-normal text-red-600">
           {errors.email.message}
         </span>
       )}
@@ -62,12 +62,12 @@ const LoginForm: React.FC<LoginFormProps> = ({
         required
       />
       {errors.password && (
-        <span className="text-sm font-normal text-rose-600">
+        <span className="text-sm font-normal text-red-600">
           {errors.password.message}
         </span>
       )}
       {errorMessage && (
-        <span className="text-sm font-normal text-rose-600">{errorMessage}</span>
+        <span className="text-sm font-normal flex justify-center my-2 text-white">{errorMessage}</span>
       )}
     </div>
 

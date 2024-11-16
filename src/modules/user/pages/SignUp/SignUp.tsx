@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { UserSignUp } from '../../../../utils/types/api-types';
 import { userSignUp } from '../../../../services/axios.PostMethods';
-import SignUpForm from './SignUpForm';
-import OtpVerificationForm from './OtpVerificationForm';
+
 import { useUserSignUpForm } from '../../../../utils/validations/user-validations/userSignupValidation';
 import { useLoading } from '../../../../contexts/LoadingContext';
+import OtpVerificationForm from './OtpVerificationForm';
+import SignUpForm from './SignUpForm';
 
 
 

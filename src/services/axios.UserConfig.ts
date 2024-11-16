@@ -45,10 +45,16 @@ userApiClient.interceptors.response.use(
             } catch (refreshError) {
                 console.error("Failed to refresh user access token", refreshError);
                 Cookies.remove('user-access-token');
+                Cookies.remove('user-refresh-token');
                 window.location.href = "/login";
                 
                 return Promise.reject(refreshError);
             }
+        }
+        if (error.response?.status === 403) {
+            Cookies.remove('user-access-token');
+            Cookies.remove('user-refresh-token');
+            window.location.href = "/login";
         }
         return Promise.reject(error);
     }

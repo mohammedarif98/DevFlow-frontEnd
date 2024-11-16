@@ -7,7 +7,7 @@ import profile_pic from "../../../../assets/images/pngtree-man-avatar-image-for-
 import { adminLogout } from "../../../../services/axios.PostMethods";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../../../redux/slices/admin-slice/adminSlice";
+import { logout } from "../../../../redux/slices/adminSlice/adminSlice";
 
 interface NavbarProps {
   onToggleSidebar: () => void;

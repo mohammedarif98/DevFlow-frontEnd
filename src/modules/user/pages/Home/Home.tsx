@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 
 
 const Home: React.FC = () => {
-  const { user } = useSelector((state: any) => state.user);
+  const isAuthenticated = useSelector((state: any) => state.user.isAuthenticated);
 
   return (
     <>
-      {!user ? (
+      {!isAuthenticated ? (
         <div className="relative w-full h-screen bg-cover bg-center">
           <img
             src={landing_Image}
@@ -68,5 +68,6 @@ const Home: React.FC = () => {
     </>
   );
 };
+
 
 export default Home;

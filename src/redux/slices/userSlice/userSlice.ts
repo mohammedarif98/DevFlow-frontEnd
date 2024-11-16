@@ -34,13 +34,6 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = null;
         },
-        //* ---------- Loading and Error actions -----------
-        // setLoading(state, action: PayloadAction<boolean>) {
-        //     state.loading = action.payload;
-        // },
-        // setError(state, action: PayloadAction<string | null>) {
-        //     state.error = action.payload;
-        // },
     }
 });
 

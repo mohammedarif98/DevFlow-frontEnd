@@ -1,10 +1,11 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Navbar from './components/navbar/Navbar';
 import Sidebar from './components/sidebar/Sidebar';
-import DashboardPage from './pages/Dashboard/DashboardPage';
-import LoginPage from './pages/Login/LoginPage';
+import DashboardPage from './pages/dashboard/DashboardPage';
+import LoginPage from './pages/login/LoginPage';
 import { useState } from 'react';
-import UserListPage from './pages/User Profiles/UserListPage';
+import UserListPage from './pages/userProfiles/UserListPage';
+import AdminProtectedRoute from './AdminProtectedRoute';
 
 
 
@@ -27,8 +28,10 @@ const AdminRoutes: React.FC = () => {
             <Sidebar isOpen={isSidebarOpen} />
             <div className={`flex-1 p-6 transition-all duration-300 ease-in-out ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
               <Routes>
-                <Route path='/dashboard' element={<DashboardPage />} />
-                <Route path='/user-list' element={<UserListPage/>} />
+                <Route element={<AdminProtectedRoute/>}>
+                  <Route path='/dashboard' element={<DashboardPage />} />
+                  <Route path='/user-list' element={<UserListPage/>} />
+                </Route>
               </Routes>
             </div>
           </div>

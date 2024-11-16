@@ -6,7 +6,7 @@ import { useAdminLoginForm } from "../../../../utils/validations/admin-validatio
 import { useLoading } from "../../../../contexts/LoadingContext";
 import { AdminLogin } from "../../../../utils/types/api-types";
 import { adminLogin } from "../../../../services/axios.PostMethods";
-import { login } from '../../../../redux/slices/admin-slice/adminSlice';
+import { login } from '../../../../redux/slices/adminSlice/adminSlice';
 import LoginForm from "./LoginForm";
 
 

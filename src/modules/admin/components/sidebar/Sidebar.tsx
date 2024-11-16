@@ -26,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
           <NavLink
             to="/admin/dashboard"
             className={({ isActive }) =>
-              `gap-x-4 font-semibold block py-3 px-10 hover:bg-blue-100 flex items-center space-x-2 ${
+              `gap-x-4 font-semibold block py-3 px-5 hover:bg-blue-100 flex items-center space-x-2 ${
                 isActive ? "bg-blue-200 text-blue-900 border-r-2 border-r-blue-900" : ""
               }`
             }
@@ -39,39 +39,39 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
           <NavLink
             to="/admin/user-list"
             className={({ isActive }) =>
-              `gap-x-4 font-normal block py-3 px-10 hover:bg-blue-100 flex items-center space-x-2 ${
+              `gap-x-4 font-normal block py-3 px-5 hover:bg-blue-100 flex items-center space-x-2 ${
                 isActive ? "bg-blue-200 text-blue-900 border-r-2 border-r-blue-900" : ""
               }`
             }
           >
             <FaUsersLine className="text-xl" />
-            User Profiles
+            Profile Managment
           </NavLink>
         </li>
         <li className="">
           <NavLink
             to="/admin/category"
             className={({ isActive }) =>
-              `gap-x-4 font-normal block py-3 px-10 hover:bg-blue-100 flex items-center space-x-2 ${
+              `gap-x-4 font-normal block py-3 px-5 hover:bg-blue-100 flex items-center space-x-2 ${
                 isActive ? "bg-blue-200 text-blue-900 border-r-2 border-r-blue-900" : ""
               }`
             }
           >
             <TbCategoryPlus className="text-xl" />
-            Category
+            Category Managment
           </NavLink>
         </li>
         <li className="">
           <NavLink
             to="/admin/blogs"
             className={({ isActive }) =>
-              `gap-x-4 font-normal block py-3 px-10 hover:bg-blue-100 flex items-center space-x-2 ${
+              `gap-x-4 font-normal block py-3 px-5 hover:bg-blue-100 flex items-center space-x-2 ${
                 isActive ? "bg-blue-200 text-blue-900 border-r-2 border-r-blue-900" : ""
               }`
             }
           >
             <GrBlog className="text-xl" />
-            Blogs
+            Blogs Managment
           </NavLink>
         </li>
       </ul>
