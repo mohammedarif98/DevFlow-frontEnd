@@ -18,6 +18,12 @@ export interface UserLogin {
     password: string;
 }
 
+export interface GoogleAuthParams {
+    email: string;
+    name: string;
+    photo: string;
+  }
+
 
 //*------------------- admin form data types ------------------------
 

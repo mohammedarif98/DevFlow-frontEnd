@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getUserProfile } from '../../../../services/axios.GetMethods';
 import profile_image from '../../../../assets/images/SAVE_20241105_220105~2.jpg'
 import Modal from '../../../../common/Modal';
+// import { useSelector } from 'react-redux';
 
 
 interface UserProfile {
@@ -17,6 +18,7 @@ const Profile:React.FC = () => {
     const [activeTab, setActiveTab] = useState(1);
     const [data, setData] = useState<UserProfile | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    // const isAuthenticated = useSelector((state:any) => state.user.isAuthenticated);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -36,10 +38,10 @@ const Profile:React.FC = () => {
     const closeModal = () => setIsModalOpen(false);
   
     return (
-      <div className='container mx-auto max-w-6xl mt-24 bg-white p-6 border border-gray-200'>
-        <div className='bg-white p-2'>
-          <div className='flex flex-col md:flex-row md:items-end md:justify-between space-y-4 md:space-y-0'>
-            <div className='flex flex-col md:flex-row md:items-end space-y-4 md:space-y-0 md:space-x-4'>
+      <div className='container mx-auto max-w-6xl mt-24 bg-white p-1 border border-gray-200'>
+        <div className='bg-cyan-800 p-6 rounded-md'>
+          <div className='flex flex-col md:flex-row md:items-end md:justify-between space-y-4 md:space-y-0 '>
+            <div className='flex flex-col md:flex-row md:items-end space-y-4 md:space-y-0 md:space-x-4 '>
               {data?.profilePhoto ? (
                 <img src={data.profilePhoto} alt="" className='h-36 w-36 md:h-48 md:w-48 rounded-full' />
               ) : (
@@ -102,13 +104,13 @@ const Profile:React.FC = () => {
               <div className='flex justify-end space-x-2'>
                 <button
                   onClick={closeModal}
-                  className="mt-3 bg-black text-white p-2 rounded-sm hover:bg-black"
+                  className="mt-3 bg-black text-white py-1 px-4 rounded-md hover:bg-black"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={closeModal}
-                  className="mt-3 bg-green-800 text-white rounded-sm p-2 hover:bg-green-700"
+                  className="mt-3 bg-green-800 text-white rounded-md py-1 px-4 hover:bg-green-700"
                 >
                   Save
                 </button>

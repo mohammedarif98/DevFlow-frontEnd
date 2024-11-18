@@ -3,7 +3,7 @@ import UsersList from './UsersList'
 
 
 
-const UserListPage = () => {
+const UserListPage:React.FC = () => {
   return (
     <div>
         <UsersList/>

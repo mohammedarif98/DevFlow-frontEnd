@@ -1,7 +1,8 @@
 import React from "react";
-import { FaGoogle } from "react-icons/fa";
+// import { FaGoogle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { UserLogin } from "../../../../utils/types/api-types";
+import OAuth from "../../components/OAuth/OAuth";
 
 
 interface LoginFormProps {
@@ -95,10 +96,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
     <div className="flex flex-col items-center">
       <p className="text-white mb-3">------------- or -------------</p>
-      <button className="flex items-center justify-center w-full bg-gray-50 border border-gray-500 opacity-95 text-black py-2 font-semibold rounded">
-        <FaGoogle className="text-red-800 text-xl mr-2" />
-        Login with Google
-      </button>
+      <OAuth/>
     </div>
   
   </form>

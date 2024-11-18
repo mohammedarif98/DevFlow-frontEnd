@@ -6,7 +6,7 @@ import LoginPage from './pages/login/LoginPage';
 import { useState } from 'react';
 import UserListPage from './pages/userProfiles/UserListPage';
 import AdminProtectedRoute from './AdminProtectedRoute';
-
+import CategoryPage from './pages/blogCategory/CategoryPage';
 
 
 const AdminRoutes: React.FC = () => {
@@ -29,8 +29,11 @@ const AdminRoutes: React.FC = () => {
             <div className={`flex-1 p-6 transition-all duration-300 ease-in-out ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
               <Routes>
                 <Route element={<AdminProtectedRoute/>}>
-                  <Route path='/dashboard' element={<DashboardPage />} />
-                  <Route path='/user-list' element={<UserListPage/>} />
+                  <Route path='/dashboard' element={<DashboardPage />}/>
+                  <Route path='/user-list' element={<UserListPage/>}/>
+                  <Route path='/blog-category' element={<CategoryPage/>}/>
+                  {/* <Routes path='/add-blog' element={<AddBlogPage/>} /> */}
+                  {/* <Routes path='/list-blogs' element={<BlogListPage/>} /> */}
                 </Route>
               </Routes>
             </div>

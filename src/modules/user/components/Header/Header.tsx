@@ -10,8 +10,9 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../../redux/slices/userSlice/userSlice";
 import { MdLogout } from "react-icons/md";
-import { AiOutlineUser } from "react-icons/ai";
+// import { AiOutlineUser } from "react-icons/ai";
 import { LuSettings } from "react-icons/lu";
+
 
 
 
@@ -23,8 +24,10 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.user);
+  // const isAuthenticated = useSelector(
+  //   (state: any) => state.user.isAuthenticated
+  // );
   const prevScrollPos = useRef(window.pageYOffset);
-
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -34,11 +37,13 @@ const Header: React.FC = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-
   //*---------------- Close the dropdown when clicking outside ----------------------
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     };
@@ -48,18 +53,18 @@ const Header: React.FC = () => {
     };
   }, []);
 
-
   //*---------------- Hide header on scroll down, show on scroll up -----------------------
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.pageYOffset;
-      setIsVisible(prevScrollPos.current > currentScrollPos || currentScrollPos < 10);
+      setIsVisible(
+        prevScrollPos.current > currentScrollPos || currentScrollPos < 10
+      );
       prevScrollPos.current = currentScrollPos;
 
       if (isDropdownOpen) {
         setIsDropdownOpen(false);
       }
-      
     };
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -67,9 +72,8 @@ const Header: React.FC = () => {
     };
   }, [isDropdownOpen]);
 
-  
   //*---------------- api call -----------------
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     try {
       await userLogout();
       dispatch(logout());
@@ -80,7 +84,6 @@ const Header: React.FC = () => {
     }
   };
 
-
   return (
     <div
       className={`fixed top-0 left-0 w-full bg-white flex items-center justify-between py-2 px-4 md:px-8 border-b border-gray-200 z-50 transition-transform duration-300 ${
@@ -90,7 +93,9 @@ const Header: React.FC = () => {
       {/*--------- Logo Section -----------*/}
       <div className="flex items-center">
         <Link to="/">
-          <span className="font-rubik-wet-paint text-lg md:text-2xl">DevFlow</span>
+          <span className="font-rubik-wet-paint text-lg md:text-2xl">
+            DevFlow
+          </span>
         </Link>
       </div>
 
@@ -137,19 +142,31 @@ const Header: React.FC = () => {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={toggleDropdown}
-                className="rounded-full p-2 bg-green-700 hover:bg-green-900 transition-colors"
+                className="rounded-full p-[1px] bg-black transition-colors"
               >
-                <FaRegUser className="text-xl text-white" />
+                {user && user.profilePhoto ? (
+                  <img
+                    src={user.profilePhoto}
+                    alt="pro-img"
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                ) : (
+                  <FaRegUser className="text-xl m-2 text-white" />
+                )}
               </button>
               {/*-------- dropdown menu button --------- */}
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-20">
                   <div className="flex flex-col">
                     <button className="block w-full text-sm text-left px-4 py-2 mt-2 text-gray-700 hover:bg-gray-100">
-                      <Link to='/profile'><FaRegUser className="inline-block mr-2" />View Profile</Link>
+                      <Link to="/profile">
+                        <FaRegUser className="inline-block mr-2" />
+                        View Profile
+                      </Link>
                     </button>
                     <button className="block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
-                      <LuSettings className="inline-block mr-2" />Settings
+                      <LuSettings className="inline-block mr-2" />
+                      Settings
                     </button>
                     <button className="block w-full text-sm text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
                       Apply for author verification
@@ -169,10 +186,14 @@ const Header: React.FC = () => {
         {!user && (
           <>
             <button className="">
-              <Link to="/" className="text-black font-semibold">About</Link>
+              <Link to="/" className="text-black font-semibold">
+                About
+              </Link>
             </button>
             <button className="rounded bg-black text-white py-1 px-4">
-              <Link to="/login" className="font-semibold">Login</Link>
+              <Link to="/login" className="font-semibold">
+                Login
+              </Link>
             </button>
           </>
         )}

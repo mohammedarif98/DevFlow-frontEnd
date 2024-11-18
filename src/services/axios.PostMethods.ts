@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { AdminLogin, UserLoginResponse, UserLogin, UserSignUp, AdminLoginResponse } from "../utils/types/api-types";
+import { AdminLogin, UserLoginResponse, UserLogin, UserSignUp, AdminLoginResponse, GoogleAuthParams } from "../utils/types/api-types";
 import { userApiRequest } from "./axios.UserConfig";
 import { adminApiRequest } from "./axios.AdminConfig";
 
@@ -52,13 +52,33 @@ export const userLogin = async(payload: UserLogin): Promise<UserLoginResponse> =
     }
     try{
         const result = await userApiRequest(config);
-        //* Ensure the response contains the message field
-        // return result.data.message ? { message: result.data.message } : { message: "Invalid response from server" };
         return result.data;
     }catch(error){
         const message = axios.isAxiosError(error) && error.response?.data?.message
             ? error.response.data.message
             : "User signup failed";
+        throw new Error(message);
+    }
+}
+
+// --------------- functoin for google login -------------------
+export const googleAuthentication = async ({ email, name, photo }: GoogleAuthParams) => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `/api/auth/google-login`,
+        data: {
+            email,
+            name,
+            photo,
+        },
+    }
+    try{
+        const result = await userApiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "Google Authentication failed";
         throw new Error(message);
     }
 }

@@ -20,7 +20,7 @@ const Table: React.FC<TableProps> = ({
   setFilterRole,
 }) => {
   return (
-    <div className="w-full mb-12 px-4">
+    <div className="w-full mb-12 px-2">
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-sm rounded bg-[#ffffff] text-black">
         <div className="rounded-t px-4 py-3 border-0">
           <div className="flex justify-between items-center">

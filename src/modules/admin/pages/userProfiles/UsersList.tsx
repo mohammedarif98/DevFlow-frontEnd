@@ -135,7 +135,7 @@ const UsersList: React.FC = () => {
   }));
 
   return (
-    <div className="my-6">
+    <div className="my-2">
       <Table
         tableHeading = {tableHeading}
         headers = {tableHeaders}
