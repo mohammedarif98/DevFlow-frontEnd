@@ -36,3 +36,14 @@ export interface AdminLogin {
     email: string;
     password: string;
 }
+
+export type CategoryFormType = {
+    categoryName: string;
+    description: string;
+    categoryImage: string;
+}; 
+
+export interface AddCategoryResponse {
+    status: string;
+    message: string;
+};

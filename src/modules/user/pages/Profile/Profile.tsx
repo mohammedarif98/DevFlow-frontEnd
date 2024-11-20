@@ -38,12 +38,12 @@ const Profile:React.FC = () => {
     const closeModal = () => setIsModalOpen(false);
   
     return (
-      <div className='container mx-auto max-w-6xl mt-24 bg-white p-1 border border-gray-200'>
-        <div className='bg-cyan-800 p-6 rounded-md'>
+      <div className='container mx-auto max-w-7xl mt-24 bg-white p-1 border border-gray-200'>
+        <div className='bg-slate-500 p-6 rounded-md'>
           <div className='flex flex-col md:flex-row md:items-end md:justify-between space-y-4 md:space-y-0 '>
             <div className='flex flex-col md:flex-row md:items-end space-y-4 md:space-y-0 md:space-x-4 '>
               {data?.profilePhoto ? (
-                <img src={data.profilePhoto} alt="" className='h-36 w-36 md:h-48 md:w-48 rounded-full' />
+                <img src={data.profilePhoto} alt="profile" className='h-36 w-36 md:h-48 md:w-48 rounded-full' />
               ) : (
                 <img src={profile_image} alt="" className='h-36 w-36 md:h-48 md:w-48 rounded-full' />
               )}
@@ -71,7 +71,7 @@ const Profile:React.FC = () => {
                 </div>
                 <div className='flex items-center space-x-4'>
                   <p className='text-md text-green-600 cursor-pointer'>Update</p>
-                  <p className='text-md text-red-700 cursor-pointer'>Remove</p>
+                  {/* <p className='text-md text-red-700 cursor-pointer'>Remove</p> */}
                 </div>
               </div>
 

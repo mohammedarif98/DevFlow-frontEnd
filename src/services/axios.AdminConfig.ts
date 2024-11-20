@@ -12,6 +12,17 @@ export const adminApiClient = axios.create({
     },
 });
 
+//* ------------------ Function to make API request ---------------------
+export const adminApiRequest = async( config: AxiosRequestConfig ) => {
+    try{
+        const response = await adminApiClient(config);
+        return response;
+    }catch( error ){
+        // console.error("API call failed", error);
+        throw error;
+    }
+};
+
 
 //*----------- Admin Request interceptor to add access token to headers -------------
 adminApiClient.interceptors.request.use(
@@ -45,23 +56,19 @@ adminApiClient.interceptors.response.use(
             } catch (refreshError) {
                 console.error("Failed to refresh admin access token", refreshError);
                 Cookies.remove('admin-access-token');
+                Cookies.remove('admin-refresh-token');
                 window.location.href = "/admin/login";
                 
                 return Promise.reject(refreshError);
             }
+        }
+        if (error.response?.status === 403) {
+            Cookies.remove('admin-access-token');
+            Cookies.remove('admin-refresh-token');
+            window.location.href = "/admin/login";
         }
         return Promise.reject(error);
     }
 );
 
 
-//* ------------------ Function to make API request ---------------------
-export const adminApiRequest = async( config: AxiosRequestConfig ) => {
-    try{
-        const response = await adminApiClient(config);
-        return response;
-    }catch( error ){
-        // console.error("API call failed", error);
-        throw error;
-    }
-};

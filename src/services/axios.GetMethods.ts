@@ -52,8 +52,25 @@ export const getAllUsers = async() => {
         return result;
     }catch(error:any){
         if (error.response?.status === 401) {
-            throw new Error('You are not Logged in! please log');
+            throw new Error('You are not Logged in! please logIn');
         }
         throw error;
     }
 }
+
+//------------- function for display all category -----------------
+export const getAllCategory = async() => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url:  `/api/admin/list-category`
+    }
+    try{
+        const result = await adminApiRequest(config);
+        return result.data;
+    }catch(error:any){
+        if (error.response?.status === 401) {
+            throw new Error('You are not Logged in! please logIn');
+        }
+        throw error;
+    }
+} 

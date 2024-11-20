@@ -1,12 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../../../../common/Modal";
+import { useCategoryForm } from "../../../../utils/validations/admin-validations/categoryValidation";
+import { addCategory } from "../../../../services/axios.PostMethods";
+import { toast } from "react-toastify";
+import { CategoryFormType } from "../../../../utils/types/api-types";
+import { getAllCategory } from "../../../../services/axios.GetMethods";
+import { useLoading } from "../../../../contexts/LoadingContext";
+
+
 
 const Category: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setLoading } = useLoading();
+  const [ isModalOpen, setIsModalOpen ] = useState(false);
+  const [ errorMessage, setErrorMessage ] = useState<string | null>(null);
+  const [ data, setData ] = useState<CategoryFormType[]>([]);
+  const { register, handleSubmit, errors, reset } = useCategoryForm();
 
-  //--------- modal for edit profile --------------
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    reset();
+  };
+
+
+  //*-------------- fetch all category -----------------
+  useEffect(()=>{
+    const fetchCategory = async()=>{
+      try{
+        setLoading(true);
+        const result = await getAllCategory();
+        setData(result?.data?.category)
+      }catch(error){
+        console.error("Error fetching categories:",error);
+      }finally{
+        setLoading(false);
+      }
+    }
+    fetchCategory();
+  },[]);
+
+
+  //*--------- modal for edit profile --------------
+  const handleAddCategory = async (data: CategoryFormType) => {
+    try {
+      const formData = new FormData();
+      formData.append('categoryName', data.categoryName);
+      formData.append('description', data.description);
+      if (data.categoryImage && data.categoryImage.length > 0) {
+        formData.append('categoryImage', data.categoryImage[0]);
+      } else {
+        throw new Error('Category image is required');
+      }; 
+  
+      const response = await addCategory(formData);
+      toast.success(response?.message);
+      console.log(response);
+      closeModal();
+    } catch (error) {
+      console.error(error);
+      const message = (error as Error).message.replace('Error: ', '');
+      setErrorMessage(message);
+    }
+  };
+
 
   return (
     <div className="my-2 space-y-2">
@@ -31,95 +87,83 @@ const Category: React.FC = () => {
       </div>
 
       <div className="bg-white w-full p-8">
-        <div className="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-10 xl:grid-cols-10 gap-4">
-          <div className="flex flex-col justify-center items-center bg-green-400 p-4">
-            <img src="" alt="" className="bg-slate-200 h-16 w-16" />
-            <p className="text-lg font-semibold text-black">Tech</p>
-          </div>
-          <div className="flex flex-col justify-center items-center bg-red-400 p-4">
-            <img src="" alt="" className="bg-slate-200 h-16 w-16" />
-            <p className="text-lg font-semibold text-black">Tech</p>
-          </div>
-          <div className="flex flex-col justify-center items-center bg-emerald-600 p-4">
-            <img src="" alt="" className="bg-slate-200 h-16 w-16" />
-            <p className="text-lg font-semibold text-black">Tech</p>
-          </div>
-          <div className="flex flex-col justify-center items-center bg-sky-600 p-4">
-            <img src="" alt="" className="bg-slate-200 h-16 w-16" />
-            <p className="text-lg font-semibold text-black">Tech</p>
-          </div>
-          <div className="flex flex-col justify-center items-center bg-yellow-400 p-4">
-            <img src="" alt="" className="bg-slate-200 h-16 w-16" />
-            <p className="text-lg font-semibold text-black">Tech</p>
-          </div>
-          <div className="flex flex-col justify-center items-center bg-purple-400 p-4">
-            <img src="" alt="" className="bg-slate-200 h-16 w-16" />
-            <p className="text-lg font-semibold text-black">Tech</p>
-          </div>
-          <div className="flex flex-col justify-center items-center bg-blue-400 p-4">
-            <img src="" alt="" className="bg-slate-200 h-16 w-16" />
-            <p className="text-lg font-semibold text-black">Tech</p>
-          </div>
-          <div className="flex flex-col justify-center items-center bg-pink-400 p-4">
-            <img src="" alt="" className="bg-slate-200 h-16 w-16" />
-            <p className="text-lg font-semibold text-black">Tech</p>
-          </div>
-          <div className="flex flex-col justify-center items-center bg-gray-400 p-4">
-            <img src="" alt="" className="bg-slate-200 h-16 w-16" />
-            <p className="text-lg font-semibold text-black">Tech</p>
-          </div>
-          <div className="flex flex-col justify-center items-center bg-indigo-400 p-4">
-            <img src="" alt="" className="bg-slate-200 h-16 w-16" />
-            <p className="text-lg font-semibold text-black">Tech</p>
-          </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-8 gap-4">
+          { data.length > 0 ? (
+            data.map((category, index) => (
+              <div key={ index } className="flex flex-col justify-center items-center bg-gray-300 p-4">
+                <div className="">
+                  <img src={category.categoryImage} alt="" className="bg-slate-200 h-32 w-36" />
+                </div>
+                <div className="">
+                  <p className="text-lg font-semibold text-black">{category.categoryName}</p>
+                  <p className="text-sm font-normal text-black">{category.description}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500 w-full">No categories available</p>
+          ) }
+            
         </div>
       </div>
 
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title="Add Category"
-        modalStyle="bg-gray-50"
+        title="ADD CATEGORY"
+        modalStyle="bg-gray-50 min-w-[600px]"
         titleStyle="text-black"
         closeBtnStyle="text-black"
       >
-        <div className='my-4 space-y-4'>
+        <form onSubmit={handleSubmit(handleAddCategory)} className='my-4 space-y-4'>
           <div>
-            <label htmlFor="image" className='block text-sm font-medium text-gray-700'>Category Image</label>
-            <input
-              type="file"
-              id="image"
-              name="image"
-              className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black sm:text-sm'
-            />
-          </div>
-          <div>
-            <label htmlFor="category-name" className='block text-sm font-medium text-gray-700'>category Name</label>
+            <label htmlFor="category-name" className='block text-sm font-medium text-gray-700'>Category Name</label>
             <input
               type="text"
               id="category-name"
-              name="category-name"
+              {...register('categoryName')}
               className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm'
               placeholder="Enter your Category Name"
-              readOnly
             />
+            {errors.categoryName && <p className="text-red-700 text-sm my-1">{errors.categoryName.message}</p>}
           </div>
-        </div>
+          <div>
+            <label htmlFor="description" className='block text-sm font-medium text-gray-700'>Description</label>
+            <textarea 
+              id="description"
+              {...register('description')}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm"></textarea>
+            {errors.description && <p className="text-red-700 text-sm my-1">{errors.description.message}</p>}
+          </div>
+          <div>
+            <label htmlFor="image" className='block text-sm font-medium text-gray-700'>Category Image</label>
+            <input type="file"
+              accept="image/*" 
+              {...register("categoryImage")}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm" />
+            {errors.categoryImage && <p className="text-red-700 text-sm my-1">{errors.categoryImage.message}</p>}
+          </div>
 
-        <div className='flex justify-end space-x-2'>
-          <button
-            onClick={closeModal}
-            className="mt-3 bg-black text-white py-1 px-4 rounded-md hover:bg-black"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={closeModal}
-            className="mt-3 bg-green-800 text-white rounded-md py-1 px-4 hover:bg-green-700"
-          >
-            Add
-          </button>
-        </div>
+          {errorMessage && (
+              <span className="text-sm font-normal text-rose-600 flex justify-center ">{errorMessage}</span>
+          )}
+
+          <div className='flex justify-end space-x-2'>
+            <button
+              onClick={closeModal}
+              type="button"
+              className="mt-3 bg-black text-white py-1 px-4 rounded-md hover:bg-black"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="mt-3 bg-green-800 text-white rounded-md py-1 px-4 hover:bg-green-700"
+            >
+              Add
+            </button>
+          </div>
+        </form>
       </Modal>
     </div>
   );

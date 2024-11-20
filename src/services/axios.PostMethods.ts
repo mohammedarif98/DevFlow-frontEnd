@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { AdminLogin, UserLoginResponse, UserLogin, UserSignUp, AdminLoginResponse, GoogleAuthParams } from "../utils/types/api-types";
+import { AdminLogin, UserLoginResponse, UserLogin, UserSignUp, AdminLoginResponse, GoogleAuthParams, CategoryFormType, AddCategoryResponse } from "../utils/types/api-types";
 import { userApiRequest } from "./axios.UserConfig";
 import { adminApiRequest } from "./axios.AdminConfig";
+
 
 
 //* =============================== USER API ========================================
@@ -133,6 +134,42 @@ export const adminLogout = async() => {
     }catch(error){
         const message = axios.isAxiosError(error) && error.response?.data?.message
             ? error.response.data.message : "Admin Logout failed";
+        throw new Error(message);
+    }
+};
+
+
+//----------- function for adding category -------------
+export const addCategory = async(formData: FormData): Promise<AddCategoryResponse> => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: '/api/admin/categories',
+        headers: { "Content-Type": "multipart/form-data" },
+        data: formData
+    }
+    try{
+        const result = await adminApiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message : "Addding category failed";
+        throw new Error(message);
+    }
+}
+
+
+//----------- function for update category -------------
+export const editCategory = async(formData:CategoryFormType, categoryId:string) => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `/api/admin/edit-category/${categoryId}`,
+        data: formData
+    }
+    try{
+        return await adminApiRequest(config);
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message : "Updating category failed";
         throw new Error(message);
     }
 }

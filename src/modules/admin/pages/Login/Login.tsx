@@ -18,7 +18,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLogin = async (data: AdminLogin) => {
+  const handleLogin = async (data:AdminLogin) => {
     try {
       setLoading(true);
       const response = await adminLogin(data);
