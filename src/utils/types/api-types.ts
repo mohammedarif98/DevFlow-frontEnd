@@ -38,6 +38,7 @@ export interface AdminLogin {
 }
 
 export type CategoryFormType = {
+    _id: string;
     categoryName: string;
     description: string;
     categoryImage: string;
@@ -46,4 +47,5 @@ export type CategoryFormType = {
 export interface AddCategoryResponse {
     status: string;
     message: string;
+    category: CategoryFormType;
 };

@@ -19,8 +19,8 @@ export const CategorySchema = z.object({
 
 
 export const useCategoryForm = () => {
-  const { reset, register, handleSubmit, formState: { errors } } = useForm<CategoryFormType>({
+  const { reset, register, setValue , handleSubmit, formState: { errors } } = useForm<CategoryFormType>({
     resolver: zodResolver(CategorySchema),
   });
-  return { register, handleSubmit, errors, reset };
+  return { register, setValue , handleSubmit, errors, reset, };
 };

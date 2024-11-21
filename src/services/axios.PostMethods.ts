@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { AdminLogin, UserLoginResponse, UserLogin, UserSignUp, AdminLoginResponse, GoogleAuthParams, CategoryFormType, AddCategoryResponse } from "../utils/types/api-types";
+import { AdminLogin, UserLoginResponse, UserLogin, UserSignUp, AdminLoginResponse, GoogleAuthParams, AddCategoryResponse } from "../utils/types/api-types";
 import { userApiRequest } from "./axios.UserConfig";
 import { adminApiRequest } from "./axios.AdminConfig";
 
@@ -158,18 +158,3 @@ export const addCategory = async(formData: FormData): Promise<AddCategoryRespons
 }
 
 
-//----------- function for update category -------------
-export const editCategory = async(formData:CategoryFormType, categoryId:string) => {
-    const config: AxiosRequestConfig = {
-        method: 'POST',
-        url: `/api/admin/edit-category/${categoryId}`,
-        data: formData
-    }
-    try{
-        return await adminApiRequest(config);
-    }catch(error){
-        const message = axios.isAxiosError(error) && error.response?.data?.message
-            ? error.response.data.message : "Updating category failed";
-        throw new Error(message);
-    }
-}

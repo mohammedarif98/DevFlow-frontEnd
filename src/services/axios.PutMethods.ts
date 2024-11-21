@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios"
 import { adminApiRequest } from "./axios.AdminConfig";
+import { AddCategoryResponse } from "../utils/types/api-types";
 
 
 
@@ -45,3 +46,26 @@ export const unblockUser = async(userId: string) => {
         throw new Error(message);
     }
 }
+
+
+// ---------------- update the category ------------------
+export const editCategory = async(formData: FormData, categoryId: string): Promise<AddCategoryResponse>  =>{
+    const config: AxiosRequestConfig = {
+        method: 'PUT',
+        url: `/api/admin/edit-category/${categoryId}`,
+        headers: {
+            'Content-Type':'multipart/form-data'
+        },
+        data: formData
+    }
+    try{
+        const result = await adminApiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "Category updating failed";
+        throw new Error(message);
+    }
+}
+
