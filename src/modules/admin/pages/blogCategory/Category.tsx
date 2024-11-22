@@ -204,7 +204,7 @@ const Category: React.FC = () => {
         isOpen={isModalOpen}
         onClose={closeModal}
         title="ADD CATEGORY"
-        modalStyle="bg-gray-50 min-w-[600px]"
+        modalStyle="bg-gray-50 max-w-[600px]"
         titleStyle="text-black"
         closeBtnStyle="text-black"
       >
@@ -299,7 +299,7 @@ const Category: React.FC = () => {
         isOpen={isEditModalOpen}
         onClose={closeEditModal}
         title="EDIT CATEGORY"
-        modalStyle="bg-gray-50 min-w-[600px]"
+        modalStyle="bg-gray-50 max-w-[600px]"
         titleStyle="text-black"
         closeBtnStyle="text-black"
       >
