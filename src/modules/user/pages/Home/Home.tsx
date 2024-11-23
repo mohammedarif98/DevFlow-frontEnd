@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import landing_Image from "../../../../assets/images/SAVE_20241105_220105~2.jpg";
-// import img from '../../../../assets/images/SAVE_20241105_220105~2.jpg'
 import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { BiSolidLike } from "react-icons/bi";
@@ -101,7 +100,7 @@ const Home: React.FC = () => {
                 </div>
               </div>
               <div className="md:flex items-center hidden sm:block">
-                <img src={blog.coverImage} alt="cover-img" className="h-36 w-64" />
+                <img src={blog.coverImage} alt="cover-img" className="h-32 w-64" />
               </div>
             </div>
           ))}

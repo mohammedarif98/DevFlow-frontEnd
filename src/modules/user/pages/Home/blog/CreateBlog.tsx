@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { createBlog } from "../../../../../services/axios.PostMethods";
 import { getAllCategory } from "../../../../../services/axios.GetMethods";
 import { toast } from "react-toastify";
+import { FaSpinner } from "react-icons/fa";
+
 
 type Category = {
     _id: string,
@@ -16,7 +18,8 @@ const CreateBlog = () => {
     coverImage: "" as string | File,
     category: "",
   });
-  const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -24,6 +27,7 @@ const CreateBlog = () => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
+        setLoading(true);
         const result = await getAllCategory();
         console.log("fetched category", result);
         setCategories(result.data.category);
@@ -45,9 +49,33 @@ const CreateBlog = () => {
     }));
   };
 
+  //*---------------- form validation -------------------
+  const validateForm = () => {
+    const errors: { [key: string]: string } = {};
+
+    if (!formState.title.trim()) errors.title = "Title is required.";
+    if (!formState.tags.trim()) errors.tags = "Tags are required.";
+    if (!formState.category) errors.category = "Please select a category.";
+    if (!formState.content.trim()) errors.content = "Content is required.";
+    if (!formState.coverImage) {
+      errors.coverImage = "Cover image is required.";
+    } else if (formState.coverImage instanceof File) {
+      const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+      if (!allowedTypes.includes(formState.coverImage.type)) {
+        errors.coverImage = "Only PNG, JPEG, or JPG images are allowed.";
+      }
+    }
+
+    return errors;
+  };
+
   //* ---------------- Handle Form Submission ----------------
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) return;
 
     const formObj = new FormData();
     formObj.append("title", formState.title);
@@ -59,7 +87,9 @@ const CreateBlog = () => {
     formObj.append("category", formState.category);
 
     try {
+      setLoading(true);
       const result = await createBlog(formObj);
+      setLoading(false);
       console.log(result);
       toast.success(result.data.message);
       if (formRef.current) {
@@ -74,6 +104,7 @@ const CreateBlog = () => {
       });
     } catch (error) {
       console.log("Error creating blog:", error);
+      setLoading(false);
     }
   };
 
@@ -98,6 +129,7 @@ const CreateBlog = () => {
                 required
                 className="w-full px-3 py-2 border rounded focus:outline-none focus:border-black"
               />
+               {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
             </div>
             <div className="mb-4 w-full">
               <label htmlFor="tags" className="block text-gray-700">
@@ -110,6 +142,7 @@ const CreateBlog = () => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded focus:outline-none focus:border-black"
               />
+               {errors.tags && <p className="text-red-500 text-sm">{errors.tags}</p>}
             </div>
           </div>
 
@@ -137,6 +170,7 @@ const CreateBlog = () => {
                         <option value="" disabled>No categories available</option>
                 )}
               </select>
+              {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
             </div>
             <div className="mb-4 w-full">
               <label htmlFor="coverImage" className="block text-gray-700">
@@ -149,6 +183,7 @@ const CreateBlog = () => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded focus:outline-none focus:border-black"
               />
+               {errors.coverImage && <p className="text-red-500 text-sm">{errors.coverImage}</p>}
             </div>
           </div>
 
@@ -164,13 +199,21 @@ const CreateBlog = () => {
               required
               className="w-full px-3 py-2 border rounded focus:outline-none focus:border-black"
             />
+             {errors.content && <p className="text-red-500 text-sm">{errors.content}</p>}
           </div>
 
           <button
             type="submit"
+            disabled={loading}
             className="w-full mt-2 px-4 py-2 text-white bg-black rounded hover:bg-gray-800"
           >
-            Create Blog
+             {loading ? (
+              <div className="flex justify-center items-center">
+                <FaSpinner className="animate-spin mx-auto text-white" /> 
+              </div>
+            ) : (
+              "Create Blog"
+            )}
           </button>
         </form>
       </div>

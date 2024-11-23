@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfile } from "../../../../services/axios.PutMethods";
 import { updateUserFail, updateUserStart, updateUserSuccess } from "../../../../redux/slices/userSlice/userSlice";
 import { toast } from "react-toastify";
+import { FaSpinner } from "react-icons/fa";
+
+
 
 // interface UserProfile {
 //   id: string;
@@ -203,7 +206,7 @@ const Profile: React.FC = () => {
                   <button
                     className="mt-3 bg-green-800 text-white rounded-md py-1 px-4 hover:bg-green-700"
                   >
-                   {loading?"...." : "Save" }
+                   {loading ? <FaSpinner className="animate-spin mx-auto text-white" /> : "Save" }
                   </button>
                 </div>
               </div>
