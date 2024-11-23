@@ -1,7 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import landing_Image from "../../../../assets/images/SAVE_20241105_220105~2.jpg";
+import img from '../../../../assets/images/SAVE_20241105_220105~2.jpg'
 import { Link } from "react-router-dom";
+import { GoPlus } from "react-icons/go";
+import { BiSolidLike } from "react-icons/bi";
+import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
+import { BsFillBookmarkPlusFill } from "react-icons/bs";
 
 
 
@@ -9,7 +14,7 @@ const Home: React.FC = () => {
   const isAuthenticated = useSelector((state: any) => state.user.isAuthenticated);
 
   return (
-    <>
+    <div className="flex justify-center">
       {!isAuthenticated ? (
         <div className="relative w-full h-screen bg-cover bg-center">
           <img
@@ -32,40 +37,43 @@ const Home: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="container mx-auto max-w-7xl mt-24">
-          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0">
-            {/* --------------- Left side content ---------------- */}
-            <div className="w-full md:w-5/6 p-4 space-y-4">
-              <div className="bg-slate-300 px-12 py-6">
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
+      <div className="flex flex-col max-w-7xl mt-24 md:flex-row border mx-2 md:mx-4 lg:mx-4">
+        {/* --------------- Left side content ---------------- */}
+        <div className="md:w-[900px] lg:w-[700px] xl:w-[850px] p-4 space-y-4 border">
+          <div className="flex gap-5 border cursor-pointer p-3 overflow-x-auto whitespace-nowrap scrollbar-hide" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+            <p className="text-xl inline-flex items-center p-1 bg-slate-200 hover:bg-slate-300 rounded-full"><GoPlus /></p>
+            <p className="inline-flex items-center">coding</p>
+            <p className="inline-flex items-center">games</p>
+          </div>
+          <div className="bg-slate-300 px-3 py-2 flex justify-between gap-4">
+            <div className="w-full space-y-2">
+              <div className="p-1">
+                <p className="">Lorem ipsum dolor sit amet consectetur corporis minima quibusdam,<br /> lab fugab. Non quam delectus eius ab esse?</p>
               </div>
-              <div className="bg-lime-300 px-12 py-6">
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-              </div>
-              <div className="bg-red-300 px-12 py-6">
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-              </div>
-              <div className="bg-emerald-300 px-12 py-6">
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
-                <p className="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error fugit distinctio corporis minima quibusdam,<br /> laboriosam odit consequatur, ducimus non hic fuga quis illum ab. Non quam delectus eius ab esse?</p>
+              <div className="flex justify-between px-3 py-1 border">
+                <div className="flex gap-x-4">
+                  <span className="text-sm">jul 1</span>
+                  <span><IoChatbubbleEllipsesSharp className="text-orange-500" /></span>
+                  <span><BiSolidLike /></span>
+                </div>
+                <div className="flex gap-x-4">
+                  <span><BsFillBookmarkPlusFill /></span>
+                </div>
               </div>
             </div>
-
-            {/* ----------------- Right side content ------------------ */}
-            <div className="w-full md:w-1/3 px-8 py-6 border-l-[0.5px] border-slate-200">
-              <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error illum quis libero assumenda optio ipsa. Facere suscipit amet voluptas mollitia quaerat dignissimos, repudiandae omnis quis veritatis laborum, quod, consequuntur excepturi?</p>
+            <div>
+              <img src={img} alt="" className="h-28 w-36" />
             </div>
           </div>
         </div>
+
+        {/* ----------------- Right side content ------------------ */}
+        <div className="lg:w-[350px] xl:w-[450px] px-6 py-6 border border-slate-200 hidden lg:block">
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error illum quis libero assumenda optio ipsa. Facere suscipit amet voluptas mollitia quaerat dignissimos, repudiandae omnis quis veritatis laborum, quod, consequuntur excepturi?</p>
+        </div>
+      </div>
       )}
-    </>
+    </div>
   );
 };
 

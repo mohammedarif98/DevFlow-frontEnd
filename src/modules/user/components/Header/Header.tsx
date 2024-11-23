@@ -124,7 +124,7 @@ const Header: React.FC = () => {
         {user && (
           <>
             <button className="rounded-full hover:bg-gray-200 p-2 transition-colors">
-              <Link to="/writeBlog">
+              <Link to="/create-blog">
                 <HiOutlinePencilSquare className="text-2xl text-black" />
               </Link>
             </button>
@@ -206,7 +206,7 @@ const Header: React.FC = () => {
             {user && (
               <>
                 <button className="flex items-left">
-                  <Link to="/writeBlog">
+                  <Link to="/create-blog">
                     <span className="text-sm text-black">Post Blog</span>
                   </Link>
                 </button>

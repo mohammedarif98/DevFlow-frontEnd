@@ -5,14 +5,15 @@ import Modal from "../../../../common/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfile } from "../../../../services/axios.PutMethods";
 import { updateUserFail, updateUserStart, updateUserSuccess } from "../../../../redux/slices/userSlice/userSlice";
+import { toast } from "react-toastify";
 
-interface UserProfile {
-  id: string;
-  username: string;
-  email: string;
-  profilePhoto?: string;
-  isVerified: boolean;
-}
+// interface UserProfile {
+//   id: string;
+//   username: string;
+//   email: string;
+//   profilePhoto?: string;
+//   isVerified: boolean;
+// }
 
 const Profile: React.FC = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -74,6 +75,7 @@ const Profile: React.FC = () => {
       dispatch(updateUserStart());
       const result = await updateUserProfile(formData);
       console.log('API response:', result);
+      toast.success(result.message);
       dispatch(updateUserSuccess(result.user));
       closeModal();
     } catch (error:any) {
@@ -137,13 +139,20 @@ const Profile: React.FC = () => {
                     )}
                   </div>
                   <div className="flex items-center space-x-4">
-                    <p className="text-md text-green-600 cursor-pointer">Update</p>
-                    <input
-                      type="file"
-                      name="profilePhoto"
-                      accept="image/*"
-                      onChange={ handleInputChange }
-                    />
+                  <label
+                    htmlFor="profilePhoto"
+                    className="text-md text-green-600 cursor-pointer hover:underline"
+                  >
+                    Update
+                  </label>
+                  <input
+                    type="file"
+                    id="profilePhoto"
+                    name="profilePhoto"
+                    accept="image/*"
+                    onChange={handleInputChange}
+                    className="hidden"
+                  />
                   </div>
                 </div>
 
@@ -234,7 +243,7 @@ const Profile: React.FC = () => {
           </ul>
 
           {/* ------------ -Tab content ------------- */}
-          <div className="bg-white text-black p-6 rounded-b">
+          <div className="bg-white text-black rounded-b">
             {activeTab === 1 && (
               <div className="p-4 border border-gray-200">
                 <h3 className="text-black">

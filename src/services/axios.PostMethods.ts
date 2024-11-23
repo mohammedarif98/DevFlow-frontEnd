@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { Axios, AxiosRequestConfig, AxiosResponse } from "axios";
 import { AdminLogin, UserLoginResponse, UserLogin, UserSignUp, AdminLoginResponse, GoogleAuthParams, AddCategoryResponse } from "../utils/types/api-types";
 import { userApiRequest } from "./axios.UserConfig";
 import { adminApiRequest } from "./axios.AdminConfig";
@@ -99,6 +99,24 @@ export const userLogout = async() => {
     }
 }
 
+// ------------- function for creating blog -----------------
+export const createBlog = async(formData: FormData) => {
+    const config: AxiosRequestConfig = {
+        method: "POST",
+        url: '/api/auth/blog-post',
+        headers: { 
+            'Content-Type': 'multipart/form-data',
+        },
+        data: formData
+    }
+    try{
+        return await userApiRequest(config);
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message : "Creating a blog failed";
+        throw new Error(message);
+    }
+}
 
 
 
