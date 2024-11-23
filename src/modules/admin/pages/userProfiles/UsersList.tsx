@@ -44,7 +44,7 @@ const UsersList: React.FC = () => {
         if (Array.isArray(result.data.data.users)) {
           const dataArray: UserList[] = result.data.data.users as UserList[];
           setData(dataArray);
-          setFilteredData(dataArray); // Set initial filtered data
+          setFilteredData(dataArray); 
         }
       } catch (error: any) {
         console.error("Failed to fetch users:", error.message);

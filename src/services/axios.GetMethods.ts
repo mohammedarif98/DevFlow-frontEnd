@@ -39,6 +39,23 @@ export const getUserProfile = async() => {
     }
 };
 
+//-----------------------  get Blogs ---------------------------
+export const getAllBlogs = async() => {
+    const config: AxiosRequestConfig = {
+        method: 'GET',
+        url: `/api/auth/get-blogs`
+    }
+    try{
+        const result = await userApiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "failed to fetch blogs";
+        throw new Error(message);
+    }
+}
+
 
 //* =========== ADMIN API =============
 // ------------------- function for display all users -----------------------
