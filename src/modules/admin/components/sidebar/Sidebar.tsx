@@ -84,7 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
           </div>
           {isBlogDropdownOpen && (
             <ul className="ml-8 space-y-1 px-5">
-              <li>
+              {/* <li>
                 <NavLink
                   to="/admin/add-blog"
                   className={({ isActive }) =>
@@ -96,7 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                   <IoIosAddCircleOutline className="mt-1 text-xl text-black" />
                   Add Blogs
                 </NavLink>
-              </li>
+              </li> */}
               <li className="">
                 <NavLink
                   to="/admin/list-blogs"

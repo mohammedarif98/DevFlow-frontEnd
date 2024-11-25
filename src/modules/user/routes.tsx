@@ -6,6 +6,7 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import UserProtectedRoute from "./UserProtectedRoute";
 import HomePage from "./pages/home/HomePage";
 import CreateBlog from "./pages/home/blog/CreateBlog";
+import BlogDetail from "./pages/home/BlogDetail";
 
 
 
@@ -25,6 +26,7 @@ const UserRoutes = () => {
             <Route element={<UserProtectedRoute />}>
               <Route path="/profile" element={<ProfilePage /> }/>
               <Route path="/create-blog" element={<CreateBlog /> }/>
+              <Route path="/blog-detail/:blogId" element={<BlogDetail /> }/>
             </Route>
         </Routes>
     </>

@@ -6,7 +6,7 @@ import { userApiClient } from "./axios.UserConfig";
 
 
 
-//* =========== USER API ===============
+//* ====================== USER API ==========================
 // --------------------- user prfile updating ----------------------
 export const updateUserProfile = async(formData: FormData): Promise<any> => {
     const config: AxiosRequestConfig = {
@@ -30,7 +30,7 @@ export const updateUserProfile = async(formData: FormData): Promise<any> => {
 
 
 
-//* =========== ADMIN API ==============
+//* ====================== ADMIN API ===========================
 //--------------------- block the user -----------------------
 export const blockUser = async(userId: string) => {
     const config: AxiosRequestConfig = {
@@ -48,7 +48,6 @@ export const blockUser = async(userId: string) => {
     }
 }
 
-
 //--------------------- unblock the user -----------------------
 export const unblockUser = async(userId: string) => {
     const config: AxiosRequestConfig = {
@@ -65,7 +64,6 @@ export const unblockUser = async(userId: string) => {
         throw new Error(message);
     }
 }
-
 
 // ---------------- update the category ------------------
 export const editCategory = async(formData: FormData, categoryId: string): Promise<AddCategoryResponse>  =>{

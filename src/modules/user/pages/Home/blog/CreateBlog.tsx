@@ -3,6 +3,7 @@ import { createBlog } from "../../../../../services/axios.PostMethods";
 import { getAllCategory } from "../../../../../services/axios.GetMethods";
 import { toast } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
+import { IoMdCloseCircleOutline } from "react-icons/io";
 
 
 type Category = {
@@ -13,13 +14,15 @@ type Category = {
 const CreateBlog = () => {
   const [formState, setFormState] = useState({
     title: "",
-    tags: "",
+    tags: [] as string[],
     content: "",
     coverImage: "" as string | File,
     category: "",
   });
+  const [tagInput, setTagInput] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);                         // For category fetchin loading
+  const [creatingBlog, setCreatingBlog] = useState(false);               // For blog creation loading
   const [categories, setCategories] = useState<Category[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -49,18 +52,40 @@ const CreateBlog = () => {
     }));
   };
 
+   //* ----------------- Handle Tag Input ---------------
+    const handleTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTagInput(e.target.value);
+  };
+
+  const addTag = () => {
+      if (tagInput.trim() && !formState.tags.includes(tagInput.trim())) {
+          setFormState((prevState) => ({
+              ...prevState,
+              tags: [...prevState.tags, tagInput.trim()],
+          }));
+          setTagInput("");
+      }
+  };
+
+  const removeTag = (tag: string) => {
+    setFormState((prevState) => ({
+        ...prevState,
+        tags: prevState.tags.filter((t) => t !== tag),
+    }));
+  };
+
   //*---------------- form validation -------------------
   const validateForm = () => {
     const errors: { [key: string]: string } = {};
 
     if (!formState.title.trim()) errors.title = "Title is required.";
-    if (!formState.tags.trim()) errors.tags = "Tags are required.";
+    if (formState.tags.length === 0) errors.tags = "At least one tag is required.";
     if (!formState.category) errors.category = "Please select a category.";
     if (!formState.content.trim()) errors.content = "Content is required.";
     if (!formState.coverImage) {
       errors.coverImage = "Cover image is required.";
     } else if (formState.coverImage instanceof File) {
-      const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+      const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
       if (!allowedTypes.includes(formState.coverImage.type)) {
         errors.coverImage = "Only PNG, JPEG, or JPG images are allowed.";
       }
@@ -79,7 +104,7 @@ const CreateBlog = () => {
 
     const formObj = new FormData();
     formObj.append("title", formState.title);
-    formObj.append("tags", formState.tags);
+    formObj.append("tags", JSON.stringify(formState.tags));  
     formObj.append("content", formState.content);
     if (formState.coverImage instanceof File){
         formObj.append("coverImage", formState.coverImage);
@@ -87,9 +112,9 @@ const CreateBlog = () => {
     formObj.append("category", formState.category);
 
     try {
-      setLoading(true);
+      setCreatingBlog(true);
       const result = await createBlog(formObj);
-      setLoading(false);
+      setCreatingBlog(false);
       console.log(result);
       toast.success(result.data.message);
       if (formRef.current) {
@@ -97,14 +122,14 @@ const CreateBlog = () => {
       }
       setFormState({
         title: "",
-        tags: "",
+        tags: [],
         content: "",
         coverImage: "" as string | File,
         category: "",
       });
     } catch (error) {
       console.log("Error creating blog:", error);
-      setLoading(false);
+      setCreatingBlog(false);
     }
   };
 
@@ -131,19 +156,47 @@ const CreateBlog = () => {
               />
                {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
             </div>
+            {/* ----------- add tags --------------*/}
             <div className="mb-4 w-full">
-              <label htmlFor="tags" className="block text-gray-700">
-                Tags (comma separated):
-              </label>
-              <input
-                type="text"
-                name="tags"
-                value={formState.tags}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border rounded focus:outline-none focus:border-black"
-              />
-               {errors.tags && <p className="text-red-500 text-sm">{errors.tags}</p>}
+              <label htmlFor="tags" className="block text-gray-700">Tags:</label>
+              <div className="flex gap-2 items-center">
+                <input
+                    type="text"
+                    value={tagInput}
+                    onChange={handleTagInput}
+                    placeholder="Add a tag"
+                    className="w-full px-3 py-2 border rounded focus:outline-none focus:border-black"
+                />
+                <button
+                    type="button"
+                    onClick={addTag}
+                    className="px-4 py-2 bg-black text-white rounded"
+                >
+                    Add
+                </button>
+              </div>
+              {formState.tags.length > 0 && (
+                  <div className="mt-2 flex gap-2 flex-wrap">
+                      {formState.tags.map((tag) => (
+                          <span
+                              key={tag}
+                              className="px-2 py-1 bg-zinc-700 rounded-md text-white flex items-center gap-2"
+                          >
+                              {tag}
+                              <button
+                                  type="button"
+                                  onClick={() => removeTag(tag)}
+                                  className="text-white text-lg"
+                              >
+                                  <IoMdCloseCircleOutline />
+                              </button>
+                          </span>
+                      ))}
+                  </div>
+              )}
+              {errors.tags && <p className="text-red-500 text-sm">{errors.tags}</p>}
             </div>
+            {/* ----------- end tags --------------*/}
           </div>
 
           <div className="flex gap-6">
@@ -204,10 +257,10 @@ const CreateBlog = () => {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={creatingBlog}
             className="w-full mt-2 px-4 py-2 text-white bg-black rounded hover:bg-gray-800"
           >
-             {loading ? (
+             {creatingBlog ? (
               <div className="flex justify-center items-center">
                 <FaSpinner className="animate-spin mx-auto text-white" /> 
               </div>

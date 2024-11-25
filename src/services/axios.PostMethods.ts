@@ -5,7 +5,7 @@ import { adminApiRequest } from "./axios.AdminConfig";
 
 
 
-//* =============================== USER API ========================================
+//* ========================= USER API =============================
 // -------- Function to handle user signup ----------
 export const userSignUp = async( payload: UserSignUp): Promise<{message: string}> => {
     const config: AxiosRequestConfig = {
@@ -120,7 +120,7 @@ export const createBlog = async(formData: FormData) => {
 
 
 
-//* ========== ADMIN API =============
+//* ======================= ADMIN API =============================
 // ------------------------- funnction for admin login ------------------------
 export const adminLogin = async(payload: AdminLogin): Promise<AdminLoginResponse> => {
     const config: AxiosRequestConfig = {

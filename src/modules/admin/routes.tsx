@@ -7,6 +7,7 @@ import { useState } from 'react';
 import UserListPage from './pages/userProfiles/UserListPage';
 import AdminProtectedRoute from './AdminProtectedRoute';
 import CategoryPage from './pages/blogCategory/CategoryPage';
+import BlogsPage from './pages/blog/BlogsPage';
 
 
 const AdminRoutes: React.FC = () => {
@@ -20,7 +21,7 @@ const AdminRoutes: React.FC = () => {
   const showNavbarAndSidebar = location.pathname !== '/admin/login';
 
   return (
-    <div className="flex flex-col h-screen bg-slate-200">
+    <div className="flex flex-col h-screen bg-[#e7edff]">
       {showNavbarAndSidebar && (
         <>
           <Navbar onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
@@ -32,8 +33,7 @@ const AdminRoutes: React.FC = () => {
                   <Route path='/dashboard' element={<DashboardPage />}/>
                   <Route path='/user-list' element={<UserListPage/>}/>
                   <Route path='/blog-category' element={<CategoryPage/>}/>
-                  {/* <Routes path='/add-blog' element={<AddBlogPage/>} /> */}
-                  {/* <Routes path='/list-blogs' element={<BlogListPage/>} /> */}
+                  <Route path='/list-blogs' element={<BlogsPage/>} />
                 </Route>
               </Routes>
             </div>

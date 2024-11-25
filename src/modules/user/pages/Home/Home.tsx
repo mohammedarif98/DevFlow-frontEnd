@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import landing_Image from "../../../../assets/images/SAVE_20241105_220105~2.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { BiSolidLike } from "react-icons/bi";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
@@ -31,6 +31,7 @@ type BlogList = {
 const Home: React.FC = () => {
   const isAuthenticated = useSelector((state: any) => state.user.isAuthenticated);
   const [data, setData] = useState<BlogList[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBlogs = async()=>{
@@ -43,6 +44,11 @@ const Home: React.FC = () => {
     }
     fetchBlogs();
   },[]);
+
+
+  const handleBlogClick = (blogId: string) => {
+    navigate(`/blog-detail/${blogId}`); 
+  };
 
   return (
     <div className="flex justify-center">
@@ -68,34 +74,34 @@ const Home: React.FC = () => {
           </div>
         </div>
       ) : (
-      <div className="flex flex-col max-w-7xl mt-24 md:flex-row border mx-2 md:mx-4 lg:mx-4">
+      <div className="flex flex-col max-w-7xl mt-24 md:flex-row mx-2 md:mx-4 lg:mx-4">
         {/* --------------- Left side content ---------------- */}
-        <div className="md:w-[900px] lg:w-[750px] xl:w-[900px] p-4 space-y-4 border">
-          <div className="flex gap-5 border cursor-pointer p-3 overflow-x-auto whitespace-nowrap scrollbar-hide" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+        <div className="md:w-[900px] lg:w-[750px] xl:w-[900px] p-4 space-y-4">
+          <div className="flex gap-5 cursor-pointer p-3 overflow-x-auto whitespace-nowrap scrollbar-hide" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
             <p className="text-xl inline-flex items-center p-1 bg-slate-200 hover:bg-slate-300 rounded-full"><GoPlus /></p>
             <p className="inline-flex items-center">coding</p>
             <p className="inline-flex items-center">games</p>
           </div>
 
           {data.map((blog) => (
-            <div key={blog._id} className="bg-slate-300 px-3 py-2 flex justify-between gap-4">   
+            <div key={blog._id} onClick={() => handleBlogClick(blog._id)} className="bg-white px-3 py-2 flex justify-between gap-4 border-b-[1px] cursor-pointer">   
               <div className="w-full space-y-2">
                 <div className="p-1">
                   <div className="flex items-center gap-2">
                     <img src={blog.author.profilePhoto} alt="pro-img" className="h-8 w-8 rounded-full"  />
                     <p className="text-sm">{blog.author.username}</p>
                   </div>
-                  <p className="font-bold text-xl">{blog.title}</p>
-                  <p className="">{blog.content.length > 140 ? `${blog.content.slice(0, 140)}...` : blog.content}</p>
+                  <p className="font-bold text-xl mt-3">{blog.title}</p>
+                  <p className="text-md">{blog.content.length > 140 ? `${blog.content.slice(0, 140)}...` : blog.content}</p>
                 </div>
-                <div className="flex justify-between px-3 py-1 border">
+                <div className="flex justify-between px-3 py-1">
                   <div className="flex gap-x-4">
                     <span className="text-xs">{blog.publishedAt}</span>
-                    <span><IoChatbubbleEllipsesSharp className="text-orange-500" /></span>
-                    <span><BiSolidLike /></span>
+                    <span><IoChatbubbleEllipsesSharp className="hover:border border-white"/></span>
+                    <span><BiSolidLike className="hover:border border-white"/></span>
                   </div>
                   <div className="flex gap-x-4">
-                    <span><BsFillBookmarkPlusFill /></span>
+                    <span><BsFillBookmarkPlusFill className="hover:border border-white"/></span>
                   </div>
                 </div>
               </div>
@@ -108,7 +114,7 @@ const Home: React.FC = () => {
         </div>
 
         {/* ----------------- Right side content ------------------ */}
-        <div className="lg:w-[300px] xl:w-[400px] px-6 py-6 border border-slate-200 hidden lg:block">
+        <div className="lg:w-[300px] xl:w-[400px] px-6 py-6 border-l-[1px] border-slate-200 hidden lg:block">
           <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error illum quis libero assumenda optio ipsa. Facere suscipit amet voluptas mollitia quaerat dignissimos, repudiandae omnis quis veritatis laborum, quod, consequuntur excepturi?</p>
         </div>
       </div>

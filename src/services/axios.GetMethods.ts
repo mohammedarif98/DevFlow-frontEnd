@@ -3,8 +3,8 @@ import { userApiRequest } from "./axios.UserConfig"
 import { adminApiRequest } from "./axios.AdminConfig";
 
 
-//* ========= USER API =========
-//----------------------- function for resend email otp -------------------------
+//* ========================= USER API ============================
+//------------------ function for resend email otp ----------------------
 export const resendOTP = async() => {    
     const config: AxiosRequestConfig = {
         method: 'GET',
@@ -56,8 +56,25 @@ export const getAllBlogs = async() => {
     }
 }
 
+//-----------------------  get Blog detail ---------------------------
+export const getBlogDetail = async(blogId: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'GET',
+        url: `/api/auth/get-blog-detail/${blogId}`
+    }
+    try{
+        const result = await userApiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "failed to fetch blogs";
+        throw new Error(message);
+    }
+}
 
-//* =========== ADMIN API =============
+
+//* ======================= ADMIN API ============================
 // ------------------- function for display all users -----------------------
 export const getAllUsers = async() => {
     const config: AxiosRequestConfig = {
