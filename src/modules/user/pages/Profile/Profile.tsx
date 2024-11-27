@@ -7,6 +7,7 @@ import { updateUserProfile } from "../../../../services/axios.PutMethods";
 import { updateUserFail, updateUserStart, updateUserSuccess } from "../../../../redux/slices/userSlice/userSlice";
 import { toast } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
+import BlogCards from "../../components/card/BlogCards";
 
 
 
@@ -89,29 +90,29 @@ const Profile: React.FC = () => {
 
 
   return (
-    <div className="container mx-auto max-w-7xl mt-24 bg-white p-1 border border-gray-200">
-      <div className="bg-slate-500 p-6 rounded-md">
+    <div className="container mx-auto max-w-screen max-h-full pt-20 bg-white p-1 ">
+      <div className="bg-slate-500 py-5 px-8 rounded-md">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between space-y-4 md:space-y-0 ">
           <div className="flex flex-col md:flex-row md:items-end space-y-4 md:space-y-0 md:space-x-4 ">
             {user?.profilePhoto ? (
               <img
                 src={user.profilePhoto}
                 alt="profile"
-                className="h-36 w-36 md:h-48 md:w-48 rounded-full"
+                className="h-36 w-36 md:h-36 md:w-36 rounded-full"
               />
             ) : (
               <img
                 src={profile_image}
                 alt=""
-                className="h-36 w-36 md:h-48 md:w-48 rounded-full"
+                className="h-36 w-36 md:h-36 md:w-36 rounded-full"
               />
             )}
-            <p className="text-2xl md:text-4xl font-bold px-6">
+            <p className="text-xl md:text-3xl font-bold px-4">
               {user?.username}
             </p>
           </div>
           <div className="flex justify-end md:justify-center">
-            <p className="text-red-600 cursor-pointer" onClick={openModal}>
+            <p className="text-black font-semibold cursor-pointer" onClick={openModal}>
               Edit Profile
             </p>
           </div>
@@ -240,26 +241,31 @@ const Profile: React.FC = () => {
                     : "bg-white text-black"
                 }`}
               >
-                About
+                Uploaded Blogs
               </button>
             </li>
           </ul>
 
           {/* ------------ -Tab content ------------- */}
-          <div className="bg-white text-black rounded-b">
+          <div className="bg-white text-black border-l-[0.1px] border-r-[0.1px] border-b-[0.1px] border-gray-300 rounded-b">
             {activeTab === 1 && (
-              <div className="p-4 border border-gray-200">
+              <div className="p-4">
                 <h3 className="text-black">
                   Standard tab panel created on bootstrap using nav-tabs
                 </h3>
               </div>
             )}
             {activeTab === 2 && (
-              <div className="p-4 border border-gray-200">
-                <h3 className="text-black">
-                  Notice the gap between the content and tab after applying a
-                  background color
-                </h3>
+              <div className="p-2">
+                <div className="w-full p-2">
+                  <form className="flex justify-end">
+                    <input type="search" placeholder="Search by blog . . ." className="py-1 px-2 border w-[300px] pr-3 border-black rounded focus:outline-none"/>
+                    <button className="absolute text-lg right-4 font-semibold top-4 transform -translate-y-1/2 text-black">
+                      x
+                    </button>
+                  </form>
+                </div>
+                <BlogCards />
               </div>
             )}
           </div>

@@ -147,9 +147,11 @@ const Category: React.FC = () => {
             placeholder="Search by  category name..."
             className="py-1 px-2 border w-full pr-8 border-black rounded focus:outline-none"
           />
-          <button onClick={() => setSearchQuery('')} className="absolute text-lg right-4 font-semibold top-4 transform -translate-y-1/2 text-black">
-            x
-          </button>
+          {searchQuery && ( 
+            <button onClick={() => setSearchQuery('')} className="absolute text-lg right-4 font-semibold top-4 transform -translate-y-1/2 text-black">
+              x
+            </button>
+          )}
         </div>
         <div>
           <button

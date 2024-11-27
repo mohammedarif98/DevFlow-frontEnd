@@ -11,7 +11,7 @@ type Category = {
     categoryName: string
 };
 
-const CreateBlog = () => {
+const CreateBlog: React.FC = () => {
   const [formState, setFormState] = useState({
     title: "",
     tags: [] as string[],
@@ -20,11 +20,12 @@ const CreateBlog = () => {
     category: "",
   });
   const [tagInput, setTagInput] = useState("");
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<{[key: string]: string }>({});
   const [loading, setLoading] = useState(false);                         // For category fetchin loading
   const [creatingBlog, setCreatingBlog] = useState(false);               // For blog creation loading
   const [categories, setCategories] = useState<Category[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
+
 
   //* ----------------- category data fetching  ---------------
   useEffect(() => {
@@ -32,7 +33,6 @@ const CreateBlog = () => {
       try {
         setLoading(true);
         const result = await getAllCategory();
-        console.log("fetched category", result);
         setCategories(result.data.category);
         setLoading(false);
       } catch (error: any) {
@@ -52,7 +52,7 @@ const CreateBlog = () => {
     }));
   };
 
-   //* ----------------- Handle Tag Input ---------------
+    //* ----------------- Handle Tag Input ---------------
     const handleTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
       setTagInput(e.target.value);
   };
@@ -115,7 +115,6 @@ const CreateBlog = () => {
       setCreatingBlog(true);
       const result = await createBlog(formObj);
       setCreatingBlog(false);
-      console.log(result);
       toast.success(result.data.message);
       if (formRef.current) {
         formRef.current.reset();
@@ -135,7 +134,7 @@ const CreateBlog = () => {
 
   return (
     <div className="flex justify-center items-center h-screen p-6 bg-slate-100">
-      <div className="p-10 w-[1200px]  bg-[#fffafa] rounded shadow-md">
+      <div className="p-10 w-[1500px]  bg-[#fffafa] rounded shadow-md">
         <form className="" ref={formRef} onSubmit={handleSubmit}>
           <h2 className="text-2xl font-bold mb-6 uppercase text-center">
             Create a New Blog
@@ -152,7 +151,7 @@ const CreateBlog = () => {
                 value={formState.title}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border rounded focus:outline-none focus:border-black"
+                className="w-full bg-gray-200 px-3 py-2 border rounded focus:outline-none focus:border-black"
               />
                {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
             </div>
@@ -165,7 +164,7 @@ const CreateBlog = () => {
                     value={tagInput}
                     onChange={handleTagInput}
                     placeholder="Add a tag"
-                    className="w-full px-3 py-2 border rounded focus:outline-none focus:border-black"
+                    className="w-full bg-gray-200 px-3 py-2 border rounded focus:outline-none focus:border-black"
                 />
                 <button
                     type="button"
@@ -208,7 +207,7 @@ const CreateBlog = () => {
                 name="category"
                 value={formState.category}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded focus:outline-none focus:border-black"
+                className="w-full bg-gray-200 px-3 py-2 border rounded focus:outline-none focus:border-black"
               >
                 <option value="">Select a category</option>
                 {loading ? (
@@ -234,7 +233,7 @@ const CreateBlog = () => {
                 name="coverImage"
                 accept="image/*"
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded focus:outline-none focus:border-black"
+                className="w-full bg-gray-200 px-3 py-2 border rounded focus:outline-none focus:border-black"
               />
                {errors.coverImage && <p className="text-red-500 text-sm">{errors.coverImage}</p>}
             </div>
@@ -248,9 +247,9 @@ const CreateBlog = () => {
               name="content"
               value={formState.content}
               onChange={handleChange}
-              rows={5}
+              rows={10}
               required
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:border-black"
+              className="w-full bg-gray-200 px-3 py-2 border rounded focus:outline-none focus:border-black"
             />
              {errors.content && <p className="text-red-500 text-sm">{errors.content}</p>}
           </div>

@@ -56,6 +56,25 @@ export const getAllBlogs = async() => {
     }
 }
 
+
+//-----------------------  get Blog detail ---------------------------
+export const getUserBlog = async() => {
+    const config: AxiosRequestConfig = {
+        method: 'GET',
+        url: 'api/auth/get-user-blog'
+    }
+    try{
+        const response = await userApiRequest(config);
+        return response.data
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "failed to fetch user blogs";
+        throw new Error(message);
+    }
+}
+
+
 //-----------------------  get Blog detail ---------------------------
 export const getBlogDetail = async(blogId: string) => {
     const config: AxiosRequestConfig = {

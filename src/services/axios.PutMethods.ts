@@ -28,6 +28,26 @@ export const updateUserProfile = async(formData: FormData): Promise<any> => {
     }
 }
 
+//------------------ update the own blogs of user ------------------
+export const editBlogPost = async(formData: FormData, blogId: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'PUT',
+        url: `/api/auth/update-blog-post/${blogId}`,
+        headers: {
+            'Content-Type':'multipart/form-data'
+        },
+        data: formData,
+    }
+    try{
+        const result = await userApiClient(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "Blog updation failed";
+        throw new Error(message);
+    }
+}
 
 
 //* ====================== ADMIN API ===========================

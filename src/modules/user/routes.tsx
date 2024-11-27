@@ -7,6 +7,7 @@ import UserProtectedRoute from "./UserProtectedRoute";
 import HomePage from "./pages/home/HomePage";
 import CreateBlog from "./pages/home/blog/CreateBlog";
 import BlogDetail from "./pages/home/BlogDetail";
+import UpdateBlog from "./pages/home/blog/UpdateBlog";
 
 
 
@@ -27,6 +28,7 @@ const UserRoutes = () => {
               <Route path="/profile" element={<ProfilePage /> }/>
               <Route path="/create-blog" element={<CreateBlog /> }/>
               <Route path="/blog-detail/:blogId" element={<BlogDetail /> }/>
+              <Route path="/update-blog/:blogId" element={<UpdateBlog /> }/>
             </Route>
         </Routes>
     </>
