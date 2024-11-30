@@ -68,7 +68,7 @@ export const blockUser = async(userId: string) => {
     }
 }
 
-//--------------------- unblock the user -----------------------
+//--------------------- unblock the user --------------
 export const unblockUser = async(userId: string) => {
     const config: AxiosRequestConfig = {
         method: 'PUT',
@@ -85,7 +85,7 @@ export const unblockUser = async(userId: string) => {
     }
 }
 
-// ---------------- update the category ------------------
+// ---------------- update the category ---------------
 export const editCategory = async(formData: FormData, categoryId: string): Promise<AddCategoryResponse>  =>{
     const config: AxiosRequestConfig = {
         method: 'PUT',
@@ -106,3 +106,36 @@ export const editCategory = async(formData: FormData, categoryId: string): Promi
     }
 }
 
+//----------------- block the blogs -------------------
+export const blockBlog = async(blogId: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'PUT',
+        url: `/api/admin/block-blog/${blogId}`
+    }
+    try{
+        const result = await adminApiRequest(config);
+        return result;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "Blog Blocking failed";
+        throw new Error(message);
+    }
+}
+
+//----------------- unblock the blogs -------------------
+export const unblockBlog = async(blogId: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'PUT',
+        url: `/api/admin/unblock-blog/${blogId}`
+    }
+    try{
+        const result = await adminApiRequest(config);
+        return result;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "Blog Unblocking failed";
+        throw new Error(message);
+    }
+}

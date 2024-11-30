@@ -257,14 +257,6 @@ const Profile: React.FC = () => {
             )}
             {activeTab === 2 && (
               <div className="p-2">
-                <div className="w-full p-2">
-                  <form className="flex justify-end">
-                    <input type="search" placeholder="Search by blog . . ." className="py-1 px-2 border w-[300px] pr-3 border-black rounded focus:outline-none"/>
-                    <button className="absolute text-lg right-4 font-semibold top-4 transform -translate-y-1/2 text-black">
-                      x
-                    </button>
-                  </form>
-                </div>
                 <BlogCards />
               </div>
             )}

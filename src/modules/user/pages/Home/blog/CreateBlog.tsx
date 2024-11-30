@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createBlog } from "../../../../../services/axios.PostMethods";
-import { getAllCategory } from "../../../../../services/axios.GetMethods";
+import { getAllCategories } from "../../../../../services/axios.GetMethods";
 import { toast } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
@@ -30,13 +30,14 @@ const CreateBlog: React.FC = () => {
   //* ----------------- category data fetching  ---------------
   useEffect(() => {
     const fetchCategory = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const result = await getAllCategory();
-        setCategories(result.data.category);
-        setLoading(false);
+        const result = await getAllCategories();
+        setCategories(result.data);
+        // setLoading(false);
       } catch (error: any) {
         console.error("Failed to fetch category:", error.message);
+      }finally {
         setLoading(false);
       }
     };
@@ -52,9 +53,9 @@ const CreateBlog: React.FC = () => {
     }));
   };
 
-    //* ----------------- Handle Tag Input ---------------
-    const handleTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTagInput(e.target.value);
+  //* ----------------- Handle Tag Input ---------------
+  const handleTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTagInput(e.target.value);
   };
 
   const addTag = () => {
@@ -77,9 +78,8 @@ const CreateBlog: React.FC = () => {
   //*---------------- form validation -------------------
   const validateForm = () => {
     const errors: { [key: string]: string } = {};
-
     if (!formState.title.trim()) errors.title = "Title is required.";
-    if (formState.tags.length === 0) errors.tags = "At least one tag is required.";
+    if (!formState.tags.length) errors.tags = "At least one tag is required.";
     if (!formState.category) errors.category = "Please select a category.";
     if (!formState.content.trim()) errors.content = "Content is required.";
     if (!formState.coverImage) {
@@ -90,7 +90,6 @@ const CreateBlog: React.FC = () => {
         errors.coverImage = "Only PNG, JPEG, or JPG images are allowed.";
       }
     }
-
     return errors;
   };
 
@@ -116,9 +115,7 @@ const CreateBlog: React.FC = () => {
       const result = await createBlog(formObj);
       setCreatingBlog(false);
       toast.success(result.data.message);
-      if (formRef.current) {
-        formRef.current.reset();
-      }
+      formRef.current?.reset();
       setFormState({
         title: "",
         tags: [],
@@ -211,15 +208,15 @@ const CreateBlog: React.FC = () => {
               >
                 <option value="">Select a category</option>
                 {loading ? (
-                        <option value="" disabled>Loading categories...</option>
-                    ) : categories && Array.isArray(categories) && categories.length > 0 ? (
-                        categories.map((category) => (
-                        <option key={category._id} value={category._id}>
-                            {category.categoryName}
-                        </option>
-                        ))
-                    ) : (
-                        <option value="" disabled>No categories available</option>
+                      <option value="" disabled>Loading categories...</option>
+                  ) : categories && categories.length > 0 ? (
+                      categories.map((category) => (
+                      <option key={category._id} value={category._id}>
+                          {category.categoryName}
+                      </option>
+                      ))
+                  ) : (
+                      <option value="" disabled>No categories</option>
                 )}
               </select>
               {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}

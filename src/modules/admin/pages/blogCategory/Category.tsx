@@ -126,8 +126,8 @@ const Category: React.FC = () => {
   };
 
   //*-------------- Handle Search Input Change --------------
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
   };
 
   //* ----------- Filter data based search -------------
@@ -162,7 +162,7 @@ const Category: React.FC = () => {
           </button>
         </div>
       </div>
-
+      {/* ----------- category list ------------- */}
       <div className="bg-white w-full p-8">
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {filteredData.length > 0 ? (

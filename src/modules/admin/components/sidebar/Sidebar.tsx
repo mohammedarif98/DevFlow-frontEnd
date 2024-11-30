@@ -69,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
 
         <li>
           <div
-            className="flex items-center justify-between px-5 py-3 cursor-pointer hover:bg-blue-100"
+            className="flex items-center justify-between px-5 py-3 cursor-pointer hover:bg-blue-100 hover:border-r-2 hover:border-r-blue-900"
             onClick={() => setIsBlogDropdownOpen((prev) => !prev)}
           >
             <div className="flex items-center gap-x-4">
@@ -84,25 +84,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
           </div>
           {isBlogDropdownOpen && (
             <ul className="ml-8 space-y-1 px-5">
-              {/* <li>
-                <NavLink
-                  to="/admin/add-blog"
-                  className={({ isActive }) =>
-                    `flex py-2 px-3 hover:bg-blue-100 gap-x-2 justify-start items-center relative ${
-                      isActive ? "bg-blue-200 text-blue-900 border-l-2 border-l-blue-900 child-active" : ""
-                    }`
-                  }
-                >
-                  <IoIosAddCircleOutline className="mt-1 text-xl text-black" />
-                  Add Blogs
-                </NavLink>
-              </li> */}
               <li className="">
                 <NavLink
                   to="/admin/list-blogs"
                   className={({ isActive }) =>
                     `flex py-2 px-3 hover:bg-blue-100 gap-x-2 justify-start items-center relative ${
-                      isActive ? "bg-blue-200 text-blue-900 border-l-2 border-l-blue-900 child-active" : ""
+                      isActive ? "bg-blue-100 text-blue-900 border-l-2 border-l-blue-900 child-active" : ""
                     }`
                   }
                 >

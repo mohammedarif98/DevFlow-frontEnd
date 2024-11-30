@@ -118,6 +118,26 @@ export const createBlog = async(formData: FormData) => {
     }
 }
 
+//----------------- function for like blog---------------------
+export const likeBlog = async(blogId: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `/api/auth/like-blog/${blogId}`,
+    }
+    try{
+        const result = await userApiRequest(config);
+        console.log(result.data);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "like blog failed";
+        throw new Error(message);
+    }
+}
+
+
+
 
 
 //* ======================= ADMIN API =============================

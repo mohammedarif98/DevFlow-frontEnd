@@ -8,6 +8,7 @@ import UserListPage from './pages/userProfiles/UserListPage';
 import AdminProtectedRoute from './AdminProtectedRoute';
 import CategoryPage from './pages/blogCategory/CategoryPage';
 import BlogsPage from './pages/blog/BlogsPage';
+import BlogDetailPage from './pages/blog/BlogDetailPage';
 
 
 const AdminRoutes: React.FC = () => {
@@ -34,6 +35,7 @@ const AdminRoutes: React.FC = () => {
                   <Route path='/user-list' element={<UserListPage/>}/>
                   <Route path='/blog-category' element={<CategoryPage/>}/>
                   <Route path='/list-blogs' element={<BlogsPage/>} />
+                  <Route path='/blog-detailPage/:blogId' element={<BlogDetailPage/>} />
                 </Route>
               </Routes>
             </div>

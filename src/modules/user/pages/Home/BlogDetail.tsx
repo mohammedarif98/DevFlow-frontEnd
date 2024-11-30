@@ -2,14 +2,40 @@ import React, { useEffect, useState } from "react";
 import { getBlogDetail } from "../../../../services/axios.GetMethods";
 import { useParams } from "react-router-dom";
 import { BsBookmarkPlus, BsChat } from "react-icons/bs";
-import { SlLike } from "react-icons/sl";
+import { AiFillLike } from "react-icons/ai";
+import { useSelector } from "react-redux";
+import { UnLikeBlog } from "../../../../services/axios.DeleteMethods";
+import { likeBlog } from "../../../../services/axios.PostMethods";
+import { useLoading } from "../../../../contexts/LoadingContext";
+
+
+type User = {
+  _id: string;
+  username: string;
+  email: string;
+  profilePhoto?: string;
+};
+
+type BlogList = {
+  _id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  likes: string[];
+  category: string;
+  coverImage: string;
+  author: User;
+  publishedAt: string;
+};
 
 
 const BlogDetail: React.FC = () => {
+
+  const user = useSelector((state: any) => state.user.user);
   const { blogId } = useParams<{ blogId: string }>();
-  const [blogData, setBlogData] = useState<any>(null);
+  const [blogData, setBlogData] = useState<BlogList | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { setLoading } = useLoading();
   const [showChat, setShowChat] = useState(false);
 
 
@@ -25,15 +51,35 @@ const BlogDetail: React.FC = () => {
         const result = await getBlogDetail(blogId);
         setBlogData(result.data);
         setLoading(false);
-        console.log(result.data);
       } catch (error: any) {
-        console.error("Failed to fetch category:", error.message);
+        console.error("Failed to fetch blogs:", error.message);
         setError(error.message);
         setLoading(false);
       }
     };
     blogDetail();
   }, [blogId]);
+
+
+  //*-------------------- give like/unlike to blog --------------------
+  const handleLike = async () => {
+    if (!blogData || !user._id) return;
+    if (blogData.likes.includes(user._id)) {
+      // Unlike the blog
+      await UnLikeBlog(blogData._id);
+      setBlogData({
+        ...blogData,
+        likes: blogData.likes.filter((l) => l !== user._id)
+      });
+    } else {
+      // Like the blog
+      await likeBlog(blogData._id);
+      setBlogData({
+        ...blogData,
+        likes: [...blogData.likes, user._id]
+      });
+    }
+  };
 
 
   return (
@@ -83,12 +129,20 @@ const BlogDetail: React.FC = () => {
             </div>
             <div className="flex justify-between p-2 border-y-[1px]">
               <div className="flex gap-x-4">
-                <span>
-                  <SlLike className="hover:border border-white text-sm md:text-lg" />
-                </span>
                 <button onClick={toggleChat}>
                   <BsChat className="hover:border border-white text-sm md:text-lg" />
                 </button>
+                <span className="flex items-center gap-x-1">
+                  <AiFillLike
+                    onClick={handleLike}
+                    className={
+                      blogData.likes.includes(user?._id)
+                        ? "text-red-600 hover:border border-white"
+                        : "text-black  hover:border border-white"
+                    }
+                  />
+                  <p className="text-sm">{blogData.likes.length ? blogData.likes.length : ""}</p>
+                </span>
               </div>
               <div className="flex gap-x-4">
                 <span>

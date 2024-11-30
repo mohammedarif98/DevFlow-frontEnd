@@ -56,6 +56,21 @@ export const getAllBlogs = async() => {
     }
 }
 
+export const getAllCategories = async() => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url: `/api/auth/get-category`
+    }
+    try{
+        const result = await userApiRequest(config);
+        return result.data;
+    }catch(error:any){
+        if (error.response?.status === 401) {
+            throw new Error('You are not Logged in! please logIn');
+        }
+        throw error;
+    }
+} 
 
 //-----------------------  get Blog detail ---------------------------
 export const getUserBlog = async() => {
@@ -74,7 +89,6 @@ export const getUserBlog = async() => {
     }
 }
 
-
 //-----------------------  get Blog detail ---------------------------
 export const getBlogDetail = async(blogId: string) => {
     const config: AxiosRequestConfig = {
@@ -91,6 +105,24 @@ export const getBlogDetail = async(blogId: string) => {
         throw new Error(message);
     }
 }
+
+//------------------ get blog likes count  ----------------
+export const getBlogLikeCount = async(blogId: string) => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url: `/api/auth/get-like-count/${blogId}`
+    }
+    try{
+        const result = await userApiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "failed to fetch blog likes count";
+        throw new Error(message);
+    }
+}
+
 
 
 //* ======================= ADMIN API ============================
@@ -127,3 +159,37 @@ export const getAllCategory = async() => {
         throw error;
     }
 } 
+
+//------------- function for display all blogs -----------------
+export const getBlogsList = async() => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url:  `/api/admin/list-blogs`
+    }
+    try{
+        const result = await adminApiRequest(config);
+        return result.data;
+    }catch(error:any){
+        if (error.response?.status === 401) {
+            throw new Error('You are not Logged in! please logIn');
+        }
+        throw error;
+    }
+} 
+
+//------------- function for display detail of selected blogs -----------------
+export const getBlogDetails = async(blogId: string) => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url: `/api/admin/blog-detail/${blogId}`
+    }
+    try{
+        const result = await adminApiRequest(config);
+        return result.data;
+    }catch(error:any){
+        if (error.response?.status === 401) {
+            throw new Error('You are not Logged in! please logIn');
+        }
+        throw error;
+    }
+}

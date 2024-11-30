@@ -5,11 +5,10 @@ import { blockUser, unblockUser } from "../../../../services/axios.PutMethods";
 import { useLoading } from "../../../../contexts/LoadingContext";
 import { FaSpinner } from "react-icons/fa";
 
-
 const UsersList: React.FC = () => {
   interface UserList {
     _id: string;
-    Photo: string | any;
+    profilePhoto: string | any;
     username: string;
     email: string;
     password: string;
@@ -22,7 +21,9 @@ const UsersList: React.FC = () => {
   const [searchName, setSearchName] = useState("");
   const [filterRole, setFilterRole] = useState("");
   const [filteredData, setFilteredData] = useState<UserList[]>([]);
-  const [loadingState, setLoadingState] = useState<{ [key: string]: boolean }>({});
+  const [loadingState, setLoadingState] = useState<{ [key: string]: boolean }>(
+    {}
+  );
 
   const tableHeading = "USER LIST";
   const tableHeaders = [
@@ -44,7 +45,7 @@ const UsersList: React.FC = () => {
         if (Array.isArray(result.data.data.users)) {
           const dataArray: UserList[] = result.data.data.users as UserList[];
           setData(dataArray);
-          setFilteredData(dataArray); 
+          setFilteredData(dataArray);
         }
       } catch (error: any) {
         console.error("Failed to fetch users:", error.message);
@@ -90,11 +91,11 @@ const UsersList: React.FC = () => {
   //*  -------------- Map rows for table ---------------------------
   const rows = filteredData.map((user, index) => ({
     ID: index + 1,
-    Photo: user.Photo ? (
+    Photo: user.profilePhoto ? (
       <img
-        src={user.Photo}
+        src={user.profilePhoto}
         alt={user.username}
-        className="w-12 h-12 rounded-full"
+        className="w-9 h-9 rounded-full mx-auto"
       />
     ) : (
       "No Image"
@@ -102,7 +103,15 @@ const UsersList: React.FC = () => {
     Name: user.username,
     Email: user.email,
     Role: user.role,
-    Status: user.isBlocked ? "Blocked" : "Active",
+    Status: user.isBlocked ? (
+      <p className="mx-auto w-fit rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-900 ring-1 ring-inset ring-red-600/10">
+        Blocked
+      </p>
+    ) : (
+      <p className=" mx-auto w-fit rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-900 ring-1 ring-inset ring-green-600/20">
+        Active
+      </p>
+    ),
     Operation: user.isBlocked ? (
       <button
         className={`px-3 py-1 rounded-sm w-24 text-white ${
@@ -137,18 +146,16 @@ const UsersList: React.FC = () => {
   return (
     <div className="my-2">
       <Table
-        tableHeading = {tableHeading}
-        headers = {tableHeaders}
-        rows = {rows}
-        searchName = {searchName}
-        setSearchName = {setSearchName}
-        filterRole = {filterRole}
-        setFilterRole = {setFilterRole}
+        tableHeading={tableHeading}
+        headers={tableHeaders}
+        rows={rows}
+        searchName={searchName}
+        setSearchName={setSearchName}
+        filterRole={filterRole}
+        setFilterRole={setFilterRole}
       />
     </div>
   );
 };
-
-
 
 export default UsersList;
