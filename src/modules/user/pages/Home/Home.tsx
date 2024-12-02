@@ -6,16 +6,18 @@ import { GoPlus } from "react-icons/go";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 import { BsFillBookmarkPlusFill } from "react-icons/bs";
 import { getAllBlogs } from "../../../../services/axios.GetMethods";
-import { likeBlog } from "../../../../services/axios.PostMethods";
-import { UnLikeBlog } from "../../../../services/axios.DeleteMethods";
+import { bookmarkBlog, likeBlog } from "../../../../services/axios.PostMethods";
+import { unbookmarkBlog, UnLikeBlog } from "../../../../services/axios.DeleteMethods";
 import { AiFillLike } from "react-icons/ai";
 import { useLoading } from "../../../../contexts/LoadingContext";
+
 
 type User = {
   _id: string;
   username: string;
   email: string;
   profilePhoto?: string;
+  bookmarks?: string[];
 };
 
 type BlogList = {
@@ -28,7 +30,9 @@ type BlogList = {
   coverImage: string;
   author: User;
   publishedAt: string;
+  isBookmarked: boolean;
 };
+
 
 const Home: React.FC = () => {
   const isAuthenticated = useSelector((state: any) => state.user.isAuthenticated);
@@ -38,20 +42,40 @@ const Home: React.FC = () => {
   const { setLoading } = useLoading();
 
 
-  //*-------------------- give like/unlike to blog --------------------
+  //*------------ bookmarking/unbookmarking the blog --------------
+  
+
+  //*-------------------- like/unlike to blog --------------------
   const handleLike = async (blogId: string) => {
 
-    const blog = data.find(b => b._id === blogId);
-    if (blog && blog.likes.includes(user._id)) {
-      // Unlike the blog
+  const selectedBlog = data.find(blog => blog._id === blogId);
+  if (!selectedBlog || !user) return;
+
+  try {
+    if (selectedBlog.likes.includes(user._id)) {
       await UnLikeBlog(blogId);
-      setData(data.map(b => b._id === blogId ? { ...b, likes: b.likes.filter(l => l !== user._id) } : b));
+      setData(prevData =>
+        prevData.map(blog =>
+          blog._id === blogId
+            ? { ...blog, likes: blog.likes.filter(userId => userId !== user._id) }
+            : blog
+        )
+      );
     } else {
-      // Like the blog
       await likeBlog(blogId);
-      setData(data.map(b => b._id === blogId ? { ...b, likes: [...b.likes, user._id] } : b));
+      setData(prevData =>
+        prevData.map(blog =>
+          blog._id === blogId
+            ? { ...blog, likes: [...blog.likes, user._id] }
+            : blog
+        )
+      );
     }
+  } catch (error: any) {
+    console.error("Error toggling like for the blog:", error.message);
+  }
   };
+
 
   //*-------------------- fetch data of blog --------------------
   useEffect(() => {
@@ -67,7 +91,7 @@ const Home: React.FC = () => {
       }
     };
     fetchBlogs();
-  }, []);
+  }, [user]);
 
 
   //* ------------- get the blog detail page  ------------------
@@ -116,66 +140,69 @@ const Home: React.FC = () => {
               <p className="inline-flex items-center">games</p>
             </div>
 
-            {data.map((blog) => (
-              <div
-                key={blog._id}
-                onClick={() => handleBlogClick(blog._id)}
-                className="bg-white px-3 py-2 flex justify-between gap-4 border-b-[1px] cursor-pointer"
-              >
-                <div className="w-full space-y-2">
-                  <div className="p-1">
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={blog.author.profilePhoto}
-                        alt="pro-img"
-                        className="h-8 w-8 rounded-full"
-                      />
-                      <p className="text-sm">{blog.author.username}</p>
-                    </div>
-                    <p className="font-bold text-xl mt-3">{blog.title}</p>
-                    <p className="text-md">
-                      {blog.content.length > 140
-                        ? `${blog.content.slice(0, 140)}...`
-                        : blog.content}
-                    </p>
-                  </div>
-                  <div className="flex justify-between px-3 py-1">
-                    <div className="flex items-center gap-x-4">
-                      <span className="text-xs">{blog.publishedAt}</span>
-                      <span>
-                        <IoChatbubbleEllipsesSharp className="hover:border border-white" />
-                      </span>
-                      <span className="flex gap-x-1">
-                        <AiFillLike
-                          onClick={(event) =>{ 
-                            event.stopPropagation();
-                            handleLike(blog._id)}
-                          }
-                          className={
-                            blog.likes.includes(user?._id)
-                              ? "text-red-600 hover:border border-white"
-                              : "text-black  hover:border border-white"
-                          }
+            {data.length > 0 ? (
+              data.map((blog) => (
+                <div
+                  key={blog._id}
+                  onClick={() => handleBlogClick(blog._id)}
+                  className="bg-white px-3 py-2 flex justify-between gap-4 border-b-[1px] cursor-pointer"
+                >
+                  <div className="w-full space-y-2">
+                    <div className="p-1">
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={blog.author.profilePhoto}
+                          alt="pro-img"
+                          className="h-8 w-8 rounded-full"
                         />
-                      <p className="text-sm">{blog.likes.length ? blog.likes.length : "" }</p>
-                      </span>
+                        <p className="text-sm">{blog.author.username}</p>
+                      </div>
+                      <p className="font-bold text-xl mt-3">{blog.title}</p>
+                      <p className="text-md">
+                        {blog.content.length > 140
+                          ? `${blog.content.slice(0, 140)}...`
+                          : blog.content}
+                      </p>
                     </div>
-                    <div className="flex gap-x-4">
-                      <span>
-                        <BsFillBookmarkPlusFill className="hover:border border-white" />
-                      </span>
+                    <div className="flex justify-between px-3 py-1">
+                      <div className="flex items-center gap-x-4">
+                        <span className="text-xs">{blog.publishedAt}</span>
+                        <span>
+                          <IoChatbubbleEllipsesSharp className="hover:border border-white" />
+                        </span>
+                        <span className="flex gap-x-1">
+                          <AiFillLike
+                            onClick={(event) =>{ 
+                              event.stopPropagation();
+                              handleLike(blog._id)}
+                            }
+                            className={
+                              blog.likes.includes(user?._id)
+                                ? "text-red-600 hover:border border-white"
+                                : "text-black  hover:border border-white"
+                            }
+                          />
+                        <p className="text-sm">{blog.likes.length ? blog.likes.length : "" }</p>
+                        </span>
+                      </div>
+                      <div className="flex gap-x-4">
+                        <BsFillBookmarkPlusFill/>
+                      </div>
                     </div>
                   </div>
+                  <div className="md:flex items-center hidden sm:block">
+                    <img
+                      src={blog.coverImage}
+                      alt="cover-img"
+                      className="h-32 w-64"
+                    />
+                  </div>
                 </div>
-                <div className="md:flex items-center hidden sm:block">
-                  <img
-                    src={blog.coverImage}
-                    alt="cover-img"
-                    className="h-32 w-64"
-                  />
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p>No blogs available.</p>
+            )}
+
           </div>
 
           {/* ----------------- Right side content ------------------ */}

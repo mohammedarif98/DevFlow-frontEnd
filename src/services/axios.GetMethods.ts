@@ -123,6 +123,24 @@ export const getBlogLikeCount = async(blogId: string) => {
     }
 }
 
+//------------------ get blog comments  ----------------
+export const getBlogComments = async(blogId: string) => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url: `/api/auth/get-comments/${blogId}`
+    }
+    try{
+        const result = await userApiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "failed to fetch blog comments";
+        console.log("failed to fetch blog comments", error);
+        throw new Error(message);
+    }
+}
+
 
 
 //* ======================= ADMIN API ============================

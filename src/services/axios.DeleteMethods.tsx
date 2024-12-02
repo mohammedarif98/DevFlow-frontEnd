@@ -21,3 +21,23 @@ export const UnLikeBlog = async(blogId: string) => {
         throw new Error(message);
     }
 }
+
+
+//----------------- function for unBookmark blog---------------------
+export const unbookmarkBlog = async(blogId: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'DELETE',
+        url: `/api/auth/unbookmark-blog/${blogId}`,
+    }
+    try{
+        const result = await userApiRequest(config);
+        console.log(result.data);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "unbookmarking blog failed";
+        console.error('Unbookmark blog error:', error);
+        throw new Error(message);
+    }
+}

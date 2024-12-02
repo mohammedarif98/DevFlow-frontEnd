@@ -94,7 +94,7 @@ const CreateBlog: React.FC = () => {
   };
 
   //* ---------------- Handle Form Submission ----------------
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const validationErrors = validateForm();

@@ -189,7 +189,7 @@ const Category: React.FC = () => {
                     {category.categoryName}
                   </p>
                   <p className="text-sm font-normal text-black flow-root">
-                    {category.description}
+                    {category.description.length > 50 ? `${category.description.slice(0,100)}...` : category.description}
                   </p>
                 </div>
               </div>

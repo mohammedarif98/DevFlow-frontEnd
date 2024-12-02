@@ -7,7 +7,7 @@ interface UserState {
     isAuthenticated: boolean;
     loading: boolean;
     error: string | null;
-  }
+}
 
 const initialState: UserState = {
     user: null,
@@ -46,7 +46,7 @@ const userSlice = createSlice({
         updateUserFail(state, action: PayloadAction<string>){
             state.loading = false;
             state.error = action.payload;
-        }
+        },
     }
 });
 

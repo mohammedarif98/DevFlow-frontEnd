@@ -137,6 +137,45 @@ export const likeBlog = async(blogId: string) => {
 }
 
 
+//----------------- function for bookmarking blog---------------------
+export const bookmarkBlog = async(blogId: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `/api/auth/bookmark-blog/${blogId}`,
+    }
+    try{
+        const result = await userApiRequest(config);
+        console.log(result.data);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "bookmarking blog failed";
+        console.error('bookmark blog error:', error);
+        throw new Error(message);
+    }
+}
+
+
+// ---------------- function for add comment on blog ---------------------
+export const addComment = async(blogId: string, content: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `/api/auth/add-comment-blog/${blogId}`,
+        data: { content },
+    }
+    try{
+        const result = await userApiRequest(config);
+        console.log(result.data);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "comment on blog failed";
+        console.error('comment on blog error:', error);
+        throw new Error(message);
+    }
+}
 
 
 
