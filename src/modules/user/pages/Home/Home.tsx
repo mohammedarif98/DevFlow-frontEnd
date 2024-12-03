@@ -84,6 +84,7 @@ const Home: React.FC = () => {
         setLoading(true);
         const result = await getAllBlogs();
         setData(result.data.blogs);
+        console.log(result.data);
         setLoading(false);
       } catch (error) {
         console.log("error to fetch blogs");
@@ -92,7 +93,7 @@ const Home: React.FC = () => {
     };
     fetchBlogs();
   }, [user]);
-
+  
 
   //* ------------- get the blog detail page  ------------------
   const handleBlogClick = (blogId: string) => {
@@ -168,7 +169,7 @@ const Home: React.FC = () => {
                       <div className="flex items-center gap-x-4">
                         <span className="text-xs">{blog.publishedAt}</span>
                         <span>
-                          <IoChatbubbleEllipsesSharp className="hover:border border-white" />
+                          <IoChatbubbleEllipsesSharp className="hover:border border-white" /> 
                         </span>
                         <span className="flex gap-x-1">
                           <AiFillLike

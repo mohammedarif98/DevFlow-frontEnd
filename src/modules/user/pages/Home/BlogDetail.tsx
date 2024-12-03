@@ -4,12 +4,13 @@ import { useParams } from "react-router-dom";
 import { BsChat, BsFillBookmarkPlusFill } from "react-icons/bs";
 import { AiFillLike, AiOutlineClose } from "react-icons/ai";
 import { useSelector } from "react-redux";
-import { UnLikeBlog } from "../../../../services/axios.DeleteMethods";
-import { addComment, likeBlog } from "../../../../services/axios.PostMethods";
+import { deleteComment, UnLikeBlog } from "../../../../services/axios.DeleteMethods";
+import { addComment, likeBlog, replyToComment } from "../../../../services/axios.PostMethods";
 import { useLoading } from "../../../../contexts/LoadingContext";
-import img from '../../../../assets/images/pngtree-man-avatar-image-for-profile-png-image_13001882.png'
+import img from '../../../../assets/images/pngtree-man-avatar-image-for-profile-png-image_13001882.png';
 import { GrMoreVertical } from "react-icons/gr";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
+
 
 
 type User = {
@@ -35,20 +36,31 @@ type BlogList = {
 type Comment = {
   content: string;
   user: User;
-  _id: number;
-}
+  _id: string;
+  replies: ReplyComment[];
+};
 
+type ReplyComment = {
+  _id: string;
+  replyContent: string;
+  createdAt: Date;
+  user: string;            // User ID
+  isReplyDeleted: boolean
+};
 
 const BlogDetail: React.FC = () => {
-
   const user = useSelector((state: any) => state.user.user);
   const { blogId } = useParams<{ blogId: string }>();
   const [blogData, setBlogData] = useState<BlogList | null>(null);
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [content, setContent] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const { setLoading } = useLoading();
   const [showChat, setShowChat] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [content, setContent] = useState<string>('');
+  const [replyContent, setReplyContent] = useState<{ [key: string]: string }>({});
+  const [replyOpen, setReplyOpen] = useState<{ [key: string]: boolean }>({});
+  const [deleteDropDownOpen, setDeleteDropDownOpen] = useState<{ [key: string]: boolean }>({});
+
 
 
   //* ------------------ Toggle chat offcanvas --------------------------
@@ -76,7 +88,7 @@ const BlogDetail: React.FC = () => {
 
   //* ------------------ Handle liking and unliking the blog ---------------------
   const handleLike = async () => {
-    if (!blogData || !user._id) return;
+    if (!blogData || !user?._id) return;
     if (blogData.likes.includes(user._id)) {
       await UnLikeBlog(blogData._id);
       setBlogData((prevData) => {
@@ -100,37 +112,103 @@ const BlogDetail: React.FC = () => {
 
 
   //* --------------- Handle addComment on blog ------------------
-  const handleAddComment= async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleAddComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!blogId || !content) return;
 
-    try{
+    try {
       const response = await addComment(blogId, content);
       setComments([...comments, response.data]);
-      setContent('');                                        // Clear the textarea
+      setContent(''); // Clear the textarea
+      setReplyContent((prev) => ({
+        ...prev,
+        [response.data._id]: '',
+      }));
       console.log(response.data);
-    }catch(error: any){
-      console.log("failed to add Comment on blog",error.message);
+    } catch (error: any) {
+      console.log("Failed to add comment on blog", error.message);
     }
-  }
-  
+  };
 
-  //* --------------- fetch the Comments of blog ------------------
-  
+
+  //* --------------- fetch the Comments of blog ------------------  
   useEffect(() => {
-    const fetchComments = async() => {
-      try{
+    const fetchComments = async () => {
+      try {
         if (!blogId) return;
         const response = await getBlogComments(blogId);
+        console.log(response.data);
         setComments(response.data.comments);
-      }catch(error: any){
-        console.error("Failed to fetch blog details:", error.message);
+      } catch (error: any) {
+        console.error("Failed to fetch blog comments:", error.message);
         setError(error.message);
       }
-    }
+    };
     fetchComments();
-  },[blogId])
+  }, [blogId]);
 
+
+  //* ------------------ show/hide the add reply form box --------------------
+  const toggleReply = (commentId: string) => {
+    setReplyOpen((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+    setReplyContent((prev) => ({
+      ...prev,
+      [commentId]: prev[commentId] || '',
+    }));
+  };
+
+
+  //* --------------- handle reply to comment on blog --------------------
+  const handleReplyComments = async (commentId: string, event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!blogId || !commentId || !replyContent[commentId]) return;
+    try {
+      const response = await replyToComment(blogId, commentId, replyContent[commentId]);
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment._id === commentId
+            ? { ...comment, replies: [...(comment.replies || []), response.data.comment] }
+            // ? { ...comment, replies: [...comment.replies, response.data.reply] }
+            : comment
+          )
+      );
+      setReplyContent((prev) => ({ ...prev, [commentId]: '' }));
+      setReplyOpen((prev) => ({ ...prev, [commentId]: false }));
+    } catch (error: any) {
+      console.log("Failed to add reply to comment", error.message);
+    }
+  };
+
+  //* ------------------ Toggle dropdown for comment options --------------------
+  const toggleDropdown = (commentId: string) => {
+    setDeleteDropDownOpen((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  };
+
+  //* --------------- Handle delete comment --------------------
+  const handleDeleteComment = async (commentId: string) => {
+    if (!blogId || !user?._id) return;
+    // Find the comment to delete
+    const commentToDelete = comments.find(comment => comment._id === commentId);
+    if (!commentToDelete || commentToDelete.user._id !== user._id) {
+      console.error("You don't have permission to delete this comment.");
+      return;
+    }
+
+    try {
+      await deleteComment(commentId);
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment._id !== commentId)
+      );
+    } catch (error: any) {
+      console.log("Failed to delete comment", error.message);
+    }
+  };
 
 
   return (
@@ -165,7 +243,7 @@ const BlogDetail: React.FC = () => {
           <div className="px-6 py-2 space-y-4 border-y-[1px]">
             <div className="flex gap-4 items-center">
               <img
-                src={blogData.author.profilePhoto || ""}
+                src={blogData.author.profilePhoto}
                 className="h-10 w-10 md:h-14 md:w-14 rounded-full"
                 alt="profile-img"
               />
@@ -180,14 +258,17 @@ const BlogDetail: React.FC = () => {
             </div>
             <div className="flex justify-between p-2 border-y-[1px]">
               <div className="flex gap-x-4">
-                <button onClick={toggleChat}>
-                  <IoChatbubbleEllipsesSharp className="hover:border border-white text-sm md:text-lg" />
-                </button>
-                <span className="flex items-center gap-x-1">
+                <div className="flex gap-x-1">
+                  <button onClick={toggleChat} className="flex items-center">
+                    <IoChatbubbleEllipsesSharp className="hover:border border-white text-sm md:text-lg" />
+                  </button>
+                  <p className="text-sm">{comments.length}</p>
+                </div>
+                <span className="flex items-center text-sm md:text-lg gap-x-1">
                   <AiFillLike
                     onClick={handleLike}
                     className={
-                      blogData.likes.includes(user?._id)
+                      blogData.likes.includes(user?._id || "")
                         ? "text-red-600 hover:border border-white"
                         : "text-black hover:border border-white"
                     }
@@ -195,7 +276,7 @@ const BlogDetail: React.FC = () => {
                   <p className="text-sm">{blogData.likes.length}</p>
                 </span>
               </div>
-              <div className="flex gap-x-4">
+              <div className="flex gap-x-4 text-sm md:text-lg">
                 <BsFillBookmarkPlusFill />
               </div>
             </div>
@@ -225,7 +306,8 @@ const BlogDetail: React.FC = () => {
                     <AiOutlineClose />
                   </button>
                 </div>
-                {/* -----------------Chat content goes here -------------------- */}
+
+                {/* ----------------- blog comment form box -------------------- */}
                 <div className="mt-4 p-2 bg-white rounded-md shadow-md">
                   <form onSubmit={handleAddComment}>
                     <textarea
@@ -236,10 +318,10 @@ const BlogDetail: React.FC = () => {
                       rows={10}
                       placeholder="What are your thoughts?"
                     ></textarea>
-                    <div className="flex gap-x-2  justify-end">
-                      <button 
-                        type="button" 
-                        onClick={() => setContent('')} 
+                    <div className="flex gap-x-2 justify-end">
+                      <button
+                        type="button"
+                        onClick={() => setContent('')}
                         className={`px-3 py-1 bg-black text-sm rounded-xl text-white ${
                           content.trim() === "" ? "opacity-40 cursor-not-allowed" : ""
                         }`}
@@ -260,46 +342,98 @@ const BlogDetail: React.FC = () => {
                   </form>
                 </div>
 
-                <hr className="my-5"/>
+                <hr className="my-5" />
 
                 {comments && comments.length > 0 ? (
                   comments.map((comment, index) => (
                     <React.Fragment key={comment._id}>
-                      <div className="p-1 bg-slate-100">
+                      <div className="p-1 bg-slate-100 border-l-2 border-l-gray-400 ">
+                        {/* ------------- list of comment ---------------- */}
                         <div className="flex items-center justify-between px-2">
                           <div className="flex gap-x-1 items-center">
-                            {/* Provide default image if profilePhoto is undefined */}
                             <img
-                              src={comment.user.profilePhoto || img}
-                              alt={comment.user.username || 'User'}
+                              src={comment.user.profilePhoto || img }
+                              alt="pro-img"
                               className="h-8 w-8 rounded-full"
                             />
                             <p className="text-xs">{comment.user.username}</p>
                           </div>
-                          <div className=""><GrMoreVertical /></div>
+                          {/* ------------ derop down delte comment ------------------ */}
+                          <div className="relative">
+                            <button onClick={() => toggleDropdown(comment._id)}>
+                              <GrMoreVertical />
+                            </button>
+                            {deleteDropDownOpen[comment._id] && (
+                              <div className="absolute top-0 right-4 w-16 bg-white border border-gray-200 rounded shadow-lg z-10">
+                                <button
+                                  onClick={() => handleDeleteComment(comment._id)}
+                                  disabled={comment.user._id !== user?._id}
+                                  className={`flex w-full text-left px-2 py-1 text-sm ${
+                                    comment.user._id === user?._id ? 'text-black hover:bg-red-100' : 'text-gray-100 cursor-not-allowed'
+                                  }`}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </div>
                         <div className="py-2 px-4">
                           <p className="break-words whitespace-normal text-sm">{comment.content}</p>
                         </div>
                         <div className="flex justify-between text-sm px-3 mt-2">
-                          <p className="flex items-center gap-x-1">
-                            <BsChat /> replies
+                          <p className="flex items-center gap-x-1 cursor-pointer">
+                            { comment.replies.length } replies
                           </p>
-                          <p>Reply</p>
+                          <p onClick={() => toggleReply(comment._id)}>Reply</p>
                         </div>
+                        {/* ------------- hide/show the reply to comment form box ---------------- */}
+                        {replyOpen[comment._id] && (
+                          <div className="p-2 mt-2 ms-4">
+                            <form onSubmit={(event) => handleReplyComments(comment._id, event)}>
+                              <textarea
+                                name="replyContent"
+                                value={replyContent[comment._id] || ''}
+                                onChange={(e) =>
+                                  setReplyContent((prev) => ({
+                                    ...prev,
+                                    [comment._id]: e.target.value,
+                                  }))
+                                }
+                                className="w-full p-1 bg-slate-200 border rounded focus:outline-none"
+                                rows={3}
+                                placeholder="Write your reply..."
+                              ></textarea>
+                              <div className="flex justify-end">
+                                <button
+                                  type="submit"
+                                  className={`px-4 py-1 bg-green-700 text-sm rounded-xl text-white ${
+                                    replyContent[comment._id]?.trim() === ""
+                                      ? "opacity-40 cursor-not-allowed"
+                                      : ""
+                                  }`}
+                                  disabled={replyContent[comment._id]?.trim() === ""}
+                                >
+                                  Reply
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        )}
+                        {/* ---------------- list the replies of associated comment -------------- */}
+                        
                       </div>
                       {index !== comments.length - 1 && <hr className="my-3" />}
                     </React.Fragment>
                   ))
                 ) : (
-                  <p>No comments yet.</p>
+                  <p className="text-center text-sm">No comments yet.</p>
                 )}
-
               </div>
             </div>
           )}
         </div>
-      )}
+      )} 
     </div>
   );
 };

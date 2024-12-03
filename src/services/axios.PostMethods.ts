@@ -178,6 +178,27 @@ export const addComment = async(blogId: string, content: string) => {
 }
 
 
+// ---------------- function for add comment on blog ---------------------
+export const replyToComment = async(blogId: string, commentId: string, replyContent: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `/api/auth/blogs/${blogId}/comments/${commentId}/replies`,
+        data: { replyContent }
+    }
+    try{
+        const result = await userApiRequest(config);
+        console.log(result.data);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "reply to comment on blog failed";
+        console.log('reply to comment on blog error:', error);
+        throw new Error(message);
+    }
+}
+
+
 
 //* ======================= ADMIN API =============================
 // ------------------------- funnction for admin login ------------------------
