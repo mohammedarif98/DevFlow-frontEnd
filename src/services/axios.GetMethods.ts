@@ -22,6 +22,7 @@ export const resendOTP = async() => {
     }
 };
 
+
 //----------------------- User Profile ---------------------------
 export const getUserProfile = async() => {
     const config: AxiosRequestConfig = {
@@ -39,7 +40,8 @@ export const getUserProfile = async() => {
     }
 };
 
-//-----------------------  get Blogs ---------------------------
+
+//-----------------------  get all Blogs ---------------------------
 export const getAllBlogs = async() => {
     const config: AxiosRequestConfig = {
         method: 'GET',
@@ -56,6 +58,8 @@ export const getAllBlogs = async() => {
     }
 }
 
+
+// ------------- get all category -----------------
 export const getAllCategories = async() => {
     const config: AxiosRequestConfig = {
         method: "GET",
@@ -66,11 +70,31 @@ export const getAllCategories = async() => {
         return result.data;
     }catch(error:any){
         if (error.response?.status === 401) {
-            throw new Error('You are not Logged in! please logIn');
+            throw new Error('failed to fetch categories');
         }
         throw error;
     }
 } 
+
+
+// ------------- get all category -----------------
+export const getUsers = async() => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url: `/api/auth/get-users`
+    }
+    try{
+        const result = await userApiRequest(config);
+        // console.log(result.data);
+        return result.data;
+    }catch(error:any){
+        if (error.response?.status === 401) {
+            throw new Error('failed to fetch users');
+        }
+        throw error;
+    }
+} 
+
 
 //-----------------------  get Blog detail ---------------------------
 export const getUserBlog = async() => {

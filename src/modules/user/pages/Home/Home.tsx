@@ -5,12 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 import { BsFillBookmarkPlusFill } from "react-icons/bs";
-import { getAllBlogs } from "../../../../services/axios.GetMethods";
-import { bookmarkBlog, likeBlog } from "../../../../services/axios.PostMethods";
-import { unbookmarkBlog, UnLikeBlog } from "../../../../services/axios.DeleteMethods";
+import { getAllBlogs, getAllCategories, getUsers } from "../../../../services/axios.GetMethods";
+import { bookmarkBlog, followCategory, followUser, likeBlog } from "../../../../services/axios.PostMethods";
+import { unbookmarkBlog, unfollowCategory, unfollowUser, UnLikeBlog } from "../../../../services/axios.DeleteMethods";
 import { AiFillLike } from "react-icons/ai";
 import { useLoading } from "../../../../contexts/LoadingContext";
-
 
 type User = {
   _id: string;
@@ -18,6 +17,9 @@ type User = {
   email: string;
   profilePhoto?: string;
   bookmarks?: string[];
+  role: string;
+  followers: string[];
+  followedCategory: string[];
 };
 
 type BlogList = {
@@ -33,49 +35,83 @@ type BlogList = {
   isBookmarked: boolean;
 };
 
+type Category = {
+  _id: string;
+  categoryName: string;
+};
 
 const Home: React.FC = () => {
-  const isAuthenticated = useSelector((state: any) => state.user.isAuthenticated);
-  const [data, setData] = useState<BlogList[]>([]);
   const user = useSelector((state: any) => state.user.user);
+  const isAuthenticated = useSelector((state: any) => state.user.isAuthenticated);
+  const [isUserFollowing, setIsUserFollowing] = useState<{ [key: string]: boolean }>({});
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [data, setData] = useState<BlogList[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
   const { setLoading } = useLoading();
 
-
-  //*------------ bookmarking/unbookmarking the blog --------------
-  
-
   //*-------------------- like/unlike to blog --------------------
   const handleLike = async (blogId: string) => {
+    const selectedBlog = data.find((blog) => blog._id === blogId);
+    if (!selectedBlog || !user) return;
 
-  const selectedBlog = data.find(blog => blog._id === blogId);
-  if (!selectedBlog || !user) return;
-
-  try {
-    if (selectedBlog.likes.includes(user._id)) {
-      await UnLikeBlog(blogId);
-      setData(prevData =>
-        prevData.map(blog =>
-          blog._id === blogId
-            ? { ...blog, likes: blog.likes.filter(userId => userId !== user._id) }
-            : blog
-        )
-      );
-    } else {
-      await likeBlog(blogId);
-      setData(prevData =>
-        prevData.map(blog =>
-          blog._id === blogId
-            ? { ...blog, likes: [...blog.likes, user._id] }
-            : blog
-        )
-      );
+    try {
+      if (selectedBlog.likes.includes(user._id)) {
+        await UnLikeBlog(blogId);
+        setData((prevData) =>
+          prevData.map((blog) =>
+            blog._id === blogId
+              ? { ...blog, likes: blog.likes.filter((userId) => userId !== user._id) }
+              : blog
+          )
+        );
+      } else {
+        await likeBlog(blogId);
+        setData((prevData) =>
+          prevData.map((blog) =>
+            blog._id === blogId
+              ? { ...blog, likes: [...blog.likes, user._id] }
+              : blog
+          )
+        );
+      }
+    } catch (error: any) {
+      console.error("Error toggling like for the blog:", error.message);
     }
-  } catch (error: any) {
-    console.error("Error toggling like for the blog:", error.message);
-  }
   };
 
+  //* ----------------- category data fetching  ---------------
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const result = await getAllCategories();
+        setCategories(result.data);
+      } catch (error: any) {
+        console.error("Failed to fetch categories:", error.message);
+      }
+    };
+    fetchCategory();
+  }, [user]);
+
+  //* ----------------- fetching users data ---------------
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await getUsers();
+        setUsers(response.data);
+
+        // Initialize isUserFollowing based on whether the current user is in userItem.followers
+        const initialIsFollowing: { [key: string]: boolean } = {};
+        response.data.forEach((userItem: User) => {
+          initialIsFollowing[userItem._id] = userItem.followers.includes(user._id);
+        });
+        setIsUserFollowing(initialIsFollowing);
+      } catch (error: any) {
+        console.error("Failed to fetch users:", error.message);
+      }
+    };
+    fetchUsers();
+  }, [user]);
 
   //*-------------------- fetch data of blog --------------------
   useEffect(() => {
@@ -84,7 +120,6 @@ const Home: React.FC = () => {
         setLoading(true);
         const result = await getAllBlogs();
         setData(result.data.blogs);
-        console.log(result.data);
         setLoading(false);
       } catch (error) {
         console.log("error to fetch blogs");
@@ -93,13 +128,32 @@ const Home: React.FC = () => {
     };
     fetchBlogs();
   }, [user]);
-  
 
   //* ------------- get the blog detail page  ------------------
   const handleBlogClick = (blogId: string) => {
     navigate(`/blog-detail/${blogId}`);
   };
 
+  //* ------------- follow/unfollow users by logged-in user ------------------
+  const handleFollowUnfollowUser = async (userId: string) => {
+    try {
+      if (isUserFollowing[userId]) {
+        const response = await unfollowUser(userId);
+        setIsUserFollowing((prev) => ({ ...prev, [userId]: false }));
+        console.log(response);
+      } else {
+        const response = await followUser(userId);
+        setIsUserFollowing((prev) => ({ ...prev, [userId]: true }));
+        console.log(response);
+      }
+    } catch (error: any) {
+      console.error('Error following/unfollowing user:', error.message);
+    }
+  };
+
+  //*----------------- follow/unfollow the category by logged-in user -------------
+  // const handleFollowUnfollowCategory = async (categoryId: string) => {
+  // };
 
   return (
     <div className="flex justify-center">
@@ -169,25 +223,25 @@ const Home: React.FC = () => {
                       <div className="flex items-center gap-x-4">
                         <span className="text-xs">{blog.publishedAt}</span>
                         <span>
-                          <IoChatbubbleEllipsesSharp className="hover:border border-white" /> 
+                          <IoChatbubbleEllipsesSharp className="hover:border border-white" />
                         </span>
                         <span className="flex gap-x-1">
                           <AiFillLike
-                            onClick={(event) =>{ 
+                            onClick={(event) => {
                               event.stopPropagation();
-                              handleLike(blog._id)}
-                            }
+                              handleLike(blog._id);
+                            }}
                             className={
                               blog.likes.includes(user?._id)
                                 ? "text-red-600 hover:border border-white"
-                                : "text-black  hover:border border-white"
+                                : "text-black hover:border border-white"
                             }
                           />
-                        <p className="text-sm">{blog.likes.length ? blog.likes.length : "" }</p>
+                          <p className="text-sm">{blog.likes.length ? blog.likes.length : ""}</p>
                         </span>
                       </div>
                       <div className="flex gap-x-4">
-                        <BsFillBookmarkPlusFill/>
+                        <BsFillBookmarkPlusFill />
                       </div>
                     </div>
                   </div>
@@ -203,17 +257,61 @@ const Home: React.FC = () => {
             ) : (
               <p>No blogs available.</p>
             )}
-
           </div>
 
           {/* ----------------- Right side content ------------------ */}
-          <div className="lg:w-[300px] xl:w-[400px] px-6 py-6 border-l-[1px] border-slate-200 hidden lg:block">
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error
-              illum quis libero assumenda optio ipsa. Facere suscipit amet
-              voluptas mollitia quaerat dignissimos, repudiandae omnis quis
-              veritatis laborum, quod, consequuntur excepturi?
-            </p>
+          <div className="lg:w-[300px] xl:w-[400px] px-2 py-6 border-l-[1px] border-slate-200 hidden lg:block">
+            <div className="m-2 p-3">
+              <p className="font-semibold underline underline-offset-4">Recommended Categories</p>
+              <div className="flex my-3 gap-2 flex-wrap">
+                {categories.slice(0, 10).map((category) => (
+                  <button
+                    key={category._id}
+                    // onClick={() => handleFollowUnfollowCategory(category._id)}
+                    className="bg-gray-200 hover:bg-gray-800 text-black hover:text-white text-sm py-1 px-3 rounded-2xl">
+                    {category.categoryName}
+                  </button>
+                ))}
+                <button className="bg-gray-600 text-white text-sm px-3 py-1 rounded-2xl">
+                  + more
+                </button>
+              </div>
+            </div>
+
+            <div className="border-b-[1px]"></div>
+
+            <div className="m-2 p-3">
+              <div className="flex justify-between">
+                <p className="font-semibold underline underline-offset-4">Who To Follow</p>
+                <p className="text-black font-normal text-md cursor-pointer"> + more</p>
+              </div>
+              <div className="my-3">
+                {users.slice(0, 8).map((userItem) => (
+                  <div key={userItem._id} className="flex justify-between items-center mb-2">
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={userItem.profilePhoto}
+                        alt="pro-img"
+                        className="h-10 w-10 rounded-full"
+                      />
+                      <p className="font-semibold">
+                        {userItem.username} <span className="ms-2 text-sm text-red-800">{userItem.role}</span>
+                      </p>
+                    </div>
+                    <div className="">
+                      <button
+                        onClick={() => handleFollowUnfollowUser(userItem._id)}
+                        className={`hover:bg-black hover:text-white text-sm border-[1px] border-black px-3 py-1 rounded-2xl 
+                          ${isUserFollowing[userItem._id] ? 'bg-black text-white' : 'bg-white text-black'
+                        }`}
+                      >
+                        {isUserFollowing[userItem._id] ? 'Following' : 'Follow'}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}

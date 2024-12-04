@@ -199,6 +199,48 @@ export const replyToComment = async(blogId: string, commentId: string, replyCont
 }
 
 
+// ---------------- function for follow the user ---------------------
+export const followUser = async(userIdToFollow: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `/api/auth/follow-user/${userIdToFollow}`
+    }
+    try{
+        const result = await userApiRequest(config);
+        console.log(result.data);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "following a user is failed";
+        console.log('following a user is error:', error);
+        throw new Error(message);
+    }
+}
+
+
+// ---------------- function for follow the category ---------------------
+export const followCategory = async(categoryId: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `/api/auth/follow-category/${categoryId}`
+    }
+    try{
+        const result = await userApiRequest(config);
+        console.log(result.data);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "following a category is failed";
+        console.log('following a category is error:', error);
+        throw new Error(message);
+    }
+}
+
+
+
+
 
 //* ======================= ADMIN API =============================
 // ------------------------- funnction for admin login ------------------------

@@ -61,3 +61,43 @@ export const deleteComment = async(commentId: string) => {
         throw new Error(message);
     }
 }
+
+
+//----------------- function for unBookmark blog---------------------
+export const unfollowUser = async(userIdToUnfollow: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'DELETE',
+        url: `/api/auth/unfollow-user/${userIdToUnfollow}`,
+    }
+    try{
+        const result = await userApiRequest(config);
+        console.log(result.data);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "unfollowing a user is failed";
+        console.error('unfollowing a user is failed:', error);
+        throw new Error(message);
+    }
+}
+
+
+//----------------- function for unBookmark blog---------------------
+export const unfollowCategory = async(categoryId: string) => {
+    const config: AxiosRequestConfig = {
+        method: 'DELETE',
+        url: `/api/auth/unfollow-category/${categoryId}`,
+    }
+    try{
+        const result = await userApiRequest(config);
+        console.log(result.data);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "unfollowing a category is failed";
+        console.error('unfollowing a category is failed:', error);
+        throw new Error(message);
+    }
+}
