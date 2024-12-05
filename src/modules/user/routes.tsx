@@ -8,6 +8,8 @@ import HomePage from "./pages/home/HomePage";
 import CreateBlog from "./pages/home/blog/CreateBlog";
 import BlogDetail from "./pages/home/BlogDetail";
 import UpdateBlog from "./pages/home/blog/UpdateBlog";
+import UsersDetailPage from "./pages/home/UsersDetailPage";
+import CategoryDetailPage from "./pages/home/CategoryDetailPage";
 
 
 
@@ -25,10 +27,12 @@ const UserRoutes = () => {
             <Route path='/' element= { <HomePage /> }/>
             {/* --------------- Protected Routes ------------- */}
             <Route element={<UserProtectedRoute />}>
-              <Route path="/profile" element={<ProfilePage /> }/>
-              <Route path="/create-blog" element={<CreateBlog /> }/>
-              <Route path="/blog-detail/:blogId" element={<BlogDetail /> }/>
-              <Route path="/update-blog/:blogId" element={<UpdateBlog /> }/>
+              <Route path="/profile" element={ <ProfilePage /> }/>
+              <Route path="/create-blog" element={ <CreateBlog /> }/>
+              <Route path="/blog-detail/:blogId" element={ <BlogDetail /> }/>
+              <Route path="/update-blog/:blogId" element={ <UpdateBlog /> }/>
+              <Route path="/users-datails/:usersId" element={ <UsersDetailPage /> }/>
+              <Route path="/category-detail" element={ <CategoryDetailPage /> }/>
             </Route>
         </Routes>
     </>

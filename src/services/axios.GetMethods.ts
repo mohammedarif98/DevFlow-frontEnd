@@ -166,6 +166,25 @@ export const getBlogComments = async(blogId: string) => {
 }
 
 
+//------------------ get blog comments  ----------------
+export const getUsersDetails = async(usersId: string) => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url: `/api/auth/users-datails/${usersId}`
+    }
+    try{
+        const result = await userApiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "failed to fetch users details";
+        console.log("failed to fetch users details", error);
+        throw new Error(message);
+    }
+}
+
+
 
 //* ======================= ADMIN API ============================
 // ------------------- function for display all users -----------------------

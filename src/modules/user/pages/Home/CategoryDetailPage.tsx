@@ -4,7 +4,7 @@ import React from 'react'
 
 const CategoryDetailPage:React.FC = () => {
   return (
-    <div>
+    <div className='mt-32'>
         CategoryDetailPage
     </div>
   )

@@ -40,6 +40,7 @@ type Category = {
   categoryName: string;
 };
 
+
 const Home: React.FC = () => {
   const user = useSelector((state: any) => state.user.user);
   const isAuthenticated = useSelector((state: any) => state.user.isAuthenticated);
@@ -49,6 +50,7 @@ const Home: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
   const { setLoading } = useLoading();
+
 
   //*-------------------- like/unlike to blog --------------------
   const handleLike = async (blogId: string) => {
@@ -134,7 +136,17 @@ const Home: React.FC = () => {
     navigate(`/blog-detail/${blogId}`);
   };
 
-  //* ------------- follow/unfollow users by logged-in user ------------------
+  //* ----------------- get users detail page -----------------------
+  const handleUserDetailclick = (usersId: string) => {
+    navigate(`/users-datails/${usersId}`)
+  };
+
+  //* ----------------- get users detail page -----------------------
+  const handleCategoryDetailclick = () => {
+    navigate(`/category-detail`)
+  };
+
+  //* ------------- follow/unfollow users by logged-in user --------------
   const handleFollowUnfollowUser = async (userId: string) => {
     try {
       if (isUserFollowing[userId]) {
@@ -267,8 +279,8 @@ const Home: React.FC = () => {
                 {categories.slice(0, 10).map((category) => (
                   <button
                     key={category._id}
-                    // onClick={() => handleFollowUnfollowCategory(category._id)}
-                    className="bg-gray-200 hover:bg-gray-800 text-black hover:text-white text-sm py-1 px-3 rounded-2xl">
+                    onClick={handleCategoryDetailclick}
+                    className="bg-gray-200 hover:bg-gray-800 text-black hover:text-white cursor-pointer text-sm py-1 px-3 rounded-2xl">
                     {category.categoryName}
                   </button>
                 ))}
@@ -287,8 +299,11 @@ const Home: React.FC = () => {
               </div>
               <div className="my-3">
                 {users.slice(0, 8).map((userItem) => (
-                  <div key={userItem._id} className="flex justify-between items-center mb-2">
-                    <div className="flex items-center gap-2">
+                  <div key={userItem._id} className="flex justify-between items-center my-1">
+                    <div 
+                      onClick={() => handleUserDetailclick(userItem._id)} 
+                      className="flex items-center gap-2 cursor-pointer"
+                          >
                       <img
                         src={userItem.profilePhoto}
                         alt="pro-img"
