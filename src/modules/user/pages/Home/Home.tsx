@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import landing_Image from "../../../../assets/images/SAVE_20241105_220105~2.jpg";
 import { Link, useNavigate } from "react-router-dom";
-import { GoPlus } from "react-icons/go";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 import { BsFillBookmarkPlusFill } from "react-icons/bs";
-import { getAllBlogs, getAllCategories, getUsers } from "../../../../services/axios.GetMethods";
-import { bookmarkBlog, followCategory, followUser, likeBlog } from "../../../../services/axios.PostMethods";
-import { unbookmarkBlog, unfollowCategory, unfollowUser, UnLikeBlog } from "../../../../services/axios.DeleteMethods";
+import { getAllBlogs, getAllCategories, getLoginUserData, getUsers } from "../../../../services/axios.GetMethods";
+import { followUser, likeBlog } from "../../../../services/axios.PostMethods";
+import { unfollowUser, UnLikeBlog } from "../../../../services/axios.DeleteMethods";
 import { AiFillLike } from "react-icons/ai";
 import { useLoading } from "../../../../contexts/LoadingContext";
 
@@ -20,6 +19,8 @@ type User = {
   role: string;
   followers: string[];
   followedCategory: string[];
+  category: Category
+  categoryName: string;
 };
 
 type BlogList = {
@@ -47,6 +48,7 @@ const Home: React.FC = () => {
   const [isUserFollowing, setIsUserFollowing] = useState<{ [key: string]: boolean }>({});
   const [categories, setCategories] = useState<Category[]>([]);
   const [data, setData] = useState<BlogList[]>([]);
+  const [authUserData, setAuthUserData] = useState<User []>([])
   const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
   const { setLoading } = useLoading();
@@ -138,12 +140,12 @@ const Home: React.FC = () => {
 
   //* ----------------- get users detail page -----------------------
   const handleUserDetailclick = (usersId: string) => {
-    navigate(`/users-datails/${usersId}`)
+    navigate(`/users-datails/${usersId}`);
   };
 
   //* ----------------- get users detail page -----------------------
-  const handleCategoryDetailclick = () => {
-    navigate(`/category-detail`)
+  const handleCategoryDetailclick = (categoryId: string) => {
+    navigate(`/category-detail/${categoryId}`);
   };
 
   //* ------------- follow/unfollow users by logged-in user --------------
@@ -152,20 +154,32 @@ const Home: React.FC = () => {
       if (isUserFollowing[userId]) {
         const response = await unfollowUser(userId);
         setIsUserFollowing((prev) => ({ ...prev, [userId]: false }));
-        console.log(response);
+        // console.log(response);
       } else {
         const response = await followUser(userId);
         setIsUserFollowing((prev) => ({ ...prev, [userId]: true }));
-        console.log(response);
+        // console.log(response);
       }
     } catch (error: any) {
       console.error('Error following/unfollowing user:', error.message);
     }
   };
 
-  //*----------------- follow/unfollow the category by logged-in user -------------
-  // const handleFollowUnfollowCategory = async (categoryId: string) => {
-  // };
+  //*----------------- get login user data -------------
+  useEffect(() => {
+    const getUserData = async() => {
+      try{
+        const response = await getLoginUserData();
+        setAuthUserData(response.data[0].followedCategory);
+        console.log(response.data[0].followedCategory);
+      }catch(error){
+        console.log("error to fetch login user data");
+      }
+    }
+    getUserData();
+  },[user]);
+
+
 
   return (
     <div className="flex justify-center">
@@ -196,15 +210,22 @@ const Home: React.FC = () => {
         <div className="flex flex-col max-w-7xl mt-24 md:flex-row mx-2 md:mx-4 lg:mx-4">
           {/* --------------- Left side content ---------------- */}
           <div className="md:w-[900px] lg:w-[750px] xl:w-[900px] p-4 space-y-4">
+
+            {/* -------------- lsit category name the user followed -----------------*/}
             <div
-              className="flex gap-5 cursor-pointer p-3 overflow-x-auto whitespace-nowrap scrollbar-hide"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
-              <p className="text-xl inline-flex items-center p-1 bg-slate-200 hover:bg-slate-300 rounded-full">
-                <GoPlus />
-              </p>
-              <p className="inline-flex items-center">coding</p>
-              <p className="inline-flex items-center">games</p>
+              className="flex gap-5 cursor-pointer p-3 overflow-x-auto whitespace-nowrap scrollbar-hide border-b-[1px] "
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+              {authUserData.length > 0 ? (
+                authUserData.map((category ,index) => {
+                  return (
+                    <ul key={index} className="">
+                      <li className="text-gray-600 hover:text-black">{category.categoryName }</li>
+                    </ul>
+                  );
+                })
+              ) : (
+                <p>No categories followed.</p>
+              )}
             </div>
 
             {data.length > 0 ? (
@@ -276,17 +297,17 @@ const Home: React.FC = () => {
             <div className="m-2 p-3">
               <p className="font-semibold underline underline-offset-4">Recommended Categories</p>
               <div className="flex my-3 gap-2 flex-wrap">
-                {categories.slice(0, 10).map((category) => (
+                {categories.map((category) => (
                   <button
                     key={category._id}
-                    onClick={handleCategoryDetailclick}
+                    onClick={() => handleCategoryDetailclick(category._id)}
                     className="bg-gray-200 hover:bg-gray-800 text-black hover:text-white cursor-pointer text-sm py-1 px-3 rounded-2xl">
                     {category.categoryName}
                   </button>
                 ))}
-                <button className="bg-gray-600 text-white text-sm px-3 py-1 rounded-2xl">
+                {/* <button className="bg-gray-600 text-white text-sm px-3 py-1 rounded-2xl">
                   + more
-                </button>
+                </button> */}
               </div>
             </div>
 

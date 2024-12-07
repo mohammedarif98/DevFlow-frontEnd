@@ -32,7 +32,7 @@ const UserRoutes = () => {
               <Route path="/blog-detail/:blogId" element={ <BlogDetail /> }/>
               <Route path="/update-blog/:blogId" element={ <UpdateBlog /> }/>
               <Route path="/users-datails/:usersId" element={ <UsersDetailPage /> }/>
-              <Route path="/category-detail" element={ <CategoryDetailPage /> }/>
+              <Route path="/category-detail/:categoryId" element={ <CategoryDetailPage /> }/>
             </Route>
         </Routes>
     </>

@@ -4,10 +4,10 @@ import { BsFillBookmarkPlusFill } from 'react-icons/bs';
 import { IoChatbubbleEllipsesSharp } from 'react-icons/io5';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLoading } from '../../../../contexts/LoadingContext';
-import { likeBlog } from '../../../../services/axios.PostMethods';
-import { UnLikeBlog } from '../../../../services/axios.DeleteMethods';
 import { getUsersDetails } from '../../../../services/axios.GetMethods';
 import { useSelector } from 'react-redux';
+import { UnLikeBlog } from '../../../../services/axios.DeleteMethods';
+import { likeBlog } from '../../../../services/axios.PostMethods';
 
 
 type User = {
@@ -43,11 +43,11 @@ type Category = {
 
 const UsersDetailPage:React.FC = () => {
 
+  const navigate = useNavigate();
+  const { setLoading } = useLoading();
   const user = useSelector((state: any) => state.user.user);
   const [blogData, setBlogData] = useState<BlogList[]>([]);
   const [author, setAuthor] = useState<User | null>(null);
-  const navigate = useNavigate();
-  const { setLoading } = useLoading();
   const { usersId } = useParams<{ usersId: string }>();
 
   //*-------------------- like/unlike to blog --------------------
@@ -113,7 +113,9 @@ const UsersDetailPage:React.FC = () => {
           {/* --------------- Left side content ---------------- */}
 
           <div className="md:w-[900px] lg:w-[750px] xl:w-[900px] p-4 space-y-4">
-          <div className='text-4xl font-bold'>{author?.username}</div>
+          <div className='flex gap-x-2'>
+            <p className='text-4xl font-bold'>{author?.username}</p>
+          </div>
             {blogData.length > 0 ? (
               blogData.map((blog) => (
                 <div

@@ -166,7 +166,7 @@ export const getBlogComments = async(blogId: string) => {
 }
 
 
-//------------------ get blog comments  ----------------
+//------------------ get fetch following users details  ----------------
 export const getUsersDetails = async(usersId: string) => {
     const config: AxiosRequestConfig = {
         method: "GET",
@@ -180,6 +180,42 @@ export const getUsersDetails = async(usersId: string) => {
             ? error.response.data.message
             : "failed to fetch users details";
         console.log("failed to fetch users details", error);
+        throw new Error(message);
+    }
+}
+
+
+//------------------ etch category match of blogs details  ----------------
+export const getCategoryMatchBlogs = async(categoryId: string) => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url: `/api/auth/categories-datails/${categoryId}`
+    }
+    try{
+        const result = await userApiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "failed to fetch category match of blogs details";
+        console.log("failed to fetch caegory of blogs details", error);
+        throw new Error(message);
+    }
+}
+//------------------ etch category match of blogs details  ----------------
+export const getLoginUserData = async() => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url: `/api/auth/login-user-datails`
+    }
+    try{
+        const result = await userApiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "failed to fetch logined user details";
+        console.log("failed to fetch logined user details", error);
         throw new Error(message);
     }
 }
