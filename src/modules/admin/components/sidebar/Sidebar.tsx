@@ -5,7 +5,7 @@ import { TbCategoryPlus } from "react-icons/tb";
 import { GrBlog } from "react-icons/gr";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
-import { IoIosAddCircleOutline } from "react-icons/io";
+// import { IoIosAddCircleOutline } from "react-icons/io";
 import { IoListOutline } from "react-icons/io5";
 
 interface SidebarProps {
@@ -21,7 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      <div className="flex justify-center p-4">
+      <div className="flex justify-center p-4 ">
         <Link to="/admin/dashboard" className="text-xl font-rubik-wet-paint">
           DevFlow Admin
         </Link>

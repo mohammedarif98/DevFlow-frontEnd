@@ -285,7 +285,25 @@ export const getBlogDetails = async(blogId: string) => {
         return result.data;
     }catch(error:any){
         if (error.response?.status === 401) {
-            throw new Error('You are not Logged in! please logIn');
+            throw new Error('fail to get blog details');
+        }
+        throw error;
+    }
+}
+
+
+//------------- function for display detail of selected blogs -----------------
+export const getDashboard = async() => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url: `/api/admin/dashboard`
+    }
+    try{
+        const result = await adminApiRequest(config);
+        return result.data;
+    }catch(error:any){
+        if (error.response?.status === 401) {
+            throw new Error('fail to get data for dashboard');
         }
         throw error;
     }

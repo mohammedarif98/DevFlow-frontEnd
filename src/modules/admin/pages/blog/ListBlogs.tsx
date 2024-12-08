@@ -74,9 +74,9 @@ const ListBlogs: React.FC = () => {
   }
 
   return (
-    <div className="my-2 space-y-2">
+    <div className=" w-full my-2 space-y-2">
       {/* ----------- blog list ------------- */}
-      <div className="bg-white w-full p-4">
+      <div className="bg-white p-4">
         <form className="flex justify-end mb-3">
           <div className="w-72">
             <input
