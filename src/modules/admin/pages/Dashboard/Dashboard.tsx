@@ -5,6 +5,7 @@ import { SiBloglovin } from 'react-icons/si';
 import { useSelector } from 'react-redux'
 import { getDashboard } from '../../../../services/axios.GetMethods';
 import { Chart, registerables } from 'chart.js';
+import { useLoading } from '../../../../contexts/LoadingContext';
 Chart.register(...registerables);
 
 
@@ -16,17 +17,20 @@ const Dashboard:React.FC = () => {
   const barChartRef = useRef<HTMLCanvasElement>(null);
   const doughnutChartRef = useRef<HTMLCanvasElement>(null);
   const lineChartRef = useRef<HTMLCanvasElement>(null);
+  const { setLoading } = useLoading()
 
 
   //*----------- get the data of users -----------------
   useEffect(() => {
     const dashboardData = async() => {
       try{
+        setLoading(true);
         const response =  await getDashboard();
         setUserData(response.data);
-        console.log(response.data);
+        setLoading(false);
       }catch(error: any){
         console.log("error in fetching the data in dashboard",error.message);
+        setLoading(false);
       }
     } 
     dashboardData()
@@ -39,7 +43,8 @@ const Dashboard:React.FC = () => {
       const barCtx = barChartRef.current.getContext('2d');
       const doughnutCtx = doughnutChartRef.current.getContext('2d');
       const lineCtx = lineChartRef.current.getContext('2d');
-
+  
+      // Bar Chart
       if (barCtx) {
         new Chart(barCtx, {
           type: 'bar',
@@ -64,11 +69,12 @@ const Dashboard:React.FC = () => {
           },
         });
       }
-
+  
+      // Doughnut Chart
       if (doughnutCtx) {
         const categories = userData.categoryBlogCount.map((item: any) => item.categoryName);
         const counts = userData.categoryBlogCount.map((item: any) => item.count);
-
+  
         new Chart(doughnutCtx, {
           type: 'doughnut',
           data: {
@@ -99,24 +105,24 @@ const Dashboard:React.FC = () => {
           },
           options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
               legend: {
-                position: 'top',
-              },
-              title: {
-                display: true,
-                text: 'Category Usage in Blogs',
+                labels: {
+                  font: {
+                    size: 10,
+                  },
+                },
               },
             },
-            cutout: '70%', // Adjust this value to reduce the visual size of the doughnut
           },
         });
       }
-
+  
+      // Line Chart
       if (lineCtx) {
-        const months = userData.monthlyBlogCreations.map((item: any) => item.month);
-        const counts = userData.monthlyBlogCreations.map((item: any) => item.count);
-
+        const counts = userData.monthlyBlogCreations;
+  
         new Chart(lineCtx, {
           type: 'line',
           data: {
@@ -183,27 +189,29 @@ const Dashboard:React.FC = () => {
         </div>
 
       {/* ----------------- chart sections ------------------ */}
-      <div className='flex flex-row gap-4'>
-        <div className="w-3/4 bg-slate-500">
-          <div className='flex flex-col space-y-2'>
-            <div className='bg-white p-2 lg:w-1/2 lg:h-[340px]'>
-              <canvas ref={lineChartRef} className='border-2' />
+      <div className="flex flex-col">
+        <div className="flex sm:flex-row gap-2">
+          {/*---------- Line chart ----------- */}
+          <div className="w-full sm:w-1/2 ">
+            <div className="bg-white p-2 shadow-sm">
+              <canvas ref={lineChartRef} className="w-full" />
             </div>
-
-            <div className='bg-white p-2 lg:w-1/2 lg:h-[330px]'>
-              <canvas className='border-2' ref={barChartRef}/>
+          </div>
+          {/* ----------- Doughnut chart ------------*/}
+          <div className="w-full sm:w-1/2 ">
+            <div className="bg-white p-2 shadow-sm">
+              <canvas ref={barChartRef} className="w-full" />
             </div>
           </div>
         </div>
-
-        <div className='flex'>
-          <div className='flex justify-center items-center bg-white p-2'>
-            <canvas className='w-[500px]' ref={doughnutChartRef} />
+        {/* ----------- Bar chart below the top row ------------ */}
+        <div className="w-full sm:w-1/2  py-2">
+          <div className="bg-white shadow-sm p-2">
+              <canvas ref={doughnutChartRef} className="h-[400px] " />
           </div>
         </div>
       </div>
-
-
+            
     </div>
   )
 }

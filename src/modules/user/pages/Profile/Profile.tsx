@@ -8,6 +8,7 @@ import { updateUserFail, updateUserStart, updateUserSuccess } from "../../../../
 import { toast } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
 import BlogCards from "../../components/card/BlogCards";
+import UserProifleData from "../../components/userProfile/UserProfileData";
 
 
 
@@ -35,6 +36,7 @@ const Profile: React.FC = () => {
       profilePhoto: null,
     });
   };
+
   const closeModal = () => {
     setIsModalOpen(false);
     setFormState({
@@ -44,6 +46,7 @@ const Profile: React.FC = () => {
   };
 
 
+  //* ---------------- user profile ----------------------
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -249,14 +252,12 @@ const Profile: React.FC = () => {
           {/* ------------ -Tab content ------------- */}
           <div className="bg-white text-black border-l-[0.1px] border-r-[0.1px] border-b-[0.1px] border-gray-300 rounded-b">
             {activeTab === 1 && (
-              <div className="p-4">
-                <h3 className="text-black">
-                  Standard tab panel created on bootstrap using nav-tabs
-                </h3>
+              <div className="p-2">
+                <UserProifleData/>
               </div>
             )}
             {activeTab === 2 && (
-              <div className="p-2">
+              <div className="p-1">
                 <BlogCards />
               </div>
             )}

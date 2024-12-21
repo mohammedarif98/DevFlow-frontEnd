@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getBlogComments, getBlogDetail } from "../../../../services/axios.GetMethods";
 import { useParams } from "react-router-dom";
-import { BsChat, BsFillBookmarkPlusFill } from "react-icons/bs";
+import { BsBookmarkCheckFill, BsChat, BsFillBookmarkPlusFill } from "react-icons/bs";
 import { AiFillLike, AiOutlineClose } from "react-icons/ai";
 import { useSelector } from "react-redux";
-import { deleteComment, UnLikeBlog } from "../../../../services/axios.DeleteMethods";
-import { addComment, likeBlog, replyToComment } from "../../../../services/axios.PostMethods";
+import { deleteComment, unbookmarkBlog, UnLikeBlog } from "../../../../services/axios.DeleteMethods";
+import { addComment, bookmarkBlog, likeBlog, replyToComment } from "../../../../services/axios.PostMethods";
 import { useLoading } from "../../../../contexts/LoadingContext";
 import img from '../../../../assets/images/pngtree-man-avatar-image-for-profile-png-image_13001882.png';
 import { GrMoreVertical } from "react-icons/gr";
@@ -60,6 +60,7 @@ const BlogDetail: React.FC = () => {
   const [replyContent, setReplyContent] = useState<{ [key: string]: string }>({});
   const [replyOpen, setReplyOpen] = useState<{ [key: string]: boolean }>({});
   const [deleteDropDownOpen, setDeleteDropDownOpen] = useState<{ [key: string]: boolean }>({});
+  const [bookmarkStatus, setBookmarkStatus] = useState<{[key: string]: boolean}>({})
 
 
 
@@ -210,6 +211,24 @@ const BlogDetail: React.FC = () => {
     }
   };
 
+  //*----------------- handle bookmark/unbookmark -------------
+  const handleBookmark = async (blogId: string) => {
+    if (!user) return;
+
+    try {
+      if (bookmarkStatus[blogId]) {
+        await unbookmarkBlog(blogId);
+        setBookmarkStatus((prev) => ({ ...prev, [blogId]: false }));
+      } else {
+        await bookmarkBlog(blogId);
+        setBookmarkStatus((prev) => ({ ...prev, [blogId]: true }));
+      }
+    } catch (error: any) {
+      console.error("Error toggling bookmark for the blog:", error.message);
+    }
+  };
+  
+
 
   return (
     <div className="flex justify-center">
@@ -277,7 +296,23 @@ const BlogDetail: React.FC = () => {
                 </span>
               </div>
               <div className="flex gap-x-4 text-sm md:text-lg">
-                <BsFillBookmarkPlusFill />
+                {bookmarkStatus[blogData._id] ? (
+                  <BsBookmarkCheckFill
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleBookmark(blogData._id);
+                    }}
+                    className="text-red-600 cursor-pointer"
+                  />
+                ) : (
+                  <BsFillBookmarkPlusFill
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleBookmark(blogData._id);
+                    }}
+                    className="text-black cursor-pointer"
+                  />
+                )}
               </div>
             </div>
           </div>

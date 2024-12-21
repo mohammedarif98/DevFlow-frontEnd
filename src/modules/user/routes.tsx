@@ -10,6 +10,8 @@ import BlogDetail from "./pages/home/BlogDetail";
 import UpdateBlog from "./pages/home/blog/UpdateBlog";
 import UsersDetailPage from "./pages/home/UsersDetailPage";
 import CategoryDetailPage from "./pages/home/CategoryDetailPage";
+import NotFound from "../../common/NotFound";
+import Bookmarks from "./pages/profile/Bookmarks";
 
 
 
@@ -33,7 +35,10 @@ const UserRoutes = () => {
               <Route path="/update-blog/:blogId" element={ <UpdateBlog /> }/>
               <Route path="/users-datails/:usersId" element={ <UsersDetailPage /> }/>
               <Route path="/category-detail/:categoryId" element={ <CategoryDetailPage /> }/>
+              <Route path="/bookmarked" element={<Bookmarks/>} />
             </Route>
+            {/* ----------- 404 Route -------------- */}
+            <Route path="*" element={ <NotFound /> } />
         </Routes>
     </>
   )

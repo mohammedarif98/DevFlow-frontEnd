@@ -220,6 +220,24 @@ export const getLoginUserData = async() => {
     }
 }
 
+//----------------- get the user blogs and bookmark  ----------------------
+export const getBookmarkandBlog = async() => {
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url: '/api/auth/user-blogs-bookmarks'
+    }
+    try{
+        const result = await userApiRequest(config);
+        return result.data;
+    }catch(error){
+        const message = axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "failed to fetch bookmark and blog data of logged user";
+        console.log("failed to fetch bookmark and blog data of logged user", error);
+        throw new Error(message);
+    }
+}
+
 
 
 //* ======================= ADMIN API ============================
@@ -308,3 +326,5 @@ export const getDashboard = async() => {
         throw error;
     }
 }
+
+

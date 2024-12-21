@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import landing_Image from "../../../../assets/images/SAVE_20241105_220105~2.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
-import { BsFillBookmarkPlusFill } from "react-icons/bs";
+import { BsBookmarkCheckFill, BsFillBookmarkPlusFill } from "react-icons/bs";
 import { getAllBlogs, getAllCategories, getLoginUserData, getUsers } from "../../../../services/axios.GetMethods";
-import { followUser, likeBlog } from "../../../../services/axios.PostMethods";
-import { unfollowUser, UnLikeBlog } from "../../../../services/axios.DeleteMethods";
+import { bookmarkBlog, followUser, likeBlog } from "../../../../services/axios.PostMethods";
+import { unbookmarkBlog, unfollowUser, UnLikeBlog } from "../../../../services/axios.DeleteMethods";
 import { AiFillLike } from "react-icons/ai";
 import { useLoading } from "../../../../contexts/LoadingContext";
 
@@ -33,7 +33,6 @@ type BlogList = {
   coverImage: string;
   author: User;
   publishedAt: string;
-  isBookmarked: boolean;
 };
 
 type Category = {
@@ -50,6 +49,7 @@ const Home: React.FC = () => {
   const [data, setData] = useState<BlogList[]>([]);
   const [authUserData, setAuthUserData] = useState<User []>([])
   const [users, setUsers] = useState<User[]>([]);
+  const [bookmarkStatus, setBookmarkStatus] = useState<{[key: string]: boolean}>({})
   const navigate = useNavigate();
   const { setLoading } = useLoading();
 
@@ -179,6 +179,22 @@ const Home: React.FC = () => {
     getUserData();
   },[user]);
 
+ //*----------------- handle bookmark/unbookmark -------------
+ const handleBookmark = async (blogId: string) => {
+  if (!user) return;
+
+  try {
+    if (bookmarkStatus[blogId]) {
+      await unbookmarkBlog(blogId);
+      setBookmarkStatus((prev) => ({ ...prev, [blogId]: false }));
+    } else {
+      await bookmarkBlog(blogId);
+      setBookmarkStatus((prev) => ({ ...prev, [blogId]: true }));
+    }
+  } catch (error: any) {
+    console.error("Error toggling bookmark for the blog:", error.message);
+  }
+};
 
 
   return (
@@ -274,7 +290,23 @@ const Home: React.FC = () => {
                         </span>
                       </div>
                       <div className="flex gap-x-4">
-                        <BsFillBookmarkPlusFill />
+                        {bookmarkStatus[blog._id] ? (
+                            <BsBookmarkCheckFill
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleBookmark(blog._id);
+                              }}
+                              className="text-red-600 cursor-pointer"
+                            />
+                          ) : (
+                            <BsFillBookmarkPlusFill
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleBookmark(blog._id);
+                              }}
+                              className="text-black cursor-pointer"
+                            />
+                          )}
                       </div>
                     </div>
                   </div>
